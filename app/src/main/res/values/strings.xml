@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Cool Wallpapers</string>
+    
+    <string name="bottom_nav_home">Home</string>
+    <string name="bottom_nav_search">Search</string>
+    <string name="bottom_nav_profile">Profile</string>
 </resources>
