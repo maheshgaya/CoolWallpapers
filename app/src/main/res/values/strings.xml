@@ -4,4 +4,9 @@
     <string name="bottom_nav_home">Home</string>
     <string name="bottom_nav_search">Search</string>
     <string name="bottom_nav_profile">Profile</string>
+
+    <string name="action_add">Add</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="follow_user">Follow</string>
+    <string name="following_user">Following</string>
 </resources>

@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +24,19 @@ import butterknife.ButterKnife;
 public class ProfileFragment extends Fragment {
     private static final String TAG = ProfileFragment.class.getSimpleName();
     @BindView(R.id.layout_profile)CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.toolbar_profile)Toolbar mToolbar;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, rootView);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.bottom_nav_profile);
+
         displaySnackBar("Hello");
+
         return rootView;
     }
 
