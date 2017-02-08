@@ -9,4 +9,39 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="follow_user">Follow</string>
     <string name="following_user">Following</string>
+
+    <!-- content description -->
+    <string name="profile_image_description">Profile Picture</string>
+
+    <string name="test_scroll">This is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
+    </string>
 </resources>

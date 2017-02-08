@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.maheshgaya.android.coolwallpapers.R;
 
@@ -25,7 +26,8 @@ import butterknife.ButterKnife;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
-    @BindView(R.id.toolbar_home)Toolbar mToolbar;
+    @BindView(R.id.toolbar)Toolbar mToolbar;
+    @BindView(R.id.toolbar_title)TextView mToolbarTitle;
 
     /**
      * set options for fragment
@@ -59,8 +61,7 @@ public class HomeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, rootView);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(R.string.bottom_nav_home);
-
+        mToolbarTitle.setText(getString(R.string.bottom_nav_home));
         return rootView;
     }
 }

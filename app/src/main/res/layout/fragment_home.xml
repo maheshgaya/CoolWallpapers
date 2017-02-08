@@ -11,14 +11,9 @@
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_home"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            android:fitsSystemWindows="true"
-            app:layout_collapseMode="none" />
-
+        <!-- add toolbar -->
+        <include layout="@layout/toolbar"/>
+        
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView
