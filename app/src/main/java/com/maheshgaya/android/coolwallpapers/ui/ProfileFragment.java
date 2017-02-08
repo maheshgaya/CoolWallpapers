@@ -75,6 +75,14 @@ public class ProfileFragment extends Fragment {
                 return true;
             }
         });
+        MenuItem signOutMenuItem = menu.findItem(R.id.action_sign_out);
+        signOutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ((MainActivity) getActivity()).signOut();
+                return true;
+            }
+        });
     }
 
     private void displaySnackBar(String message){

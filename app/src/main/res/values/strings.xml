@@ -10,6 +10,11 @@
     <string name="follow_user">Follow</string>
     <string name="following_user">Following</string>
 
+    <!-- Error Handling and user profile -->
+    <string name="no_internet_connection">No internet connection available!</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_out_success">You have successfully signed out!</string>
+
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>
 
