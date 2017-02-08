@@ -1,8 +1,8 @@
 # CoolWallpapers
-A photo-sharing app where you can find and share wallpapers
+A photo-sharing app where you can find and share wallpapers. Curious about the design? [Click here](https://github.com/maheshgaya/CoolWallpapers/blob/master/Capstone_Stage1.pdf)
 
 This is my capstone project for Udacity Android Developer Nanodegree. 
-It is an app where users can find and share awesome wallpapers.
+
 
 ## Using the Source Code
 1. Clone the repository
