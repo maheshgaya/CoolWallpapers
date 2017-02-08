@@ -29,8 +29,9 @@
             android:layout_height="@dimen/profile_image_height"
             android:layout_width="@dimen/profile_image_height">
             <ImageView
+                android:id="@+id/profile_image_view"
                 android:contentDescription="@string/profile_image_description"
-                android:src="@mipmap/ic_launcher"
+                tools:src="@mipmap/ic_launcher"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -38,7 +39,8 @@
         </android.support.v7.widget.CardView>
 
         <TextView
-            android:text="Mahesh Gaya"
+            android:id="@+id/profile_name"
+            tools:text="Hola"
             android:textColor="@android:color/white"
             android:textSize="@dimen/profile_name_text_size"
             android:layout_marginTop="@dimen/profile_name_top_padding"
@@ -46,30 +48,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <Button
-            android:layout_gravity="center"
-            android:paddingStart="@dimen/profile_button_side_padding"
-            android:paddingLeft="@dimen/profile_button_side_padding"
-            android:paddingEnd="@dimen/profile_button_side_padding"
-            android:paddingRight="@dimen/profile_button_side_padding"
-            android:layout_marginBottom="@dimen/profile_button_vertical_margin"
-            android:layout_marginTop="@dimen/profile_button_vertical_margin"
-            style="@style/Widget.AppCompat.Button"
-            android:background="?attr/selectableItemBackground"
+            style="@style/AppTheme.Button"
             android:id="@+id/edit_profile_button"
             android:text="@string/edit_profile"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
 
         <Button
+            style="@style/AppTheme.Button"
             android:id="@+id/follow_button"
-            android:text="@string/follow_user"
+            android:text="@string/follow_user_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:visibility="gone"/>
     </LinearLayout>
 
     <TextView
-        android:text="# followers"
+        tools:text="# followers"
         android:layout_column="1"
         android:layout_row="1"
         android:layout_columnWeight="1"
@@ -80,7 +75,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <TextView
-        android:text="# likes"
+        tools:text="# likes"
         android:layout_column="2"
         android:layout_row="1"
         android:layout_columnWeight="1"
@@ -91,7 +86,7 @@
         android:layout_gravity="center_horizontal"/>
 
     <TextView
-        android:text="# following"
+        tools:text="# following"
         android:layout_column="0"
         android:layout_row="1"
         android:layout_columnWeight="1"

@@ -30,8 +30,17 @@
             <item name="android:windowBackground">@drawable/auth_ui_logo</item>
     </style>
 
-
      <!--buttons -->
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:paddingStart">@dimen/profile_button_side_padding</item>
+        <item name="android:paddingLeft">@dimen/profile_button_side_padding</item>
+        <item name="android:paddingEnd">@dimen/profile_button_side_padding</item>
+        <item name="android:paddingRight">@dimen/profile_button_side_padding</item>
+        <item name="android:layout_marginBottom">@dimen/profile_button_vertical_margin</item>
+        <item name="android:layout_marginTop">@dimen/profile_button_vertical_margin</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
     <!--<style name="AppTheme.Button" parent="ThemeOverlay.AppCompat">-->
         <!--<item name="colorAccent">@color/colorGrey100</item>-->
     <!--</style>-->

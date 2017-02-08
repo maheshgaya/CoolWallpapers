@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     /** Firebase variables */
     private static final int RC_SIGN_IN = 100;
+    /** require user account for using the app */
     private FirebaseAuth mFirebaseAuth;
+    /** current user */
     private FirebaseUser mUser;
 
     /**
@@ -59,13 +61,12 @@ public class MainActivity extends AppCompatActivity {
         if (mUser == null){
             //redirect to login
             requireLogin();
-        } else {
-            //TODO: get the picture, name, user id
+        } /*else {
+            //TODO: get the picture, name, user id (not necessary here)
             String userName = mUser.getDisplayName();
             Uri userPictureUrl = mUser.getPhotoUrl();
             String uid = mUser.getUid();
-            Toast.makeText(getApplicationContext(), userName + " " + uid + " " + userPictureUrl, Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
 
         mFragmentManager = getSupportFragmentManager();
@@ -108,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * redirects to Login Activity
+     * Account Providers: email, Google
+     */
     private void requireLogin(){
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
@@ -120,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
+    /**
+     * check if login was successful
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // RC_SIGN_IN is the request code you passed into startActivityForResult(...) when starting the sign in flow.
@@ -132,31 +143,28 @@ public class MainActivity extends AppCompatActivity {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    //showSnackbar(R.string.sign_in_cancelled);
                     Log.d(TAG, "onActivityResult: user canceled");
                     return;
                 }
-
+                // No network
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
-                    //showSnackbar(R.string.no_internet_connection);
                     Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                // Boo boo
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
-                    //showSnackbar(R.string.unknown_error);
                     Log.d(TAG, "onActivityResult: Unknown error");
                     return;
                 }
             }
-
-            //showSnackbar(R.string.unknown_sign_in_response);
         }
     }
 
+    /** Utilities for getting status of the Firebase */
+
     /**
-     * Allow the user to sign out
-     * redirects to login activity
+     * Allow the user to sign out.
+     * This redirects to login activity
      */
     public void signOut(){
         AuthUI.getInstance()
@@ -165,10 +173,19 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         // user is now signed out
                         Toast.makeText(getApplicationContext(), getString(R.string.sign_out_success), Toast.LENGTH_SHORT).show();
+                        //redirect to login activity
                         requireLogin();
 
                     }
                 });
+    }
+
+    /**
+     * Getter for current user
+     * @return
+     */
+    public FirebaseUser getCurrentUser(){
+        return mUser;
     }
 
 }

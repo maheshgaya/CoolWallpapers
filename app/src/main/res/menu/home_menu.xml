@@ -11,7 +11,7 @@
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_sign_out"
-        android:title="@string/sign_out"
+        android:title="@string/action_sign_out"
         android:icon="@drawable/ic_account_circle_black"
         android:orderInCategory="200"
         app:showAsAction="never"/>

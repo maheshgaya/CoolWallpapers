@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.maheshgaya.android.coolwallpapers.R;
 
 import butterknife.BindView;
@@ -72,4 +73,5 @@ public class HomeFragment extends Fragment {
         mToolbarTitle.setText(getString(R.string.bottom_nav_home));
         return rootView;
     }
+
 }

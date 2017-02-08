@@ -1,5 +1,6 @@
 package com.maheshgaya.android.coolwallpapers.ui;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -16,8 +17,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.maheshgaya.android.coolwallpapers.R;
 
 import butterknife.BindView;
@@ -28,39 +32,81 @@ import butterknife.ButterKnife;
  */
 
 public class ProfileFragment extends Fragment {
+    //Logging purposes
     private static final String TAG = ProfileFragment.class.getSimpleName();
+    //Views
+    /** Toolbar variables */
     @BindView(R.id.layout_profile)CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.toolbar)Toolbar mToolbar;
     @BindView(R.id.profile_appbarlayout)AppBarLayout mAppBarLayout;
     @BindView(R.id.toolbar_title)TextView mToolbarTitle;
+    @BindView(R.id.profile_name)TextView mProfileNameTextView;
+    @BindView(R.id.profile_image_view)ImageView mProfileImageView;
+    @BindView(R.id.edit_profile_button)Button mEditProfileButton;
 
+    /** gets the current user */
+    private FirebaseUser mUser;
+    /**
+     * enable toolbar menu buttons
+     */
     public ProfileFragment(){
         setHasOptionsMenu(true);
     }
+
+    /**
+     * initializes the views
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, rootView);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        //displaySnackBar("Hello"); //TODO remove this
+
+        //get current user and display information
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (appBarLayout.getTotalScrollRange() + verticalOffset == 0){
-                    mToolbarTitle.setText("Mahesh Gaya"); //TODO get user's name
+                    mToolbarTitle.setText(mUser.getDisplayName());
                 } else {
                     mToolbarTitle.setText(getActivity().getString(R.string.bottom_nav_profile));
                 }
             }
         });
+
+        mEditProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: change this
+                displaySnackBar("Test: button is working");
+            }
+        });
+
+        //TODO: Add gridview and Initialize it
+
         return rootView;
     }
 
+    /**
+     *
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mUser = ((MainActivity)getActivity()).getCurrentUser();
+        mProfileNameTextView.setText(mUser.getDisplayName());
     }
 
     @Override
@@ -85,14 +131,21 @@ public class ProfileFragment extends Fragment {
         });
     }
 
+
     private void displaySnackBar(String message){
-        Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_SHORT)
-                .setAction("OK", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d(TAG, "onClick: Hello");
-                    }
-                }).setActionTextColor(getContext().getColor(android.R.color.holo_green_light))
-                .show();
+        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
+        snackbar.setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: Hello");
+            }
+        });
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            snackbar.setActionTextColor(getContext().getColor(android.R.color.holo_green_light));
+        } else {
+            snackbar.setActionTextColor(getContext().getResources().getColor(android.R.color.holo_green_light));
+        }
+        snackbar.show();
     }
 }

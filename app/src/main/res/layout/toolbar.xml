@@ -10,8 +10,8 @@
     android:background="@color/colorPrimary"
     android:textAlignment="center"
     android:minHeight="?attr/actionBarSize"
-    app:contentInsetLeft="50dp"
-    app:contentInsetStart="50dp"
+    app:contentInsetLeft="80dp"
+    app:contentInsetStart="80dp"
     app:layout_collapseMode="pin" >
     <TextView
         android:id="@+id/toolbar_title"
