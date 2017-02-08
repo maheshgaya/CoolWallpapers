@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- profile -->
-<GridLayout
+<android.support.v7.widget.GridLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="?attr/actionBarSize"
     app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
     app:layout_collapseMode="parallax"
-    android:columnCount="3"
-    android:rowCount="2"
+    app:columnCount="3"
+    app:rowCount="2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
-        android:layout_row="0"
-        android:layout_columnSpan="3"
+        app:layout_row="0"
+        app:layout_columnSpan="3"
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
@@ -65,34 +65,33 @@
 
     <TextView
         tools:text="# followers"
-        android:layout_column="1"
-        android:layout_row="1"
-        android:layout_columnWeight="1"
+        app:layout_column="1"
+        app:layout_row="1"
+        app:layout_columnWeight="1"
         android:id="@+id/follower_textview"
-        android:stretchMode="spacingWidthUniform"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        app:layout_gravity="center_horizontal"/>
 
     <TextView
+        android:paddingRight="28dp"
+        android:paddingEnd="28dp"
         tools:text="# likes"
-        android:layout_column="2"
-        android:layout_row="1"
-        android:layout_columnWeight="1"
+        app:layout_column="2"
+        app:layout_row="1"
+        app:layout_columnWeight="1"
         android:id="@+id/likes_textview"
-        android:stretchMode="spacingWidthUniform"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        app:layout_gravity="center_horizontal"/>
 
     <TextView
         tools:text="# following"
-        android:layout_column="0"
-        android:layout_row="1"
-        android:layout_columnWeight="1"
+        app:layout_column="0"
+        app:layout_row="1"
+        app:layout_columnWeight="1"
         android:id="@+id/following_textview"
-        android:stretchMode="spacingWidthUniform"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_gravity="center_horizontal"/>
-</GridLayout>
+        app:layout_gravity="center_horizontal"/>
+</android.support.v7.widget.GridLayout>

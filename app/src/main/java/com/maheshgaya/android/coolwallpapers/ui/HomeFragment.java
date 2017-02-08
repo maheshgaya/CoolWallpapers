@@ -50,7 +50,7 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d(TAG, "onMenuItemClick: adding");
-                //TODO: Start add post activity
+                //TODO: Start AddPostActivity
                 return true;
             }
         });

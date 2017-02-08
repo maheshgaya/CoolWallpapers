@@ -1,16 +1,12 @@
 package com.maheshgaya.android.coolwallpapers.ui;
 
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -23,8 +19,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.maheshgaya.android.coolwallpapers.BuildConfig;
 import com.maheshgaya.android.coolwallpapers.R;
+import com.maheshgaya.android.coolwallpapers.data.Post;
+import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 
 import java.util.Arrays;
 
@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     /** current user */
     private FirebaseUser mUser;
+    /** realtime database */
+    private FirebaseDatabase mFirebaseDatabase;
+    /** realtime database reference */
+    private DatabaseReference mPostDBReference;
+
 
     /**
      * initializes the views and adds listeners for the controls
@@ -56,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        //get authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
+        //get current user
         mUser = mFirebaseAuth.getCurrentUser();
         if (mUser == null){
             //redirect to login
@@ -68,7 +75,17 @@ public class MainActivity extends AppCompatActivity {
             String uid = mUser.getUid();
         }*/
 
+        /** initialization of the realtime database */
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mPostDBReference = mFirebaseDatabase.getReference(Post.TABLE_NAME);
 
+        if (mUser != null) {
+            mPostDBReference.setValue(new Post(mUser.getUid(), "Test Image", DateUtils.getCurrentDate(),
+                    "This is a test", "nature", "tree, test", "currentlocation"));
+            Log.d(TAG, "onCreate: post data");
+        }
+
+        //bottom navigation initialization
         mFragmentManager = getSupportFragmentManager();
 
         //initialize the home fragment to the main container
@@ -139,6 +156,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == ResultCodes.OK) {
                 // Successfully signed in
+                mUser = mFirebaseAuth.getCurrentUser();
+
+
             } else {
                 // Sign in failed
                 if (response == null) {
@@ -175,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), getString(R.string.sign_out_success), Toast.LENGTH_SHORT).show();
                         //redirect to login activity
                         requireLogin();
-
                     }
                 });
     }

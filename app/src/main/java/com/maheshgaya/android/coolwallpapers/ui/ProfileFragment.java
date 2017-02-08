@@ -43,6 +43,9 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.profile_name)TextView mProfileNameTextView;
     @BindView(R.id.profile_image_view)ImageView mProfileImageView;
     @BindView(R.id.edit_profile_button)Button mEditProfileButton;
+    @BindView(R.id.follower_textview)TextView mFollowerTextView;
+    @BindView(R.id.following_textview)TextView mFollowingTextView;
+    @BindView(R.id.likes_textview)TextView mLikesTextView;
 
     /** gets the current user */
     private FirebaseUser mUser;
@@ -72,7 +75,9 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (appBarLayout.getTotalScrollRange() + verticalOffset == 0){
-                    mToolbarTitle.setText(mUser.getDisplayName());
+                    if (mUser != null) {
+                        mToolbarTitle.setText(mUser.getDisplayName());
+                    }
                 } else {
                     mToolbarTitle.setText(getActivity().getString(R.string.bottom_nav_profile));
                 }
@@ -92,6 +97,7 @@ public class ProfileFragment extends Fragment {
         return rootView;
     }
 
+
     /**
      *
      * @param savedInstanceState
@@ -106,7 +112,13 @@ public class ProfileFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mUser = ((MainActivity)getActivity()).getCurrentUser();
-        mProfileNameTextView.setText(mUser.getDisplayName());
+        if (mUser != null) {
+            mProfileNameTextView.setText(mUser.getDisplayName());
+            mFollowerTextView.setText(0 + " " + getString(R.string.followers));
+            mFollowingTextView.setText(0 + " " + getString(R.string.following));
+            mLikesTextView.setText(0 + " " + getString(R.string.likes));
+
+        }
     }
 
     @Override
@@ -117,7 +129,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d(TAG, "onMenuItemClick: adding");
-                //TODO: Start add post activity
+                //TODO: Start add Post activity
                 return true;
             }
         });
