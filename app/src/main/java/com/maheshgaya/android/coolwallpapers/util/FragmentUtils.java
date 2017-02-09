@@ -14,14 +14,12 @@ import com.maheshgaya.android.coolwallpapers.ui.main.SearchFragment;
 public class FragmentUtils {
     public static int getBottomNavigationItemId(int currentFragmentId){
         switch (currentFragmentId){
-            case R.id.menu_home:
-                return  0;
             case R.id.menu_search:
-                return  1;
+                return 1;
             case R.id.menu_profile:
                 return 2;
             default:
-                return 0;
+                return 0; //if nothing is selected, home is returned
         }
     }
 
@@ -42,4 +40,9 @@ public class FragmentUtils {
                 return null;
         }
     }
+
+
+
+
+
 }

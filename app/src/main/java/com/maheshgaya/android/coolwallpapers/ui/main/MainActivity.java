@@ -1,12 +1,18 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,6 +21,8 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     /** saved instance state for fragment */
     private static final String FRAGMENT_KEY = "frag";
     private int mCurrentFragmentId = R.id.menu_home;
+
+    /** failed states for */
+    private static final int GOOGLE_API_NOTIFICATION_ID = 200;
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 102;
 
     /** Firebase variables */
     private static final int RC_SIGN_IN = 100;
@@ -118,9 +130,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Save instance for rotation or activity navigation
+     * @param outState
+     */
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //saves the current bottom navigation selected
         outState.putInt(FRAGMENT_KEY, mCurrentFragmentId);
     }
 
@@ -129,6 +146,33 @@ public class MainActivity extends AppCompatActivity {
      * Account Providers: email, Google
      */
     private void requireLogin(){
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int status  = googleApiAvailability.isGooglePlayServicesAvailable(this);
+        if (status == ConnectionResult.API_UNAVAILABLE || status != ConnectionResult.SUCCESS){
+            //TODO replace small icon
+            //If Google Play Services is not available, app should finish
+            //Otherwise, there will be memory leaks
+            //However, show the user that the app failed as a notification
+            NotificationCompat.Builder notificationBuilder =
+                    (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_mail_white_24dp) //icon for app
+                            .setContentTitle(getString(R.string.google_play_services)) //subject
+                            .setContentText(getString(R.string.no_google_play_services_available)) //text, one line view
+                            .setDefaults(Notification.DEFAULT_ALL) //Allows vibrate
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText(getString(R.string.no_google_play_services_available))) //text, multi-line view
+                            .setAutoCancel(true); //cancels if user opens app
+
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(GOOGLE_API_NOTIFICATION_ID, notificationBuilder.build());
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                finishAndRemoveTask();
+            } else {
+                finish();
+            }
+        }
         startActivityForResult(
                 // Get an instance of AuthUI based on the default app
                 AuthUI.getInstance().createSignInIntentBuilder()
@@ -154,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == ResultCodes.OK) {
                 // Successfully signed in
+                //initializes the user if login is successful
                 mUser = mFirebaseAuth.getCurrentUser();
             } else {
                 // Sign in failed

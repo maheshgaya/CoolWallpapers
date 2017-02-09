@@ -45,6 +45,12 @@ dependencies {
 
     //Firebase UI
     compile 'com.firebaseui:firebase-ui-auth:1.1.1'
+
+    //Firebase Dispatcher
+    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
+
+    //Glide
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 }
 
 //This needs to be at the bottom

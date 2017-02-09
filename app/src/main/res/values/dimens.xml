@@ -20,4 +20,7 @@
     <dimen name="profile_toolbar_text_size">18sp</dimen>
 
     <dimen name="post_title_side_padding">16dp</dimen>
+    <dimen name="post_image_height">200dp</dimen>
+    <dimen name="post_fab_margin">16dp</dimen>
+    <dimen name="post_content_padding">16dp</dimen>
 </resources>

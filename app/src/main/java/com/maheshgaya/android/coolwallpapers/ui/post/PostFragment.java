@@ -52,6 +52,8 @@ public class PostFragment extends Fragment {
         ((PostActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
         ((PostActivity) getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
         ((PostActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         return rootView;
     }
 
