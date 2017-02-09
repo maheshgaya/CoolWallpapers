@@ -1,8 +1,8 @@
-package com.maheshgaya.android.coolwallpapers.ui;
+package com.maheshgaya.android.coolwallpapers.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.maheshgaya.android.coolwallpapers.R;
+import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
+import com.maheshgaya.android.coolwallpapers.ui.post.PostFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +51,9 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Log.d(TAG, "onMenuItemClick: adding");
-                //TODO: Start AddPostActivity
+                //Open PostActivity
+                Intent postIntent = new Intent(getActivity(), PostActivity.class);
+                startActivity(postIntent); //TODO startActivityForResult(postIntent);
                 return true;
             }
         });

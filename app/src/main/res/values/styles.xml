@@ -8,9 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- for toolbar -->
+    <!-- For toolbar -->
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <!-- when toolbar is expanded, do not show title for toolbar -->
@@ -19,7 +18,7 @@
         <item name="android:textSize">0sp</item>
     </style>
 
-
+    <!-- custom theme for Firebase -->
     <style name="AuthTheme" parent="FirebaseUI">
             <item name="colorPrimary">@color/colorPrimary</item>
             <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -41,18 +40,16 @@
         <item name="android:layout_marginTop">@dimen/profile_button_vertical_margin</item>
         <item name="android:background">?attr/selectableItemBackground</item>
     </style>
-    <!--<style name="AppTheme.Button" parent="ThemeOverlay.AppCompat">-->
-        <!--<item name="colorAccent">@color/colorGrey100</item>-->
-    <!--</style>-->
 
-    <!--<string name="AppTheme.Button.Borderless">-->
-        <!--<item name="style">@style/Widget.AppCompat.Button.Borderless</item>-->
-        <!--<item name="android:background">?attr/selectableItemBackground"</item>-->
-    <!--</string>-->
-    <!--<style name="AppTheme.ProfileButton" parent="AppTheme.Button">-->
-        <!--<item name="android:background">@drawable/touch_selector</item>-->
-        <!--<item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>-->
-        <!--<item name="android:layout_marginTop">@dimen/profile_button_padding</item>-->
-        <!--<item name="android:layout_marginBottom">@dimen/profile_button_padding</item>-->
-    <!--</style>-->
+    <!-- EditText -->
+    <style name="AppTheme.EditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorAccent">@color/colorLightBlue300</item>
+    </style>
+
+    <!-- Back Button for toolbar-->
+    <style name="AppTheme.BackButton" parent="android:Theme.Holo">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_close_white</item>
+    </style>
 </resources>

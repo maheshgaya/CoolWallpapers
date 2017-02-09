@@ -10,12 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
-        <activity android:name=".ui.MainActivity" >
+        <activity android:name=".ui.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ui.post.PostActivity"
+            android:parentActivityName=".ui.main.MainActivity"
+            android:label="@string/post">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.main.MainActivity"/>
         </activity>
     </application>
 

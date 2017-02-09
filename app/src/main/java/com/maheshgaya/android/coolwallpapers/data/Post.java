@@ -35,10 +35,11 @@ public class Post {
      * @param tags
      * @param location
      */
-    public Post(String uid, String title,  String date, String description,
+    public Post(String uid, String title,  String imageUrl, String date, String description,
                 String category, String tags, String location){
         this.uid = uid;
         this.title = title;
+        this.imageUrl = imageUrl;
         this.date = date;
         this.description = description;
         this.category = category;

@@ -1,4 +1,4 @@
-package com.maheshgaya.android.coolwallpapers.ui;
+package com.maheshgaya.android.coolwallpapers.ui.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -25,6 +25,7 @@ import com.maheshgaya.android.coolwallpapers.BuildConfig;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
+import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
 import java.util.Arrays;
 
@@ -37,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.bottom_navigation)BottomNavigationView mBottomNavigation;
     /** handles main container for adding fragments */
     FragmentManager mFragmentManager;
+    /** saved instance state for fragment */
+    private static final String FRAGMENT_KEY = "frag";
+    private int mCurrentFragmentId = R.id.menu_home;
 
     /** Firebase variables */
     private static final int RC_SIGN_IN = 100;
@@ -68,38 +72,44 @@ public class MainActivity extends AppCompatActivity {
         if (mUser == null){
             //redirect to login
             requireLogin();
-        } /*else {
-            //TODO: get the picture, name, user id (not necessary here)
-            String userName = mUser.getDisplayName();
-            Uri userPictureUrl = mUser.getPhotoUrl();
-            String uid = mUser.getUid();
-        }*/
+        }
 
         /** initialization of the realtime database */
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mPostDBReference = mFirebaseDatabase.getReference(Post.TABLE_NAME);
-
+        mPostDBReference = mFirebaseDatabase.getReference().child(Post.TABLE_NAME);
+/*
         if (mUser != null) {
-            mPostDBReference.setValue(new Post(mUser.getUid(), "Test Image", DateUtils.getCurrentDate(),
+            mPostDBReference.push().setValue(new Post(mUser.getUid(), "Test Image", "this link", DateUtils.getCurrentDate(),
                     "This is a test", "nature", "tree, test", "currentlocation"));
             Log.d(TAG, "onCreate: post data");
-        }
+        }*/
 
         //bottom navigation initialization
         mFragmentManager = getSupportFragmentManager();
 
         //initialize the home fragment to the main container
-        if (mFragmentManager.findFragmentById(R.id.main_container) == null){
+        if (mFragmentManager.findFragmentById(R.id.main_container) == null && savedInstanceState == null){
+            mCurrentFragmentId = R.id.menu_home;
             mFragmentManager.beginTransaction()
                     .replace(R.id.main_container, new HomeFragment())
                     .commit();
+        } else if (mFragmentManager.findFragmentById(R.id.main_container) != null && savedInstanceState != null){
+            //if rotation changes, set the correct selected item for bottom navigation
+            mCurrentFragmentId= savedInstanceState.getInt(FRAGMENT_KEY);
+            if (mCurrentFragmentId != 0 ){
+                mBottomNavigation.getMenu()
+                        .getItem(FragmentUtils.getBottomNavigationItemId(mCurrentFragmentId))
+                        .setChecked(true);
+            }
+
         }
 
         //handles what selected item for the bottom navigation bar
         mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = selectFragment(item);
+                Fragment fragment = FragmentUtils.selectFragment(item.getItemId());
+                mCurrentFragmentId = item.getItemId();
                 mFragmentManager.beginTransaction()
                     .replace(R.id.main_container, fragment)
                     .commit();
@@ -108,22 +118,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /**
-     * return a fragment instance based on the MenuItem passed
-     * @param item
-     * @return
-     */
-    private Fragment selectFragment(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_home:
-                return new HomeFragment();
-            case R.id.menu_search:
-                return new SearchFragment();
-            case R.id.menu_profile:
-                return new ProfileFragment();
-            default:
-                return null;
-        }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(FRAGMENT_KEY, mCurrentFragmentId);
     }
 
     /**
@@ -157,8 +155,6 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == ResultCodes.OK) {
                 // Successfully signed in
                 mUser = mFirebaseAuth.getCurrentUser();
-
-
             } else {
                 // Sign in failed
                 if (response == null) {
@@ -174,14 +170,12 @@ public class MainActivity extends AppCompatActivity {
                 // Boo boo
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     Log.d(TAG, "onActivityResult: Unknown error");
-                    return;
                 }
             }
         }
     }
 
     /** Utilities for getting status of the Firebase */
-
     /**
      * Allow the user to sign out.
      * This redirects to login activity

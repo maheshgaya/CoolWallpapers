@@ -1,4 +1,4 @@
-package com.maheshgaya.android.coolwallpapers.ui;
+package com.maheshgaya.android.coolwallpapers.ui.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

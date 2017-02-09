@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Cool Wallpapers</string>
+    <string name="post"></string> <!-- should show no title -->
 
     <!-- Bottom Navigation -->
     <string name="bottom_nav_home">Home</string>
@@ -9,6 +10,7 @@
     <!-- menus -->
     <string name="action_add">Add</string>
     <string name="action_sign_out">Sign Out</string>
+    <string name="action_post">Post</string>
 
     <!-- profile -->
     <string name="edit_profile">Edit Profile</string>
@@ -17,6 +19,9 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="likes">Likes</string>
+
+    <!-- User Input -->
+    <string name="enter_title">Enter a beautiful title</string>
 
     <!-- Error Handling and messages -->
     <string name="no_internet_connection">No internet connection available!</string>

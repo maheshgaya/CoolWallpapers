@@ -1,10 +1,9 @@
-package com.maheshgaya.android.coolwallpapers.ui;
+package com.maheshgaya.android.coolwallpapers.ui.main;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
