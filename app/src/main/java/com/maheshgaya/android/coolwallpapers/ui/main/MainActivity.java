@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
     /** failed states for */
     private static final int GOOGLE_API_NOTIFICATION_ID = 200;
-    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 102;
 
     /** Firebase variables */
     private static final int RC_SIGN_IN = 100;
@@ -226,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
      * This redirects to login activity
      */
     public void signOut(){
+        //todo cleanup before
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

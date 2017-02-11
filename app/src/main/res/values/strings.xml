@@ -24,6 +24,8 @@
     <string name="post_content_desc">Wallpaper</string>
     <string name="post_add_image">Add image</string>
     <string name="enter_post_description">Add a description</string>
+    <string name="enter_post_tags">Add more tags</string>
+    <string name="enter_post_location">Add location</string>
 
     <!-- User Input -->
     <string name="enter_title">Enter a beautiful title</string>
@@ -36,6 +38,14 @@
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>
+    
+    <!-- todo for test: entries for categories -->
+    <string name="category_choose">Choose a category</string>
+    <string name="category_nature">Nature</string>
+    <string name="category_animal">Animal</string>
+    <string name="category_abstract">Abstract</string>
+    <string name="category_art">Art</string>
+    <string name="category_urban">Urban</string>
 
     <string name="test_scroll">This is a test for long string. This is a test for long string. \n
     This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n

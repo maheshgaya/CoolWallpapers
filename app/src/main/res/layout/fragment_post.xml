@@ -26,14 +26,10 @@
             android:layout_marginRight="@dimen/post_title_side_padding"
             android:layout_marginStart="@dimen/post_title_side_padding"
             android:layout_marginEnd="@dimen/post_title_side_padding"
-            android:inputType="textNoSuggestions"
             android:id="@+id/title_edittext"
             android:hint="@string/enter_title"
-            android:maxLength="40"
             android:paddingBottom="@dimen/post_title_side_padding"
             android:background="@color/colorPrimary"
-            android:singleLine="true"
-            android:lines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.AppBarLayout>
@@ -43,49 +39,100 @@
         android:fitsSystemWindows="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:contentDescription="@string/post_content_desc"
-            tools:src="@drawable/background"
-            android:scaleType="centerCrop"
-            android:adjustViewBounds="true"
-            android:id="@+id/post_imageview"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/post_image_height" />
-
-        <!-- description, location, category tags-->
-        <android.support.v7.widget.CardView
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <!-- enter description -->
-            <android.support.design.widget.TextInputLayout
-                android:padding="@dimen/post_content_padding"
-                android:id="@+id/post_description_text_input_layout"
+
+            <ImageView
+                android:contentDescription="@string/post_content_desc"
+                android:src="@drawable/ic_image"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"
+                android:id="@+id/post_imageview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/post_description_edittext"
+                android:layout_height="@dimen/post_image_height" />
+
+            <!-- description, location, category tags-->
+            <android.support.v7.widget.CardView
+                android:elevation="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:hint="@string/enter_post_description"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content">
 
-            <include layout="@layout/line_divider"/>
+                    <!-- enter description -->
+                    <EditText
+                        android:layout_marginTop="@dimen/post_content_padding"
+                        android:drawableStart="@drawable/ic_note"
+                        android:drawableLeft="@drawable/ic_note"
+                        android:id="@+id/post_description_edittext"
+                        android:background="@android:color/white"
+                        android:theme="@style/AppTheme.NormalEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_post_description"/>
 
-            <Spinner
-                android:id="@+id/post_category_spinner"
-                android:padding="@dimen/post_content_padding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                    <include layout="@layout/line_divider"/>
 
-        </android.support.v7.widget.CardView>
+                    <!-- add location -->
+                    <EditText
+                        android:drawableStart="@drawable/ic_location"
+                        android:drawableLeft="@drawable/ic_location"
+                        android:id="@+id/post_location_edittext"
+                        android:background="@android:color/white"
+                        android:theme="@style/AppTheme.NormalEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_post_location"/>
 
+                    <include layout="@layout/line_divider"/>
+
+                    <!-- choose category -->
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/tag_imageview"
+                            android:layout_gravity="center"
+                            android:paddingLeft="@dimen/post_content_padding"
+                            android:paddingStart="@dimen/post_content_padding"
+                            android:src="@drawable/ic_category_tag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <Spinner
+                            android:id="@+id/post_category_spinner"
+                            android:padding="@dimen/post_content_padding"
+                            android:entries="@array/categories"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </LinearLayout>
+
+
+
+                    <!-- add tags -->
+                    <EditText
+                        android:drawableStart="@drawable/ic_tag"
+                        android:drawableLeft="@drawable/ic_tag"
+                        android:background="@android:color/white"
+                        android:id="@+id/post_tags_edittext"
+                        android:theme="@style/AppTheme.NormalEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/enter_post_tags"/>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/post_add_image_fab"
         app:layout_anchor="@id/post_imageview"
         app:layout_anchorGravity="bottom|right|end"
         android:layout_margin="@dimen/post_fab_margin"

@@ -23,7 +23,7 @@
             <item name="colorPrimary">@color/colorPrimary</item>
             <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
             <item name="colorAccent">@color/colorAccent</item>
-            <item name="colorControlNormal">@color/colorGrey100</item>
+            <item name="colorControlNormal">@color/colorGray100</item>
             <item name="colorControlActivated">@color/colorLightBlue700</item>
             <item name="colorControlHighlight">@color/colorLightBlue700</item>
             <item name="android:windowBackground">@drawable/auth_ui_logo</item>
@@ -43,8 +43,11 @@
 
     <!-- EditText -->
     <style name="AppTheme.EditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:maxLength">40</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="colorAccent">@color/colorLightBlue300</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:lines">1</item>
     </style>
 
     <!-- Back Button for toolbar-->
@@ -52,4 +55,14 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_close_white</item>
     </style>
+    <style name="AppTheme.NormalEditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:layout_marginTop">@dimen/post_content_padding</item>
+        <item name="android:layout_marginBottom">@dimen/post_content_padding</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:drawablePadding">@dimen/post_drawable_content_padding</item>
+        <item name="android:textSize">16sp</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:padding">@dimen/post_content_padding</item>
+    </style>
+    
 </resources>

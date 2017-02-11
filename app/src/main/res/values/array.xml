@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>@string/category_choose</item>
+        <item>@string/category_abstract</item>
+        <item>@string/category_animal</item>
+        <item>@string/category_art</item>
+        <item>@string/category_nature</item>
+        <item>@string/category_urban</item>
+    </string-array>
+</resources>

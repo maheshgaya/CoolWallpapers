@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.post.PostActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:parentActivityName=".ui.main.MainActivity"
             android:label="@string/post">
             <meta-data
