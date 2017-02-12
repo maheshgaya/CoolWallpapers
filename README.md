@@ -3,6 +3,9 @@ A photo-sharing app where you can find and share wallpapers. Curious about the d
 
 This is my capstone project for Udacity Android Developer Nanodegree. 
 
+## Disclaimer
+Icons from [Material Design Icons](https://materialdesignicons.com/)
+
 
 ## Using the Source Code
 1. Clone the repository
