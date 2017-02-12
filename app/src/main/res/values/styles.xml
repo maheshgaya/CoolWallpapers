@@ -55,6 +55,7 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_close_white</item>
     </style>
+
     <style name="AppTheme.NormalEditText" parent="Base.V7.Widget.AppCompat.EditText">
         <item name="android:layout_marginTop">@dimen/post_content_padding</item>
         <item name="android:layout_marginBottom">@dimen/post_content_padding</item>
@@ -64,5 +65,11 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:padding">@dimen/post_content_padding</item>
     </style>
+
+    <style name="AppTheme.FullScreen" parent="android:Theme.Holo">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     
 </resources>

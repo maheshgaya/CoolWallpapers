@@ -79,9 +79,11 @@
                     <include layout="@layout/line_divider"/>
 
                     <!-- add location -->
+
                     <EditText
                         android:drawableStart="@drawable/ic_location"
                         android:drawableLeft="@drawable/ic_location"
+                        android:focusableInTouchMode="false"
                         android:id="@+id/post_location_edittext"
                         android:background="@android:color/white"
                         android:theme="@style/AppTheme.NormalEditText"

@@ -6,6 +6,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -39,8 +40,15 @@ public class DateUtils {
      */
     public static String getCurrentDate(){
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-        Calendar calendar = Calendar.getInstance();
-        return dateFormat.format(calendar.getTime());
+        return dateFormat.format(getTimeStamp());
+    }
+
+    /**
+     * Get timestamp
+     * @return
+     */
+    public static Date getTimeStamp(){
+        return Calendar.getInstance().getTime();
     }
 
 }

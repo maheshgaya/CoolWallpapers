@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Cool Wallpapers</string>
     <string name="post"> </string> <!-- should show no title -->
+    <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="ok">OK</string>
 
     <!-- Bottom Navigation -->
     <string name="bottom_nav_home">Home</string>
@@ -35,6 +37,7 @@
     <string name="sign_out_success">You have successfully signed out!</string>
     <string name="no_google_play_services_available">Could not start app! Please update your Google Play Services</string>
     <string name="google_play_services">Google Play Services</string>
+    <string name="error_could_not_post">Could not complete request!</string>
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>
@@ -46,36 +49,5 @@
     <string name="category_abstract">Abstract</string>
     <string name="category_art">Art</string>
     <string name="category_urban">Urban</string>
-
-    <string name="test_scroll">This is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    This is a test for long string. This is a test for long string. \nThis is a test for long string. This is a test for long string. \n
-    </string>
+    
 </resources>

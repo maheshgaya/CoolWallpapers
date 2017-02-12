@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- <p> get your places api key from <a href=https://developers.google.com/places/android-api/signup"/></p>
+    <p>remove "_template" from the string name below</p>
+    <p>Replace the name of the file to places_api.xml</p>-->
+    <string name="places_api_template"></string>
+</resources>

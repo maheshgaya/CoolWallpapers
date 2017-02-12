@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/places_api"/>
+
         <activity android:name=".ui.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +28,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
+        </activity>
+        <activity android:name=".ui.image.FullScreenActivity"
+            android:label="">
+
         </activity>
     </application>
 

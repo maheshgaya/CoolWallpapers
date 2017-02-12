@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.maheshgaya.android.coolwallpapers.R;
+import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,7 +88,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO: change this
-                displaySnackBar("Test: button is working");
+                DisplayUtils.showSnackBar(mCoordinatorLayout, "Test: button is working").show();
             }
         });
 
@@ -142,21 +143,4 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-
-    private void displaySnackBar(String message){
-        Snackbar snackbar = Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_SHORT);
-        snackbar.setAction("OK", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: Hello");
-            }
-        });
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            snackbar.setActionTextColor(getContext().getColor(android.R.color.holo_green_light));
-        } else {
-            snackbar.setActionTextColor(getContext().getResources().getColor(android.R.color.holo_green_light));
-        }
-        snackbar.show();
-    }
 }
