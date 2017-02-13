@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     /** realtime database reference */
     private DatabaseReference mPostDBReference;
 
-
     /**
      * initializes the views and adds listeners for the controls
      * @param savedInstanceState
@@ -88,12 +87,6 @@ public class MainActivity extends AppCompatActivity {
         /** initialization of the realtime database */
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mPostDBReference = mFirebaseDatabase.getReference().child(Post.TABLE_NAME);
-/*
-        if (mUser != null) {
-            mPostDBReference.push().setValue(new Post(mUser.getUid(), "Test Image", "this link", DateUtils.getCurrentDate(),
-                    "This is a test", "nature", "tree, test", "currentlocation"));
-            Log.d(TAG, "onCreate: post data");
-        }*/
 
         //bottom navigation initialization
         mFragmentManager = getSupportFragmentManager();

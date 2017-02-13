@@ -66,10 +66,16 @@
         <item name="android:padding">@dimen/post_content_padding</item>
     </style>
 
-    <style name="AppTheme.FullScreen" parent="android:Theme.Holo">
+    <style name="AppTheme.FullScreen" parent="@android:style/Theme.Holo">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:background">@android:color/transparent</item>
+        <item name="android:actionBarStyle">@android:color/transparent</item>
     </style>
+    <style name="AppTheme.FullScreenActivity" parent="AppTheme">
+        <item name="colorPrimaryDark">@android:color/black</item>
+    </style>
+
+
 
     
 </resources>

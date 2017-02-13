@@ -30,9 +30,8 @@
                 android:value=".ui.main.MainActivity"/>
         </activity>
         <activity android:name=".ui.image.FullScreenActivity"
-            android:label="">
-
-        </activity>
+            android:theme="@style/AppTheme.FullScreenActivity"
+            android:label=""/>
     </application>
 
 </manifest>

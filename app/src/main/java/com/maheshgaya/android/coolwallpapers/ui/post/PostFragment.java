@@ -2,11 +2,13 @@ package com.maheshgaya.android.coolwallpapers.ui.post;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -14,6 +16,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -50,6 +55,7 @@ import com.maheshgaya.android.coolwallpapers.ui.main.MainActivity;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -91,6 +97,7 @@ public class PostFragment extends Fragment{
     @BindView(R.id.post_category_spinner)Spinner mCategorySpinner;
     @BindView(R.id.post_tags_edittext)EditText mTagsEditText;
 
+    private MenuItem mPostMenuItem;
     /**
      * Enable menus on toolbar
      */
@@ -126,8 +133,12 @@ public class PostFragment extends Fragment{
         mPhotoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent fullScreenIntent = new Intent(getActivity(), FullScreenActivity.class);
-                startActivity(fullScreenIntent);
+                if (mSelectedImageUri != null) {
+                    Intent fullScreenIntent = new Intent(getActivity(), FullScreenActivity.class);
+                    //For Full Screen
+                    fullScreenIntent.setData(mSelectedImageUri);
+                    startActivity(fullScreenIntent);
+                }
             }
         });
 
@@ -151,6 +162,9 @@ public class PostFragment extends Fragment{
                 }
             }
         });
+
+        //add listener to enable or disable post button
+        addListenerToInput();
 
         return rootView;
     }
@@ -177,16 +191,66 @@ public class PostFragment extends Fragment{
     }
 
     /**
+     * Check if the user has entered  values in the required fields
+     * @return
+     */
+    private boolean isInputEmpty(){
+        return (mTitleEditText.getText().toString().equals("") ||
+        mSelectedImageUri == null ||
+        mCategorySpinner.getSelectedItemPosition() == 0);
+
+    }
+
+    /**
+     * Listens for changes in EditText and ImageView
+     * And enables or disables post button accordingly
+     */
+    private void addListenerToInput(){
+        mCategorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                enablePostButton();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                enablePostButton();
+            }
+        });
+
+        mTitleEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                enablePostButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                enablePostButton();
+            }
+        });
+
+    }
+
+
+    /**
      * creates the menu for Toolbar
-     *
      * @param menu
      * @param inflater
      */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.post_menu, menu);
-        MenuItem postItem = menu.findItem(R.id.action_post);
-        postItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+        mPostMenuItem = menu.findItem(R.id.action_post);
+        //all the input fields have not been filled out, so just disable the button
+        mPostMenuItem.setEnabled(false);
+
+        mPostMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 //save image and then save data
@@ -201,7 +265,7 @@ public class PostFragment extends Fragment{
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                     //save data to database
                                     String imageUrl = (taskSnapshot.getDownloadUrl() != null) ?
-                                            taskSnapshot.getDownloadUrl().toString(): "";
+                                            taskSnapshot.getDownloadUrl().toString() : "";
 
                                     postDBReference.push().setValue(new Post(mUser.getUid(),
                                             mTitleEditText.getText().toString(),
@@ -226,12 +290,24 @@ public class PostFragment extends Fragment{
                                 }
                             });
                 }
+
                 return true;
             }
         });
 
+
     }
 
+    /**
+     * enable post button if every required input is filled out
+     */
+    private void enablePostButton(){
+        if (isInputEmpty()){
+            mPostMenuItem.setEnabled(false);
+        } else if (!isInputEmpty()) {
+            mPostMenuItem.setEnabled(true);
+        }
+    }
 
     /**
      * Handles results from other activities
@@ -249,6 +325,9 @@ public class PostFragment extends Fragment{
                     .load(mSelectedImageUri)
                     .error(R.drawable.ic_image)
                     .into(mPhotoImageView);
+            //enable post button if possible
+            enablePostButton();
+
         } else if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE){
             //Places API Autocomplete Activity
             if (resultCode == RESULT_OK) {
