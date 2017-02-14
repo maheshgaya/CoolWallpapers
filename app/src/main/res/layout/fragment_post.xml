@@ -63,10 +63,19 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@android:color/holo_red_light"
+                        android:text="@string/post_information"
+                        android:paddingLeft="@dimen/post_content_padding"
+                        android:paddingStart="@dimen/post_content_padding"
+                        android:paddingRight="@dimen/post_content_padding"
+                        android:paddingEnd="@dimen/post_content_padding"
+                        android:paddingTop="@dimen/post_content_padding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                     <!-- enter description -->
                     <EditText
-                        android:layout_marginTop="@dimen/post_content_padding"
                         android:drawableStart="@drawable/ic_note"
                         android:drawableLeft="@drawable/ic_note"
                         android:id="@+id/post_description_edittext"
@@ -79,7 +88,6 @@
                     <include layout="@layout/line_divider"/>
 
                     <!-- add location -->
-
                     <EditText
                         android:drawableStart="@drawable/ic_location"
                         android:drawableLeft="@drawable/ic_location"

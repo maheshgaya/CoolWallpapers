@@ -14,18 +14,18 @@
         <ImageView
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:src="@drawable/background"
+            tools:src="@drawable/background"
             android:adjustViewBounds="true"
             android:id="@+id/full_screen_image_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/profile_appbarlayout"
+        android:id="@+id/full_screen_appbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         app:elevation="0dp"
-        android:background="@android:color/transparent">
+        android:background="@color/colorToolbar">
         <android.support.v7.widget.Toolbar
             android:id="@+id/full_screen_toolbar"
             app:theme="@style/AppTheme.FullScreen"

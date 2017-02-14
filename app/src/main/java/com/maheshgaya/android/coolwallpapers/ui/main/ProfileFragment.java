@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
@@ -117,7 +118,10 @@ public class ProfileFragment extends Fragment {
             mFollowerTextView.setText(0 + " " + getString(R.string.followers));
             mFollowingTextView.setText(0 + " " + getString(R.string.following));
             mLikesTextView.setText(0 + " " + getString(R.string.likes));
-
+            Glide.with(getContext())
+                    .load(mUser.getPhotoUrl())
+                    .error(R.drawable.ic_account_circle_black)
+                    .into(mProfileImageView);
         }
     }
 

@@ -25,4 +25,7 @@
 
     <!-- icon color-->
     <color name="colorIcon">@color/colorGray600</color>
+
+    <!-- toolbar full screen -->
+    <color name="colorToolbar">#A0000000</color>
 </resources>
