@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.maheshgaya.android.coolwallpapers.BuildConfig;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Post;
+import com.maheshgaya.android.coolwallpapers.data.User;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
@@ -61,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser mUser;
     /** realtime database */
     private FirebaseDatabase mFirebaseDatabase;
-    /** realtime database reference */
-    private DatabaseReference mPostDBReference;
-
+    private DatabaseReference mUserFirebaseRef;
     /**
      * initializes the views and adds listeners for the controls
      * @param savedInstanceState
@@ -77,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
         //get authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
+        mUserFirebaseRef = mFirebaseDatabase.getReference(User.TABLE_NAME);
+
         //get current user
         mUser = mFirebaseAuth.getCurrentUser();
         if (mUser == null){
@@ -86,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         /** initialization of the realtime database */
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mPostDBReference = mFirebaseDatabase.getReference().child(Post.TABLE_NAME);
-
         //bottom navigation initialization
         mFragmentManager = getSupportFragmentManager();
 
@@ -192,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
                 // Successfully signed in
                 //initializes the user if login is successful
                 mUser = mFirebaseAuth.getCurrentUser();
+                //todo add user to database
             } else {
                 // Sign in failed
                 if (response == null) {
