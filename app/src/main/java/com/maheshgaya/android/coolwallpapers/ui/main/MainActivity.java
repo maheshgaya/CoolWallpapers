@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
         //get current user
         mUser = UserAuthUtils.getCurrentUser();
         if (mUser == null){
@@ -126,49 +127,6 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt(FRAGMENT_KEY, mCurrentFragmentId);
     }
 
-//    /**
-//     * redirects to Login Activity
-//     * Account Providers: email, Google
-//     */
-//    private void requireLogin(){
-//        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-//        int status  = googleApiAvailability.isGooglePlayServicesAvailable(this);
-//        if (status == ConnectionResult.API_UNAVAILABLE || status != ConnectionResult.SUCCESS){
-//            //TODO replace small icon
-//            //If Google Play Services is not available, app should finish
-//            //Otherwise, there will be memory leaks
-//            //However, show the user that the app failed as a notification
-//            NotificationCompat.Builder notificationBuilder =
-//                    (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-//                            .setSmallIcon(R.drawable.ic_mail_white_24dp) //icon for app
-//                            .setContentTitle(getString(R.string.google_play_services)) //subject
-//                            .setContentText(getString(R.string.no_google_play_services_available)) //text, one line view
-//                            .setDefaults(Notification.DEFAULT_ALL) //Allows vibrate
-//                            .setStyle(new NotificationCompat.BigTextStyle()
-//                                    .bigText(getString(R.string.no_google_play_services_available))) //text, multi-line view
-//                            .setAutoCancel(true); //cancels if user opens app
-//
-//            NotificationManager mNotificationManager =
-//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-//            mNotificationManager.notify(GOOGLE_API_NOTIFICATION_ID, notificationBuilder.build());
-//
-//            if (Build.VERSION.SDK_INT >= 21) {
-//                finishAndRemoveTask();
-//            } else {
-//                finish();
-//            }
-//        }
-//        startActivityForResult(
-//                // Get an instance of AuthUI based on the default app
-//                AuthUI.getInstance().createSignInIntentBuilder()
-//                        .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-//                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-//                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-//                        .setTheme(R.style.AuthTheme)
-//                        .build(),
-//                RC_SIGN_IN);
-//    }
-
     /**
      * check if login was successful
      * @param requestCode
@@ -206,17 +164,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-//    /** Utilities for getting status of the Firebase */
-//    /**
-//     * Allow the user to sign out.
-//     * This redirects to login activity
-//     */
-//    public void signOut(){
-//        //todo cleanup before
-//        UserAuthUtils.signOut(this);
-//        requireLogin();
-//    }
-
 
 }

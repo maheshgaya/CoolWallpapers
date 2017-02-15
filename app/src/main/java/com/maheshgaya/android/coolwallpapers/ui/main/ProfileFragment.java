@@ -128,6 +128,7 @@ public class ProfileFragment extends Fragment{
         FirebaseUser user = UserAuthUtils.getCurrentUser();
         if (user != null) {
             //query database to see if user is there
+
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(User.TABLE_NAME);
             Query query = userRef.orderByKey().equalTo(user.getUid());
             //make sure that the return user is null
@@ -136,24 +137,28 @@ public class ProfileFragment extends Fragment{
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Log.d(TAG, "onChildAdded: " + dataSnapshot.getChildrenCount());
-                    mCurrentUser = new User(
-                            dataSnapshot.child(User.COLUMN_UID).getValue().toString(),
-                            dataSnapshot.child(User.COLUMN_NAME).getValue().toString(),
-                            dataSnapshot.child(User.COLUMN_EMAIL).getValue().toString(),
-                            dataSnapshot.child(User.COLUMN_IMAGE_URL).getValue().toString(),
-                            Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWERS).getValue().toString()),
-                            Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWING).getValue().toString()),
-                            Integer.parseInt(dataSnapshot.child(User.COLUMN_LIKES).getValue().toString())
-                    );
-                    mProfileNameTextView.setText(mCurrentUser.getName());
-                    mFollowerTextView.setText(mCurrentUser.getFollowers() + " " + getString(R.string.followers));
-                    mFollowingTextView.setText(mCurrentUser.getFollowing()  + " " + getString(R.string.following));
-                    mLikesTextView.setText(mCurrentUser.getLikes()  + " " + getString(R.string.likes));
-                    Glide.with(getContext())
-                            .load(mCurrentUser.getImageUrl())
-                            .error(R.drawable.ic_account_circle_black)
-                            .into(mProfileImageView);
+                    try {
+                        mCurrentUser = new User(
+                                dataSnapshot.child(User.COLUMN_UID).getValue().toString(),
+                                dataSnapshot.child(User.COLUMN_NAME).getValue().toString(),
+                                dataSnapshot.child(User.COLUMN_EMAIL).getValue().toString(),
+                                dataSnapshot.child(User.COLUMN_IMAGE_URL).getValue().toString(),
+                                Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWERS).getValue().toString()),
+                                Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWING).getValue().toString()),
+                                Integer.parseInt(dataSnapshot.child(User.COLUMN_LIKES).getValue().toString())
+                        );
+                        mProfileNameTextView.setText(mCurrentUser.getName());
+                        mFollowerTextView.setText(mCurrentUser.getFollowers() + " " + getString(R.string.followers));
+                        mFollowingTextView.setText(mCurrentUser.getFollowing()  + " " + getString(R.string.following));
+                        mLikesTextView.setText(mCurrentUser.getLikes()  + " " + getString(R.string.likes));
+                        Glide.with(getContext())
+                                .load(mCurrentUser.getImageUrl())
+                                .error(R.drawable.ic_account_circle_black)
+                                .into(mProfileImageView);
+                    } catch (java.lang.IllegalStateException e){
+                        e.printStackTrace();
+                    }
+
                 }
 
                 @Override

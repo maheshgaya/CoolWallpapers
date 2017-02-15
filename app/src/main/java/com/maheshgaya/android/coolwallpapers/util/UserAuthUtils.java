@@ -46,6 +46,10 @@ public class UserAuthUtils {
     }
 
     public static void requireLogin(Context context) {
+        if (!Utils.isOnline(context)){
+            Toast.makeText(context, context.getString(R.string.failed_no_connection), Toast.LENGTH_SHORT).show();
+            //todo show another activity that internet is out
+        }
         if (context instanceof MainActivity) {
             GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
             int status = googleApiAvailability.isGooglePlayServicesAvailable(context);
