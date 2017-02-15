@@ -19,11 +19,24 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.maheshgaya.android.coolwallpapers.R;
+import com.maheshgaya.android.coolwallpapers.data.User;
+import com.maheshgaya.android.coolwallpapers.util.DatabaseUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
+import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
+
+import java.util.Map;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +45,7 @@ import butterknife.ButterKnife;
  * Created by Mahesh Gaya on 2/6/17.
  */
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment{
     //Logging purposes
     private static final String TAG = ProfileFragment.class.getSimpleName();
     //Views
@@ -49,7 +62,7 @@ public class ProfileFragment extends Fragment {
     @BindView(R.id.likes_textview)TextView mLikesTextView;
 
     /** gets the current user */
-    private FirebaseUser mUser;
+    private User mCurrentUser;
     /**
      * enable toolbar menu buttons
      */
@@ -76,8 +89,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                 if (appBarLayout.getTotalScrollRange() + verticalOffset == 0){
-                    if (mUser != null) {
-                        mToolbarTitle.setText(mUser.getDisplayName());
+                    if (mCurrentUser != null) {
+                        mToolbarTitle.setText(mCurrentUser.getName());
                     }
                 } else {
                     mToolbarTitle.setText(getActivity().getString(R.string.bottom_nav_profile));
@@ -112,19 +125,66 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mUser = ((MainActivity)getActivity()).getCurrentUser();
-        if (mUser != null) {
-            mProfileNameTextView.setText(mUser.getDisplayName());
-            mFollowerTextView.setText(0 + " " + getString(R.string.followers));
-            mFollowingTextView.setText(0 + " " + getString(R.string.following));
-            mLikesTextView.setText(0 + " " + getString(R.string.likes));
-            Glide.with(getContext())
-                    .load(mUser.getPhotoUrl())
-                    .error(R.drawable.ic_account_circle_black)
-                    .into(mProfileImageView);
+        FirebaseUser user = UserAuthUtils.getCurrentUser();
+        if (user != null) {
+            //query database to see if user is there
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(User.TABLE_NAME);
+            Query query = userRef.orderByKey().equalTo(user.getUid());
+            //make sure that the return user is null
+
+            //if user is present in database, return the record as a User object
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Log.d(TAG, "onChildAdded: " + dataSnapshot.getChildrenCount());
+                    mCurrentUser = new User(
+                            dataSnapshot.child(User.COLUMN_UID).getValue().toString(),
+                            dataSnapshot.child(User.COLUMN_NAME).getValue().toString(),
+                            dataSnapshot.child(User.COLUMN_EMAIL).getValue().toString(),
+                            dataSnapshot.child(User.COLUMN_IMAGE_URL).getValue().toString(),
+                            Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWERS).getValue().toString()),
+                            Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWING).getValue().toString()),
+                            Integer.parseInt(dataSnapshot.child(User.COLUMN_LIKES).getValue().toString())
+                    );
+                    mProfileNameTextView.setText(mCurrentUser.getName());
+                    mFollowerTextView.setText(mCurrentUser.getFollowers() + " " + getString(R.string.followers));
+                    mFollowingTextView.setText(mCurrentUser.getFollowing()  + " " + getString(R.string.following));
+                    mLikesTextView.setText(mCurrentUser.getLikes()  + " " + getString(R.string.likes));
+                    Glide.with(getContext())
+                            .load(mCurrentUser.getImageUrl())
+                            .error(R.drawable.ic_account_circle_black)
+                            .into(mProfileImageView);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
     }
 
+    /**
+     *
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.home_menu, menu);
@@ -141,7 +201,7 @@ public class ProfileFragment extends Fragment {
         signOutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((MainActivity) getActivity()).signOut();
+                UserAuthUtils.signOut(getActivity());
                 return true;
             }
         });

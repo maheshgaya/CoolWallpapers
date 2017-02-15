@@ -2,6 +2,9 @@ package com.maheshgaya.android.coolwallpapers.util;
 
 import android.support.v4.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.main.HomeFragment;
 import com.maheshgaya.android.coolwallpapers.ui.main.ProfileFragment;
@@ -40,9 +43,5 @@ public class FragmentUtils {
                 return null;
         }
     }
-
-
-
-
 
 }

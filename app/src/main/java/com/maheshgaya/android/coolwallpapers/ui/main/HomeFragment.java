@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostFragment;
+import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +62,7 @@ public class HomeFragment extends Fragment {
         signOutMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                ((MainActivity) getActivity()).signOut();
+                UserAuthUtils.signOut(getActivity());
                 return true;
             }
         });

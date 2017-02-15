@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
@@ -25,16 +24,19 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.maheshgaya.android.coolwallpapers.BuildConfig;
 import com.maheshgaya.android.coolwallpapers.R;
-import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.data.User;
-import com.maheshgaya.android.coolwallpapers.util.DateUtils;
+import com.maheshgaya.android.coolwallpapers.util.DatabaseUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
+import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.util.Arrays;
 
@@ -52,17 +54,15 @@ public class MainActivity extends AppCompatActivity {
     private int mCurrentFragmentId = R.id.menu_home;
 
     /** failed states for */
-    private static final int GOOGLE_API_NOTIFICATION_ID = 200;
+    public static final int GOOGLE_API_NOTIFICATION_ID = 200;
 
     /** Firebase variables */
-    private static final int RC_SIGN_IN = 100;
+    public static final int RC_SIGN_IN = 100;
     /** require user account for using the app */
-    private FirebaseAuth mFirebaseAuth;
+
     /** current user */
     private FirebaseUser mUser;
-    /** realtime database */
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mUserFirebaseRef;
+
     /**
      * initializes the views and adds listeners for the controls
      * @param savedInstanceState
@@ -74,19 +74,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        //get authentication
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mUserFirebaseRef = mFirebaseDatabase.getReference(User.TABLE_NAME);
-
         //get current user
-        mUser = mFirebaseAuth.getCurrentUser();
+        mUser = UserAuthUtils.getCurrentUser();
         if (mUser == null){
             //redirect to login
-            requireLogin();
+            UserAuthUtils.requireLogin(this);
         }
 
-        /** initialization of the realtime database */
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
         //bottom navigation initialization
         mFragmentManager = getSupportFragmentManager();
 
@@ -132,48 +126,48 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt(FRAGMENT_KEY, mCurrentFragmentId);
     }
 
-    /**
-     * redirects to Login Activity
-     * Account Providers: email, Google
-     */
-    private void requireLogin(){
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int status  = googleApiAvailability.isGooglePlayServicesAvailable(this);
-        if (status == ConnectionResult.API_UNAVAILABLE || status != ConnectionResult.SUCCESS){
-            //TODO replace small icon
-            //If Google Play Services is not available, app should finish
-            //Otherwise, there will be memory leaks
-            //However, show the user that the app failed as a notification
-            NotificationCompat.Builder notificationBuilder =
-                    (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_mail_white_24dp) //icon for app
-                            .setContentTitle(getString(R.string.google_play_services)) //subject
-                            .setContentText(getString(R.string.no_google_play_services_available)) //text, one line view
-                            .setDefaults(Notification.DEFAULT_ALL) //Allows vibrate
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText(getString(R.string.no_google_play_services_available))) //text, multi-line view
-                            .setAutoCancel(true); //cancels if user opens app
-
-            NotificationManager mNotificationManager =
-                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(GOOGLE_API_NOTIFICATION_ID, notificationBuilder.build());
-
-            if (Build.VERSION.SDK_INT >= 21) {
-                finishAndRemoveTask();
-            } else {
-                finish();
-            }
-        }
-        startActivityForResult(
-                // Get an instance of AuthUI based on the default app
-                AuthUI.getInstance().createSignInIntentBuilder()
-                        .setIsSmartLockEnabled(!BuildConfig.DEBUG)
-                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
-                        .setTheme(R.style.AuthTheme)
-                        .build(),
-                RC_SIGN_IN);
-    }
+//    /**
+//     * redirects to Login Activity
+//     * Account Providers: email, Google
+//     */
+//    private void requireLogin(){
+//        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+//        int status  = googleApiAvailability.isGooglePlayServicesAvailable(this);
+//        if (status == ConnectionResult.API_UNAVAILABLE || status != ConnectionResult.SUCCESS){
+//            //TODO replace small icon
+//            //If Google Play Services is not available, app should finish
+//            //Otherwise, there will be memory leaks
+//            //However, show the user that the app failed as a notification
+//            NotificationCompat.Builder notificationBuilder =
+//                    (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+//                            .setSmallIcon(R.drawable.ic_mail_white_24dp) //icon for app
+//                            .setContentTitle(getString(R.string.google_play_services)) //subject
+//                            .setContentText(getString(R.string.no_google_play_services_available)) //text, one line view
+//                            .setDefaults(Notification.DEFAULT_ALL) //Allows vibrate
+//                            .setStyle(new NotificationCompat.BigTextStyle()
+//                                    .bigText(getString(R.string.no_google_play_services_available))) //text, multi-line view
+//                            .setAutoCancel(true); //cancels if user opens app
+//
+//            NotificationManager mNotificationManager =
+//                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            mNotificationManager.notify(GOOGLE_API_NOTIFICATION_ID, notificationBuilder.build());
+//
+//            if (Build.VERSION.SDK_INT >= 21) {
+//                finishAndRemoveTask();
+//            } else {
+//                finish();
+//            }
+//        }
+//        startActivityForResult(
+//                // Get an instance of AuthUI based on the default app
+//                AuthUI.getInstance().createSignInIntentBuilder()
+//                        .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+//                        .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+//                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+//                        .setTheme(R.style.AuthTheme)
+//                        .build(),
+//                RC_SIGN_IN);
+//    }
 
     /**
      * check if login was successful
@@ -190,8 +184,9 @@ public class MainActivity extends AppCompatActivity {
             if (resultCode == ResultCodes.OK) {
                 // Successfully signed in
                 //initializes the user if login is successful
-                mUser = mFirebaseAuth.getCurrentUser();
-                //todo add user to database
+                mUser = UserAuthUtils.getCurrentUser();
+                //add user to database if not already exists there
+                DatabaseUtils.addUserToDatabase();
             } else {
                 // Sign in failed
                 if (response == null) {
@@ -212,31 +207,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /** Utilities for getting status of the Firebase */
-    /**
-     * Allow the user to sign out.
-     * This redirects to login activity
-     */
-    public void signOut(){
-        //todo cleanup before
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // user is now signed out
-                        Toast.makeText(getApplicationContext(), getString(R.string.sign_out_success), Toast.LENGTH_SHORT).show();
-                        //redirect to login activity
-                        requireLogin();
-                    }
-                });
-    }
+//    /** Utilities for getting status of the Firebase */
+//    /**
+//     * Allow the user to sign out.
+//     * This redirects to login activity
+//     */
+//    public void signOut(){
+//        //todo cleanup before
+//        UserAuthUtils.signOut(this);
+//        requireLogin();
+//    }
 
-    /**
-     * Getter for current user
-     * @return
-     */
-    public FirebaseUser getCurrentUser(){
-        return mUser;
-    }
 
 }
