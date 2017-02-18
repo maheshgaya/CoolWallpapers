@@ -47,6 +47,9 @@
 
             <ImageView
                 android:contentDescription="@string/post_content_desc"
+                android:focusable="true"
+                android:clickable="true"
+                android:foreground="?android:attr/selectableItemBackground"
                 android:src="@drawable/ic_image"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"

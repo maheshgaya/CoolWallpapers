@@ -8,6 +8,15 @@ public class Post {
 
     public static final String TABLE_NAME = "posts";
 
+    public static final String COLUMN_IMAGE_URL = "imageUrl";
+    public static final String COLUMN_UID = "uid";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_DATE = "date";
+    public static final String COLUMN_LOCATION = "location";
+    public static final String COLUMN_DESCRIPTION = "description";
+    public static final String COLUMN_CATEGORY = "category";
+    public static final String COLUMN_TAGS = "tags";
+
     /** keeps a reference to the image on the Storage */
     private String imageUrl;
     /** keeps a reference to the submitter */

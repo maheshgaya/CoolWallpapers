@@ -2,6 +2,7 @@ package com.maheshgaya.android.coolwallpapers.ui.image;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.AsyncTaskLoader;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -87,17 +88,24 @@ public class FullScreenActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        if (mToolbar.getVisibility() == View.VISIBLE){
+            mToolbar.setVisibility(View.GONE);
+            mAppBarLayout.setVisibility(View.GONE);
+        } else {
+            showStatusBar();
+            mToolbar.setVisibility(View.VISIBLE);
+            mAppBarLayout.setVisibility(View.VISIBLE);
+        }
     }
-
-//    private void showStatusBar(){
-//        View decorView = getWindow().getDecorView();
-//        decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-//                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-//    }
+    private void showStatusBar(){
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -157,13 +165,6 @@ public class FullScreenActivity extends AppCompatActivity {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             hideStatusBar();
-            if (mToolbar.getVisibility() == View.VISIBLE){
-                mToolbar.setVisibility(View.INVISIBLE);
-                mAppBarLayout.setVisibility(View.INVISIBLE);
-            } else {
-                mToolbar.setVisibility(View.VISIBLE);
-                mAppBarLayout.setVisibility(View.VISIBLE);
-            }
             return true;
         }
 
@@ -198,5 +199,6 @@ public class FullScreenActivity extends AppCompatActivity {
             return false;
         }
     }
+
 
 }
