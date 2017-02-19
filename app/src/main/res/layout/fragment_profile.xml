@@ -34,16 +34,6 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <android.support.v4.widget.NestedScrollView
-        android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.v7.widget.RecyclerView
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp"
-            android:id="@+id/recycle_view_profile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </android.support.v4.widget.NestedScrollView>
+    <include layout="@layout/image_recycleview"/>
+
 </android.support.design.widget.CoordinatorLayout>

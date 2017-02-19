@@ -1,10 +1,13 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +25,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
@@ -30,6 +34,7 @@ import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,8 +47,8 @@ public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
     @BindView(R.id.toolbar)Toolbar mToolbar;
     @BindView(R.id.toolbar_title)TextView mToolbarTitle;
-
-    @BindView(R.id.recycle_view_home) RecyclerView mRecycleView;
+    @BindView(R.id.swipe_refresh_layout)SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.recycle_view) RecyclerView mRecycleView;
     private ArrayList<Object> mImageUriList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
@@ -51,6 +56,9 @@ public class HomeFragment extends Fragment {
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
+            if (mImageUriList.size() != 0) {
+                mImageUriList.clear();
+            }
             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
                 mImageUriList.add(new Post(
                         postSnapshot.child(Post.COLUMN_UID).getValue().toString(),
@@ -62,7 +70,11 @@ public class HomeFragment extends Fragment {
                         postSnapshot.child(Post.COLUMN_TAGS).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_LOCATION).getValue().toString()));
             }
+            //reverse chronological order, Firebase does not provide reverse order query
+            Collections.reverse(mImageUriList);
             mImageAdapter.notifyDataSetChanged();
+            mSwipeRefreshLayout.setRefreshing(false);
+
         }
 
         @Override
@@ -106,6 +118,19 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        refreshContent();
+    }
+
+    private void refreshContent(){
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+        mDatabaseReference.keepSynced(true);
+        Query postQuery = mDatabaseReference.orderByKey();
+        postQuery.addValueEventListener(mValueEventListener);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -125,8 +150,18 @@ public class HomeFragment extends Fragment {
         mRecycleView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         mRecycleView.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
-        mDatabaseReference.addValueEventListener(mValueEventListener);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorAccent
+        );
+
 
         return rootView;
     }

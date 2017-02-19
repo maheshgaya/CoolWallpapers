@@ -53,7 +53,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             holder.thumbnailCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, post.getTitle(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, post.getTitle() + " " + post.getDate(), Toast.LENGTH_SHORT).show();
                 }
             });
         }

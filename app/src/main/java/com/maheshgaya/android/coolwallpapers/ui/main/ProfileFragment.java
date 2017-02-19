@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +43,7 @@ import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,11 +69,12 @@ public class ProfileFragment extends Fragment{
     @BindView(R.id.follower_textview)TextView mFollowerTextView;
     @BindView(R.id.following_textview)TextView mFollowingTextView;
     @BindView(R.id.likes_textview)TextView mLikesTextView;
+    @BindView(R.id.swipe_refresh_layout)SwipeRefreshLayout mSwipeRefreshLayout;
 
     /** gets the current user */
     private User mCurrentUser;
 
-    @BindView(R.id.recycle_view_profile)RecyclerView mRecycleView;
+    @BindView(R.id.recycle_view)RecyclerView mRecycleView;
     private ArrayList<Object> mImageUriList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
@@ -78,6 +82,9 @@ public class ProfileFragment extends Fragment{
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
+            if (mImageUriList.size() != 0) {
+                mImageUriList.clear();
+            }
             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
                 mImageUriList.add(new Post(
                         postSnapshot.child(Post.COLUMN_UID).getValue().toString(),
@@ -89,7 +96,9 @@ public class ProfileFragment extends Fragment{
                         postSnapshot.child(Post.COLUMN_TAGS).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_LOCATION).getValue().toString()));
             }
+            Collections.reverse(mImageUriList);
             mImageAdapter.notifyDataSetChanged();
+            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -153,12 +162,32 @@ public class ProfileFragment extends Fragment{
         mRecycleView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         mRecycleView.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
 
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
-        mDatabaseReference.addValueEventListener(mValueEventListener);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
+        mSwipeRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorAccent
+        );
 
         return rootView;
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+        refreshContent();
+    }
+
+    private void refreshContent(){
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+        Query query = mDatabaseReference.orderByChild(Post.COLUMN_UID).equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addValueEventListener(mValueEventListener);
+    }
 
     /**
      *
