@@ -26,4 +26,6 @@
     <dimen name="post_text_size">18sp</dimen>
     <dimen name="post_drawable_content_padding">24dp</dimen>
 
+    <integer name="grid_item_columns">2</integer>
+
 </resources>

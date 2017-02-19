@@ -52,4 +52,6 @@
     <string name="category_art">Art</string>
     <string name="category_urban">Urban</string>
 
+    <!-- Firebase UI Override -->
+    <string name="progress_dialog_signing_up">Creating your account&#8230;!</string>
 </resources>

@@ -26,9 +26,9 @@ import butterknife.ButterKnife;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private Context mContext;
-    private ArrayList<Post>  mImageUriList;
+    private ArrayList<Object>  mImageUriList;
 
-    public ImageAdapter(Context context, ArrayList<Post> imageUriList){
+    public ImageAdapter(Context context, ArrayList<Object> imageUriList){
         this.mContext = context;
         this.mImageUriList = imageUriList;
     }
@@ -42,19 +42,21 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Post post = mImageUriList.get(position);
-        Glide.with(mContext)
-                .load(post.getImageUrl())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.ic_image)
-                .into(holder.thumbnailImageView);
-        holder.thumbnailTextView.setText(post.getTitle());
-        holder.thumbnailCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, post.getTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (mImageUriList.get(position) instanceof  Post) {
+            final Post post = (Post)mImageUriList.get(position);
+            Glide.with(mContext)
+                    .load(post.getImageUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.ic_image)
+                    .into(holder.thumbnailImageView);
+            holder.thumbnailTextView.setText(post.getTitle());
+            holder.thumbnailCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext, post.getTitle(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
     }
 

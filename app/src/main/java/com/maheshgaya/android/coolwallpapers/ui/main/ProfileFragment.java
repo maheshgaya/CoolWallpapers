@@ -71,7 +71,7 @@ public class ProfileFragment extends Fragment{
     private User mCurrentUser;
 
     @BindView(R.id.recycle_view_profile)RecyclerView mRecycleView;
-    private ArrayList<Post> mImageUriList;
+    private ArrayList<Object> mImageUriList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
 
@@ -176,20 +176,21 @@ public class ProfileFragment extends Fragment{
         FirebaseUser user = UserAuthUtils.getCurrentUser();
         if (user != null) {
             //query database to see if user is there
-
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(User.TABLE_NAME);
             Query query = userRef.orderByKey().equalTo(user.getUid());
-            //make sure that the return user is null
 
             //if user is present in database, return the record as a User object
             query.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     try {
+                        String name = dataSnapshot.child(User.COLUMN_NAME).getValue().toString();
+                        String email = dataSnapshot.child(User.COLUMN_EMAIL).getValue().toString();
+
                         mCurrentUser = new User(
                                 dataSnapshot.child(User.COLUMN_UID).getValue().toString(),
-                                dataSnapshot.child(User.COLUMN_NAME).getValue().toString(),
-                                dataSnapshot.child(User.COLUMN_EMAIL).getValue().toString(),
+                                (name.equals(""))? email: name, //handles bug with Firebase:10.0.1
+                                email,
                                 dataSnapshot.child(User.COLUMN_IMAGE_URL).getValue().toString(),
                                 Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWERS).getValue().toString()),
                                 Integer.parseInt(dataSnapshot.child(User.COLUMN_FOLLOWING).getValue().toString()),
@@ -203,7 +204,7 @@ public class ProfileFragment extends Fragment{
                                 .load(mCurrentUser.getImageUrl())
                                 .error(R.drawable.ic_account_circle_black)
                                 .into(mProfileImageView);
-                    } catch (java.lang.IllegalStateException e){
+                    } catch (Exception e){
                         e.printStackTrace();
                     }
 

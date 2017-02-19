@@ -39,13 +39,14 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
     //Places API
-    compile "com.google.android.gms:play-services-places:10.0.1"
+    compile "com.google.android.gms:play-services-places:$google_services_version"
 
     //Firebase
-    compile 'com.google.firebase:firebase-auth:10.0.1'
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
-    compile 'com.google.firebase:firebase-database:10.0.1'
-    compile 'com.google.firebase:firebase-storage:10.0.1'
+    compile "com.google.firebase:firebase-core:$google_services_version"
+    compile "com.google.firebase:firebase-auth:$google_services_version"
+    compile "com.google.firebase:firebase-messaging:$google_services_version"
+    compile "com.google.firebase:firebase-database:$google_services_version"
+    compile "com.google.firebase:firebase-storage:$google_services_version"
 
     //Firebase UI
     compile 'com.firebaseui:firebase-ui-auth:1.1.1'

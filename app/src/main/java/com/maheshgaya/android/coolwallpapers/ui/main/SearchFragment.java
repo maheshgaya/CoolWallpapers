@@ -28,7 +28,6 @@ public class SearchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, rootView);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        mToolbarTitle.setText(getString(R.string.bottom_nav_search));
         //TODO: if add menu remove this code for content insets
         mToolbar.setContentInsetsAbsolute(0, 0);
         mToolbar.setContentInsetsRelative(0, 0);

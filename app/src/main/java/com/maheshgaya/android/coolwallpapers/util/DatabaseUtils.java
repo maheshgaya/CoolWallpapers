@@ -45,7 +45,12 @@ public class DatabaseUtils {
                 //if user is not in database, add the user
                 if (dataSnapshot.getChildrenCount() == 0) {
                     String imageUrl = (UserAuthUtils.getCurrentUser().getPhotoUrl() != null) ? UserAuthUtils.getCurrentUser().getPhotoUrl().toString() : "";
-                    userRef.child(UserAuthUtils.getCurrentUser().getUid()).setValue(new User(UserAuthUtils.getCurrentUser().getUid(), UserAuthUtils.getCurrentUser().getDisplayName(), UserAuthUtils.getCurrentUser().getEmail(), imageUrl));
+                    String name = UserAuthUtils.getCurrentUser().getDisplayName();
+                    userRef.child(UserAuthUtils.getCurrentUser().getUid()).setValue(
+                            new User(UserAuthUtils.getCurrentUser().getUid(),
+                                    (name == null)? "" : name, //handles bug with Firebase:10.0.1
+                                    UserAuthUtils.getCurrentUser().getEmail(),
+                                    imageUrl));
                 }
             }
 

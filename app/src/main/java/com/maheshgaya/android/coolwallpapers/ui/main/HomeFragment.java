@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +44,7 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.toolbar_title)TextView mToolbarTitle;
 
     @BindView(R.id.recycle_view_home) RecyclerView mRecycleView;
-    private ArrayList<Post> mImageUriList;
+    private ArrayList<Object> mImageUriList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
 
@@ -116,7 +117,7 @@ public class HomeFragment extends Fragment {
         mImageUriList = new ArrayList<>();
         mImageAdapter = new ImageAdapter(getContext(), mImageUriList);
         mRecycleView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.grid_item_columns));
         mRecycleView.setLayoutManager(gridLayoutManager);
         mRecycleView.setAdapter(mImageAdapter);
         mRecycleView.setItemViewCacheSize(20);
@@ -131,8 +132,8 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         mDatabaseReference.removeEventListener(mValueEventListener);
     }
 }

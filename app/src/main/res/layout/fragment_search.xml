@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <!-- add toolbar -->
-        <include layout="@layout/toolbar"/>
+        <include layout="@layout/search_toolbar"/>
 
     </android.support.design.widget.AppBarLayout>
 

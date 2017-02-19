@@ -20,14 +20,16 @@
 
     <!-- custom theme for Firebase -->
     <style name="AuthTheme" parent="FirebaseUI">
-            <item name="colorPrimary">@color/colorPrimary</item>
-            <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-            <item name="colorAccent">@color/colorAccent</item>
-            <item name="colorControlNormal">@color/colorGray100</item>
-            <item name="colorControlActivated">@color/colorLightBlue700</item>
-            <item name="colorControlHighlight">@color/colorLightBlue700</item>
-            <item name="android:windowBackground">@drawable/auth_ui_logo</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorGray100</item>
+        <item name="colorControlActivated">@color/colorLightBlue700</item>
+        <item name="colorControlHighlight">@color/colorGray100</item>
+        <item name="android:windowBackground">@drawable/auth_ui_logo</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
+
 
      <!--buttons -->
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
@@ -48,6 +50,21 @@
         <item name="colorAccent">@color/colorLightBlue300</item>
         <item name="android:singleLine">true</item>
         <item name="android:lines">1</item>
+    </style>
+
+    <!-- AutoComplete -->
+    <style name="AppTheme.AutoCompleteTextView" parent="Base.V7.Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="colorAccent">@color/colorLightBlue300</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:lines">1</item>
+        <item name="android:drawableLeft">@drawable/ic_search_white</item>
+        <item name="android:drawableStart">@drawable/ic_search_white</item>
+        <item name="android:drawablePadding">16dp</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">@dimen/profile_toolbar_text_size</item>
+        <item name="android:background">@drawable/search_background</item>
     </style>
 
     <!-- Back Button for toolbar-->
@@ -75,7 +92,4 @@
         <item name="colorPrimaryDark">@android:color/black</item>
     </style>
 
-
-
-    
 </resources>
