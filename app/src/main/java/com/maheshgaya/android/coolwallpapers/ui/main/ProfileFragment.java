@@ -154,7 +154,7 @@ public class ProfileFragment extends Fragment{
         mImageUriList = new ArrayList<>();
         mImageAdapter = new ImageAdapter(getContext(), mImageUriList);
         mRecycleView.setHasFixedSize(true);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.grid_item_columns));
         mRecycleView.setLayoutManager(gridLayoutManager);
         mRecycleView.setAdapter(mImageAdapter);
         mRecycleView.setItemViewCacheSize(20);

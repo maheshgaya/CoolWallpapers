@@ -8,4 +8,12 @@
         <item>@string/category_nature</item>
         <item>@string/category_urban</item>
     </string-array>
+    <string-array name="category_array">
+        <item>@string/category</item>
+        <item>@string/category_abstract</item>
+        <item>@string/category_animal</item>
+        <item>@string/category_art</item>
+        <item>@string/category_nature</item>
+        <item>@string/category_urban</item>
+    </string-array>
 </resources>

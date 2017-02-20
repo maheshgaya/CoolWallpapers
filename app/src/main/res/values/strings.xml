@@ -2,6 +2,7 @@
     <string name="app_name">Cool Wallpapers</string>
     <string name="post"> </string> <!-- should show no title -->
     <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="category">Categories</string>
     <string name="ok">OK</string>
 
     <!-- Bottom Navigation -->
