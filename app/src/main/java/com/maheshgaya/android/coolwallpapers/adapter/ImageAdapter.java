@@ -1,6 +1,9 @@
 package com.maheshgaya.android.coolwallpapers.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Post;
+import com.maheshgaya.android.coolwallpapers.ui.image.FullScreenActivity;
+import com.maheshgaya.android.coolwallpapers.ui.image.FullScreenFragment;
 
 import java.util.ArrayList;
 
@@ -53,9 +58,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             holder.thumbnailCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, post.getTitle() + " " + post.getDate(), Toast.LENGTH_SHORT).show();
+                    Activity activity = (Activity)mContext;
+                    Intent fullScreenIntent = new Intent(activity, FullScreenActivity.class);
+                    //For Full Screen, intent for post
+                    fullScreenIntent.putExtra(FullScreenFragment.POST_EXTRA, post);
+                    mContext.startActivity(fullScreenIntent);
                 }
             });
+
         }
 
     }

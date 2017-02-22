@@ -28,4 +28,7 @@
 
     <integer name="grid_item_columns">2</integer>
 
+    <dimen name="fs_image_round_edge">30dp</dimen>
+    <dimen name="fs_image_height">60dp</dimen>
+
 </resources>

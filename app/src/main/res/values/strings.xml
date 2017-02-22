@@ -41,6 +41,7 @@
     <string name="error_could_not_post">Could not complete request!</string>
     <string name="set_wallpaper_successful">Wallpaper successfully set!</string>
     <string name="set_wallpaper_failed">Failed to set wallpaper!</string>
+    <string name="complete_action">Complete action using</string>
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>
@@ -55,4 +56,5 @@
 
     <!-- Firebase UI Override -->
     <string name="progress_dialog_signing_up">Creating your account&#8230;!</string>
+
 </resources>

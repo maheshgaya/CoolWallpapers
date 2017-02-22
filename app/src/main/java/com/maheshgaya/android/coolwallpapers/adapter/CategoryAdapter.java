@@ -1,7 +1,6 @@
 package com.maheshgaya.android.coolwallpapers.adapter;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,9 @@ import android.widget.TextView;
 
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Category;
+import com.maheshgaya.android.coolwallpapers.sync.CategoryAsyncTaskLoader;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Optional;
 
 /**
  * Created by Mahesh Gaya on 2/19/17.

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     app:popupTheme="@style/AppTheme.PopupOverlay"
-    android:background="@color/colorPrimary"
+    android:background="@android:color/transparent"
     android:textAlignment="center"
     android:minHeight="?attr/actionBarSize"
     app:contentInsetLeft="80dp"

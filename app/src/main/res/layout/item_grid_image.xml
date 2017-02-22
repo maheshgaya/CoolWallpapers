@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_image_card_view"
     android:layout_height="250dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -8,6 +9,7 @@
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:layout_margin="2dp"
+    app:cardBackgroundColor="@android:color/transparent"
     android:drawSelectorOnTop="true"
     android:descendantFocusability="blocksDescendants">
 

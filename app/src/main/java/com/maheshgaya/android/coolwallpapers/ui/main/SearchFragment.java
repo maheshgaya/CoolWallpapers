@@ -7,11 +7,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +17,10 @@ import android.widget.TextView;
 
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.CategoryAdapter;
-import com.maheshgaya.android.coolwallpapers.adapter.CategoryAsyncTaskLoader;
-import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
+import com.maheshgaya.android.coolwallpapers.sync.CategoryAsyncTaskLoader;
 import com.maheshgaya.android.coolwallpapers.data.Category;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +30,7 @@ import butterknife.ButterKnife;
  */
 
 public class SearchFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<List<Category>> {
+        LoaderManager.LoaderCallbacks<ArrayList<Category>> {
     private static final String TAG = SearchFragment.class.getSimpleName();
     private static final int LOADER_ID = 1000;
     @BindView(R.id.toolbar)Toolbar mToolbar;
@@ -88,19 +84,19 @@ public class SearchFragment extends Fragment implements
     }
 
     @Override
-    public Loader<List<Category>> onCreateLoader(int id, Bundle args) {
+    public Loader<ArrayList<Category>> onCreateLoader(int id, Bundle args) {
         return new CategoryAsyncTaskLoader(getContext());
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Category>> loader, List<Category> data) {
+    public void onLoadFinished(Loader<ArrayList<Category>> loader, ArrayList<Category> data) {
         mCategoryList = new ArrayList<>(data);
         mCategoryAdapter.setList(mCategoryList);
     }
 
 
     @Override
-    public void onLoaderReset(Loader<List<Category>> loader) {
+    public void onLoaderReset(Loader<ArrayList<Category>> loader) {
         //does nothing
     }
 }

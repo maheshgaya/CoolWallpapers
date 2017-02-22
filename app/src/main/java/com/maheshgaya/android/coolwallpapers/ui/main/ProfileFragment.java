@@ -1,5 +1,6 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.data.User;
+import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.util.DatabaseUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
@@ -275,8 +277,9 @@ public class ProfileFragment extends Fragment{
         menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                Log.d(TAG, "onMenuItemClick: adding");
-                //TODO: Start add Post activity
+                //Open PostActivity
+                Intent postIntent = new Intent(getActivity(), PostActivity.class);
+                startActivity(postIntent); //TODO startActivityForResult(postIntent);
                 return true;
             }
         });

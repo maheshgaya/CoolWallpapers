@@ -29,7 +29,7 @@ public class DateUtils {
         } catch (ParseException e) {
             Log.e(TAG, "getFriendlyDate: ", e);
             e.printStackTrace();
-            return null;
+            return date;
         }
 
     }
@@ -40,15 +40,8 @@ public class DateUtils {
      */
     public static String getCurrentDate(){
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
-        return dateFormat.format(getTimeStamp());
+        return dateFormat.format(Calendar.getInstance().getTime());
     }
 
-    /**
-     * Get timestamp
-     * @return
-     */
-    public static Date getTimeStamp(){
-        return Calendar.getInstance().getTime();
-    }
 
 }

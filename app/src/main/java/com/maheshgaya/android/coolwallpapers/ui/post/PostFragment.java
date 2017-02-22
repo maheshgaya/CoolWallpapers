@@ -137,7 +137,9 @@ public class PostFragment extends Fragment{
                 if (mSelectedImageUri != null) {
                     Intent fullScreenIntent = new Intent(getActivity(), FullScreenActivity.class);
                     //For Full Screen
-                    fullScreenIntent.setData(mSelectedImageUri);
+                    if (mSelectedImageUri != null) {
+                        fullScreenIntent.setData(mSelectedImageUri);
+                    }
                     startActivity(fullScreenIntent);
                 }
             }
@@ -188,7 +190,7 @@ public class PostFragment extends Fragment{
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/jpeg");
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-        startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.complete_action)), RC_PHOTO_PICKER);
     }
 
     /**
@@ -259,7 +261,7 @@ public class PostFragment extends Fragment{
                 if (mUser != null) {
                     //save image
                     final StorageReference storageReference = mStorage.getReference().child(mUser.getUid() + "_" +
-                            DateUtils.getTimeStamp().toString().replaceAll("\\s+", ""));
+                            DateUtils.getCurrentDate().replaceAll("\\s+|/+", ""));
                     storageReference.putFile(mSelectedImageUri)
                             .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -271,7 +273,7 @@ public class PostFragment extends Fragment{
                                     postDBReference.push().setValue(new Post(mUser.getUid(),
                                             mTitleEditText.getText().toString(),
                                             imageUrl,
-                                            DateUtils.getTimeStamp().toString(), //todo save locale
+                                            DateUtils.getCurrentDate(), //todo save locale
                                             mDescriptionEditText.getText().toString(),
                                             mCategorySpinner.getSelectedItem().toString(),
                                             mTagsEditText.getText().toString(),

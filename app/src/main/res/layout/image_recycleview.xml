@@ -7,6 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.RecyclerView
         android:paddingBottom="4dp"
+        android:background="@android:color/transparent"
         android:id="@+id/recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

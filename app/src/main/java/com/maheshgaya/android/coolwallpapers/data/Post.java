@@ -1,10 +1,13 @@
 package com.maheshgaya.android.coolwallpapers.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Mahesh Gaya on 2/8/17.
  */
 
-public class Post {
+public class Post implements Parcelable{
 
     public static final String TABLE_NAME = "posts";
 
@@ -120,4 +123,58 @@ public class Post {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
+    public String toString(){
+        return uid + ", " + title + ", " + date + ", " + imageUrl + ", " + description +
+                ", " + category + ", " + tags + ", " + location;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(uid);
+        out.writeString(title);
+        out.writeString(imageUrl);
+        out.writeString(date);
+        out.writeString(location);
+        out.writeString(description);
+        out.writeString(category);
+        out.writeString(tags);
+
+    }
+
+    private Post(){
+        //for parcelable
+    }
+    private Post(Parcel in){
+        uid = in.readString();
+        title = in.readString();
+        imageUrl = in.readString();
+        date = in.readString();
+        location = in.readString();
+        description = in.readString();
+        category = in.readString();
+        tags = in.readString();
+    }
+
+    public static final Parcelable.Creator<Post> CREATOR
+            = new Parcelable.Creator<Post>() {
+
+        // This simply calls our new constructor (typically private) and
+        // passes along the unmarshalled `Parcel`, and then returns the new object!
+        @Override
+        public Post createFromParcel(Parcel in) {
+            return new Post(in);
+        }
+
+        // We just need to copy this and change the type to match our class.
+        @Override
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
 }

@@ -13,10 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:supportsRtl">
+
+        <!-- Places API -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/places_api"/>
 
+        <!-- Main Activity -->
         <activity android:name=".ui.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- post activity -->
         <activity android:name=".ui.post.PostActivity"
             android:windowSoftInputMode="stateVisible|adjustResize"
             android:parentActivityName=".ui.main.MainActivity"
@@ -32,9 +37,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.main.MainActivity"/>
         </activity>
+
+        <!-- full screen for details -->
         <activity android:name=".ui.image.FullScreenActivity"
             android:theme="@style/AppTheme.FullScreenActivity"
             android:label=""/>
+
+        <!-- keep the data sync -->
+        <service
+            android:exported="false"
+            android:name=".sync.PostJobService">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
+
+        <!-- sets wallpaper in a background thread -->
+        <service android:name=".service.SetWallpaperIntentService"/>
+
     </application>
 
 </manifest>
