@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -153,6 +154,23 @@ public class FullScreenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Hello World", Toast.LENGTH_SHORT).show();
+                if (Build.VERSION.SDK_INT >= 21) {
+                    if (mFavoriteButton.getTag() == getString(R.string.unfavorite_tag)) {
+                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_colored, null));
+                        mFavoriteButton.setTag(getString(R.string.favorite_tag));
+                    } else {
+                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart, null));
+                        mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+                    }
+                } else {
+                    if (mFavoriteButton.getTag() == getString(R.string.unfavorite_tag)) {
+                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_colored));
+                        mFavoriteButton.setTag(getString(R.string.favorite_tag));
+                    } else {
+                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart));
+                        mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+                    }
+                }
             }
         });
 
@@ -238,9 +256,6 @@ public class FullScreenFragment extends Fragment {
             } else {
                 mTagsTextView.setVisibility(View.GONE);
             }
-
-
-
         }
     }
 

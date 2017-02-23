@@ -77,8 +77,10 @@
 
             <TextView
                 android:id="@+id/fs_detail_title"
-                android:text="Title"
+                tools:text="Title"
                 android:textSize="20sp"
+                android:layout_toStartOf="@+id/fs_detail_favorite_linear"
+                android:layout_toLeftOf="@+id/fs_detail_favorite_linear"
                 android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -90,8 +92,10 @@
 
             <TextView
                 android:id="@+id/fs_detail_submitter"
-                android:text="Submitter"
-                android:textColor="@android:color/white"
+                tools:text="Submitter"
+                android:textColor="@android:color/holo_orange_light"
+                android:layout_toStartOf="@+id/fs_detail_favorite_linear"
+                android:layout_toLeftOf="@+id/fs_detail_favorite_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/fs_detail_title"
@@ -99,50 +103,67 @@
                 android:layout_below="@+id/fs_detail_title" />
             <TextView
                 android:id="@+id/fs_detail_date"
-                android:text="Date"
+                tools:text="Date"
                 android:textColor="@android:color/white"
+                android:layout_toStartOf="@+id/fs_detail_favorite_linear"
+                android:layout_toLeftOf="@+id/fs_detail_favorite_linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/fs_detail_title"
                 android:layout_alignStart="@+id/fs_detail_title"
                 android:layout_below="@+id/fs_detail_submitter" />
-            <ImageButton
-                android:id="@+id/fs_favorite_imagebutton"
-                android:background="@android:color/transparent"
+            <LinearLayout
+                android:id="@+id/fs_detail_favorite_linear"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/ic_heart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:weightSum="3"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/fs_favorite_imagebutton"
+                    android:background="@android:color/transparent"
+                    android:tag="@string/unfavorite_tag"
+                    android:layout_weight="2"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp" />
+                <TextView
+                    android:paddingTop="4dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:id="@+id/fs_detail_category"
+                    tools:text="Category"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp" />
+            </LinearLayout>
+
         </RelativeLayout>
 
-        <include layout="@layout/fs_line_divider" />
         <TextView
-            android:id="@+id/fs_detail_description"
-            android:text="Description"
-            android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:id="@+id/fs_detail_category"
-            android:text="Category"
-            android:textColor="@android:color/white"
+            android:id="@+id/fs_detail_location"
+            tools:text="Location"
+            android:textStyle="italic"
+            android:textColor="@android:color/darker_gray"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/fs_detail_tags"
-            android:text="Tags"
+            android:id="@+id/fs_detail_description"
+            tools:text="Description"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
         <TextView
-            android:id="@+id/fs_detail_location"
-            android:text="Location"
-            android:textColor="@android:color/white"
+            android:id="@+id/fs_detail_tags"
+            tools:text="Tags"
+            android:textColor="@color/colorLightBlue700"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 

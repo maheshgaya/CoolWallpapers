@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
         <android.support.v7.widget.Toolbar
             android:id="@+id/post_toolbar"
-            android:theme="@style/AppTheme.BackButton"
+            android:theme="@style/AppTheme.CancelButton"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
         </android.support.v7.widget.Toolbar>
@@ -81,6 +81,7 @@
                     <EditText
                         android:drawableStart="@drawable/ic_note"
                         android:drawableLeft="@drawable/ic_note"
+                        android:maxLength="200"
                         android:id="@+id/post_description_edittext"
                         android:background="@android:color/white"
                         android:theme="@style/AppTheme.NormalEditText"

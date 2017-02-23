@@ -28,15 +28,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     //Support libraries and design libraries
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
-    compile 'com.android.support:cardview-v7:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile "com.android.support:gridlayout-v7:25.1.1"
+    compile "com.android.support:appcompat-v7:$design_library_version"
+    compile "com.android.support:design:$design_library_version"
+    compile "com.android.support:cardview-v7:$design_library_version"
+    compile "com.android.support:recyclerview-v7:$design_library_version"
+    compile "com.android.support:gridlayout-v7:$design_library_version"
 
     //Dependency Injection
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile "com.jakewharton:butterknife:$butterknife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknife_version"
 
     //Places API
     compile "com.google.android.gms:play-services-places:$google_services_version"
@@ -49,13 +49,13 @@ dependencies {
     compile "com.google.firebase:firebase-storage:$google_services_version"
 
     //Firebase UI
-    compile 'com.firebaseui:firebase-ui-auth:1.1.1'
+    compile "com.firebaseui:firebase-ui-auth:$firebase_ui_version"
 
     //Firebase Dispatcher
-    compile 'com.firebase:firebase-jobdispatcher-with-gcm-dep:0.5.2'
+    compile "com.firebase:firebase-jobdispatcher-with-gcm-dep:$firebase_jobdispatcher_version"
 
     //Glide
-    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile "com.github.bumptech.glide:glide:$glide_version"
 }
 
 //This needs to be at the bottom
