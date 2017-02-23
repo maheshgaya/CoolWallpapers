@@ -228,7 +228,9 @@ public class FullScreenFragment extends Fragment {
             }
 
             if (!(mPost.getLocation().equals(""))){
-                mLocationTextView.setText(mPost.getLocation());
+                String location = mPost.getLocation();
+                location = location.replaceAll("\\n",", ");
+                mLocationTextView.setText(location);
             } else {
                 mLocationTextView.setVisibility(View.GONE);
             }
