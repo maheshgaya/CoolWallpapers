@@ -126,8 +126,6 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
 
-
-
                     <!-- add tags -->
                     <EditText
                         android:drawableStart="@drawable/ic_tag"

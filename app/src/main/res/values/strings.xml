@@ -44,6 +44,8 @@
     <string name="set_wallpaper_successful_friendly">Yay!</string>
     <string name="set_wallpaper_failed_friendly">Oops!</string>
     <string name="complete_action">Complete action using</string>
+    <string name="search_hint">Search for wallpapers&#8230;</string>
+    <string name="discard_message">Discard post?</string>
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>
@@ -62,5 +64,6 @@
     <string name="unfavorite_tag">Unfavorite</string>
     <string name="favorite_tag">Favorite</string>
 
+    <string name="fs_toolbar_flag">false</string>
 
 </resources>

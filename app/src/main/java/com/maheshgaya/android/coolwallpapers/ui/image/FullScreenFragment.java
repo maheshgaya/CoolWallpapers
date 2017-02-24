@@ -403,7 +403,6 @@ public class FullScreenFragment extends Fragment {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             //todo handle zoom
-            Toast.makeText(mContext, "Double Tap. Yay!", Toast.LENGTH_SHORT).show();
             return true;
         }
 

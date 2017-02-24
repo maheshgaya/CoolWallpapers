@@ -6,18 +6,48 @@
     android:id="@+id/layout_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context=".ui.main.SearchFragment">
+    <FrameLayout
+        android:visibility="gone"
+        android:id="@+id/search_content_layout"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <!-- add toolbar -->
-        <include layout="@layout/search_toolbar"/>
+        <!-- toolbar -->
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:background="@android:color/transparent"
+            android:textAlignment="center"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetLeft="80dp"
+            app:contentInsetStart="80dp"
+            app:layout_collapseMode="pin">
+            <include layout="@layout/search_toolbar"/>
+
+        </android.support.v7.widget.Toolbar>
+
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/image_recycleview"/>
+
 
 </android.support.design.widget.CoordinatorLayout>

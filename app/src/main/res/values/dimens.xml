@@ -30,5 +30,7 @@
 
     <dimen name="fs_image_round_edge">30dp</dimen>
     <dimen name="fs_image_height">60dp</dimen>
+    <dimen name="fs_layout_padding">54dp</dimen>
+    <dimen name="fs_layout_side_padding">16dp</dimen>
 
 </resources>

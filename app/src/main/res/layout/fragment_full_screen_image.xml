@@ -9,46 +9,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <FrameLayout
-            android:fitsSystemWindows="false"
+    <FrameLayout
+        android:fitsSystemWindows="false"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="match_parent">
+        <ImageView
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            tools:src="@drawable/background"
+            android:adjustViewBounds="true"
+            android:id="@+id/full_screen_image_view"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:layout_height="match_parent">
-            <ImageView
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                tools:src="@drawable/background"
-                android:adjustViewBounds="true"
-                android:id="@+id/full_screen_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </FrameLayout>
-
-        <android.support.design.widget.AppBarLayout
-            android:fitsSystemWindows="false"
-            android:id="@+id/full_screen_appbarlayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:elevation="0dp"
-            android:background="@color/colorToolbar">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/full_screen_toolbar"
-                app:theme="@style/AppTheme.FullScreen"
-                android:layout_width="match_parent"
-                android:layout_height="72dp">
-            </android.support.v7.widget.Toolbar>
-        </android.support.design.widget.AppBarLayout>
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/fs_detail_linear_layout"
         android:orientation="vertical"
         android:layout_gravity="bottom"
-        android:paddingBottom="64dp"
+        android:paddingBottom="@dimen/fs_layout_padding"
         android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="@dimen/fs_layout_side_padding"
+        android:paddingStart="@dimen/fs_layout_side_padding"
+        android:paddingEnd="@dimen/fs_layout_side_padding"
+        android:paddingRight="@dimen/fs_layout_side_padding"
         android:background="@color/colorTranslucent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -163,8 +148,21 @@
             android:textColor="@color/colorLightBlue700"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </LinearLayout>
-
+    <android.support.design.widget.AppBarLayout
+        android:fitsSystemWindows="false"
+        android:id="@+id/full_screen_appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"
+        android:background="@color/colorToolbar">
+        <android.support.v7.widget.Toolbar
+            android:fitsSystemWindows="@string/fs_toolbar_flag"
+            android:id="@+id/full_screen_toolbar"
+            app:theme="@style/AppTheme.FullScreen"
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

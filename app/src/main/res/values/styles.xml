@@ -45,7 +45,8 @@
 
     <!-- EditText -->
     <style name="AppTheme.EditText" parent="Base.V7.Widget.AppCompat.EditText">
-        <item name="android:maxLength">40</item>
+        <item name="android:maxLength">30</item>
+        <item name="android:imeOptions">flagNoFullscreen</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="colorAccent">@color/colorLightBlue300</item>
         <item name="android:singleLine">true</item>
@@ -53,18 +54,16 @@
     </style>
 
     <!-- AutoComplete -->
-    <style name="AppTheme.AutoCompleteTextView" parent="Base.V7.Widget.AppCompat.AutoCompleteTextView">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="colorAccent">@color/colorLightBlue300</item>
+    <style name="AppTheme.SearchEditText" parent="Base.V7.Widget.AppCompat.EditText">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:singleLine">true</item>
         <item name="android:lines">1</item>
-        <item name="android:drawableLeft">@drawable/ic_search_white</item>
-        <item name="android:drawableStart">@drawable/ic_search_white</item>
-        <item name="android:drawablePadding">16dp</item>
-        <item name="android:textCursorDrawable">@null</item>
         <item name="android:gravity">start</item>
+        <item name="android:imeOptions">actionSearch|flagNoFullscreen</item>
+        <item name="android:textColorHint">@android:color/darker_gray</item>
         <item name="android:textSize">@dimen/profile_toolbar_text_size</item>
-        <item name="android:background">@drawable/search_background</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <!-- Back Button for toolbar-->
@@ -76,6 +75,7 @@
     <style name="AppTheme.NormalEditText" parent="Base.V7.Widget.AppCompat.EditText">
         <item name="android:layout_marginTop">@dimen/post_content_padding</item>
         <item name="android:layout_marginBottom">@dimen/post_content_padding</item>
+        <item name="android:imeOptions">flagNoFullscreen</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:drawablePadding">@dimen/post_drawable_content_padding</item>
         <item name="android:textSize">16sp</item>

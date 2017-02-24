@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="grid_item_columns">3</integer>
+    <dimen name="fs_layout_padding">16dp</dimen>
+    <dimen name="fs_layout_side_padding">54dp</dimen>
 </resources>

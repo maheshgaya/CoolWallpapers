@@ -1,6 +1,7 @@
 package com.maheshgaya.android.coolwallpapers.ui.post;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Address;
@@ -16,6 +17,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -250,12 +252,15 @@ public class PostFragment extends Fragment{
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.post_menu, menu);
         mPostMenuItem = menu.findItem(R.id.action_post);
-        //all the input fields have not been filled out, so just disable the button
         mPostMenuItem.setEnabled(false);
 
-        mPostMenuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_post:{
+                //all the input fields have not been filled out, so just disable the button
                 //save image and then save data
                 final DatabaseReference postDBReference = mPostDatabase.getReference().child(Post.TABLE_NAME);
                 if (mUser != null) {
@@ -296,19 +301,39 @@ public class PostFragment extends Fragment{
 
                 return true;
             }
-        });
+            case android.R.id.home:{
+                getActivity().finish();
+            }
+            default:
+                 return super.onOptionsItemSelected(item);
+        }
 
 
+    }
+
+    private void showAlertDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+        alertDialog.setTitle(getString(R.string.discard_message));
+        alertDialog.setMessage("Alert message to be shown");
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
     }
 
     /**
      * enable post button if every required input is filled out
      */
     private void enablePostButton(){
-        if (isInputEmpty()){
-            mPostMenuItem.setEnabled(false);
-        } else if (!isInputEmpty()) {
-            mPostMenuItem.setEnabled(true);
+        if (mPostMenuItem != null) {
+            if (isInputEmpty()) {
+                mPostMenuItem.setEnabled(false);
+            } else if (!isInputEmpty()) {
+                mPostMenuItem.setEnabled(true);
+            }
         }
     }
 
