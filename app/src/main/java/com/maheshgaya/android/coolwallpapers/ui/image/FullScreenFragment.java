@@ -50,6 +50,7 @@ import com.maheshgaya.android.coolwallpapers.service.SetWallpaperIntentService;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
+import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.io.IOException;
@@ -182,7 +183,6 @@ public class FullScreenFragment extends Fragment {
             query.addChildEventListener(userChildEventListener);
             showDetail = true;
             displayPost();
-            Log.d(TAG, "onCreateView: " + mPost.toString());
         }
 
         mGestureDetector = new GestureDetector(getContext(),new GestureListener(getContext()));
@@ -262,10 +262,7 @@ public class FullScreenFragment extends Fragment {
     }
 
     private void setupToolbar(){
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar = FragmentUtils.getToolbar(getContext(), mToolbar, false);
         mToolbar.setPadding(0, getStatusBarHeight(), 0, 0);
         hideToolbar(); //TODO find a better way to do this
         hideToolbar(); //kind of a hack way to show immersive content

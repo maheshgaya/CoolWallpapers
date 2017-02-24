@@ -1,6 +1,9 @@
 package com.maheshgaya.android.coolwallpapers.util;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -9,6 +12,7 @@ import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.main.HomeFragment;
 import com.maheshgaya.android.coolwallpapers.ui.main.ProfileFragment;
 import com.maheshgaya.android.coolwallpapers.ui.main.SearchFragment;
+import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 
 /**
  * Created by Mahesh Gaya on 2/8/17.
@@ -42,6 +46,20 @@ public class FragmentUtils {
             default:
                 return null;
         }
+    }
+
+    public static Toolbar getToolbar(Context context, Toolbar toolbar, boolean parent){
+        ((AppCompatActivity) context).setSupportActionBar(toolbar);
+        ((AppCompatActivity) context).getSupportActionBar().setHomeButtonEnabled(!parent);
+        ((AppCompatActivity) context).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(!parent);
+        ((AppCompatActivity) context).getSupportActionBar().setDisplayHomeAsUpEnabled(!parent);
+        return toolbar;
+    }
+
+    public static Toolbar getToolbar(Context context, Toolbar toolbar, String title){
+        ((AppCompatActivity) context).setSupportActionBar(toolbar);
+        toolbar.setTitle("");
+        return toolbar;
     }
 
 }

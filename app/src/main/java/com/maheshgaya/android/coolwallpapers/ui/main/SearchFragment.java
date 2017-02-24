@@ -28,6 +28,7 @@ import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.CategoryAdapter;
 import com.maheshgaya.android.coolwallpapers.sync.CategoryAsyncTaskLoader;
 import com.maheshgaya.android.coolwallpapers.data.Category;
+import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
 import java.util.ArrayList;
 
@@ -58,18 +59,13 @@ public class SearchFragment extends Fragment implements
         setHasOptionsMenu(true);
     }
 
-    private void setupToolbar(){
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
-        mToolbar.setTitle("");
-    }
-
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
         ButterKnife.bind(this, rootView);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
+        mToolbar = FragmentUtils.getToolbar(getContext(), mToolbar, "");
         mToolbar.setContentInsetsAbsolute(0, 0);
         mToolbar.setContentInsetsRelative(0, 0);
         mCategoryList = new ArrayList<>();
@@ -87,7 +83,6 @@ public class SearchFragment extends Fragment implements
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
-        setupToolbar();
 
 
         mSearchCancel.setOnClickListener(new View.OnClickListener() {

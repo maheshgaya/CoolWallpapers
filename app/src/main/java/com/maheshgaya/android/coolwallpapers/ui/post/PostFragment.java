@@ -57,6 +57,7 @@ import com.maheshgaya.android.coolwallpapers.ui.image.FullScreenActivity;
 import com.maheshgaya.android.coolwallpapers.ui.main.MainActivity;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
+import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -121,11 +122,7 @@ public class PostFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_post, container, false);
         ButterKnife.bind(this, rootView);
-
-        ((PostActivity) getActivity()).setSupportActionBar(mToolbar);
-        ((PostActivity) getActivity()).getSupportActionBar().setHomeButtonEnabled(true);
-        ((PostActivity) getActivity()).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        ((PostActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar = FragmentUtils.getToolbar(getContext(), mToolbar, false);
 
         mAddImageFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -302,7 +299,14 @@ public class PostFragment extends Fragment{
                 return true;
             }
             case android.R.id.home:{
-                getActivity().finish();
+                //// TODO: test
+                if (!isInputEmpty()) {
+                    Log.d(TAG, "onOptionsItemSelected: " + isInputEmpty());
+                    showAlertDialog();
+                } else if (isInputEmpty()){
+                    Log.d(TAG, "onOptionsItemSelected: " + isInputEmpty());
+                    getActivity().finish();
+                }
             }
             default:
                  return super.onOptionsItemSelected(item);
@@ -314,14 +318,21 @@ public class PostFragment extends Fragment{
     private void showAlertDialog(){
         AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
         alertDialog.setTitle(getString(R.string.discard_message));
-        alertDialog.setMessage("Alert message to be shown");
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+        alertDialog.setMessage(getString(R.string.confirmation_message));
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.no),
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.yes),
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+                    }
+                });
         alertDialog.show();
+        alertDialog.getWindow().setLayout(800, 500);
     }
 
     /**
