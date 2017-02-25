@@ -37,6 +37,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -310,7 +312,19 @@ public class FullScreenFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.full_screen_image_menu, menu);
+        int resourceId;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        try {
+            if (user.getUid().equals(mPost.getUid())){
+                resourceId = R.menu.full_screen_image_current_menu;
+            } else {
+                resourceId = R.menu.full_screen_image_menu;
+            }
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            resourceId = R.menu.full_screen_image_menu;
+        }
+        inflater.inflate(resourceId, menu);
 
     }
 

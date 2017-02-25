@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expanded_search_layout"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/expanded_search_toolbar"
+        android:orientation="horizontal"
+        android:weightSum="12"
+        android:padding="16dp"
+        android:elevation="8dp"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/expanded_search_back_image_view"
+            android:layout_weight="1"
+            android:contentDescription="@string/search_cancel_content_description"
+            android:src="@drawable/ic_back_dark"
+            android:paddingLeft="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingRight="16dp"
+            android:scaleType="center"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+
+        <EditText
+            android:id="@+id/expanded_search_edit_text"
+            android:layout_weight="10"
+            android:paddingLeft="8dp"
+            android:paddingStart="8dp"
+            android:paddingRight="8dp"
+            android:paddingEnd="8dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            android:theme="@style/AppTheme.SearchEditText"
+            android:inputType="text"
+            android:hint="@string/search_hint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/expanded_search_cancel_button"
+            android:contentDescription="@string/search_cancel_content_description"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:src="@drawable/ic_close_dark"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/expanded_search_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/expanded_search_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+</LinearLayout>

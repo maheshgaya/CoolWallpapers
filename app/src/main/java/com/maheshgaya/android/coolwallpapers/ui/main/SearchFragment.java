@@ -3,6 +3,7 @@ package com.maheshgaya.android.coolwallpapers.ui.main;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -22,6 +23,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.maheshgaya.android.coolwallpapers.R;
@@ -46,11 +48,14 @@ public class SearchFragment extends Fragment implements
     @BindView(R.id.toolbar)Toolbar mToolbar;
     @BindView(R.id.recycle_view)RecyclerView mCategoryRecycleView;
     @BindView(R.id.swipe_refresh_layout)SwipeRefreshLayout mSwipeRefreshLayout;
+
+    //Search
+    @BindView(R.id.search_appbarlayout)AppBarLayout mSearchAppbarLayout;
     @BindView(R.id.search_toolbar_edit_text)EditText mSearchEditText;
-    @BindView(R.id.search_toolbar_cancel_button)ImageButton mSearchCancel;
-    @BindView(R.id.search_toolbar_image_view)ImageView mSearchImageView;
-    @BindView(R.id.search_content_layout)FrameLayout mSearchContentLayout;
-    @BindView(R.id.search_toolbar_framelayout)FrameLayout mSearchToolbarFrameLayout;
+    @BindView(R.id.expanded_search_layout)LinearLayout mExpandedSearchLayout;
+    @BindView(R.id.expanded_search_back_image_view)ImageView mExpandedSearchBackImageView;
+    @BindView(R.id.expanded_search_cancel_button)ImageButton mExpandedSearchCancelImageButton;
+    @BindView(R.id.expanded_search_edit_text)EditText mExpandedSearchEditText;
 
     private ArrayList<Category> mCategoryList;
     private CategoryAdapter mCategoryAdapter;
@@ -75,7 +80,11 @@ public class SearchFragment extends Fragment implements
                 LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mCategoryRecycleView.setLayoutManager(linearLayoutManager);
         mCategoryRecycleView.setAdapter(mCategoryAdapter);
+
         refreshContent();
+
+        showExpandedSearch(false);
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -84,51 +93,43 @@ public class SearchFragment extends Fragment implements
             }
         });
 
-
-        mSearchCancel.setOnClickListener(new View.OnClickListener() {
+        mExpandedSearchBackImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSearchEditText.setText("");
+                showExpandedSearch(false);
             }
         });
 
-        mSearchContentLayout.setVisibility(View.GONE);
-        mSearchCancel.setVisibility(View.INVISIBLE);
+        mExpandedSearchCancelImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mExpandedSearchEditText.setText("");
+            }
+        });
 
+
+        //initialize search toolbar
         mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                showContent(hasFocus);
-            }
-        });
-
-        mSearchImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mSearchEditText.hasFocus()){
-                    mSearchEditText.setText("");
-                    showContent(false);
-                } else {
-                    mSearchEditText.findFocus();
-                    showContent(true);
+                if (hasFocus) {
+                    showExpandedSearch(true);
                 }
             }
         });
 
-        mSearchEditText.addTextChangedListener(new TextWatcher() {
+        mExpandedSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence query, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence text, int start, int count, int after) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence query, int start, int before, int count) {
-                showContent(true);
-
-                if (query.length() > 0){
-                    mSearchCancel.setVisibility(View.VISIBLE);
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                if (text.length() > 0){
+                    mExpandedSearchCancelImageButton.setVisibility(View.VISIBLE);
                 } else {
-                    mSearchCancel.setVisibility(View.INVISIBLE);
+                    mExpandedSearchCancelImageButton.setVisibility(View.INVISIBLE);
                 }
             }
 
@@ -140,25 +141,27 @@ public class SearchFragment extends Fragment implements
         return rootView;
     }
 
-    private void showContent(boolean value){
-        if (value) {
-            mSearchContentLayout.setVisibility(View.VISIBLE);
+    private void showExpandedSearch(boolean value){
+        //show expandedSearch
+        if (value){
             mSwipeRefreshLayout.setVisibility(View.INVISIBLE);
-            mSearchImageView.setImageResource(R.drawable.ic_back_dark);
+            mSearchAppbarLayout.setVisibility(View.INVISIBLE);
+            mExpandedSearchLayout.setVisibility(View.VISIBLE);
+            mExpandedSearchCancelImageButton.setVisibility(View.INVISIBLE);
         } else {
-            mSearchContentLayout.setVisibility(View.INVISIBLE);
-            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-            mSearchImageView.setImageResource(R.drawable.ic_search_dark);
+            mExpandedSearchEditText.setText("");
             InputMethodManager inputMethodManager =
                     (InputMethodManager) getActivity().getSystemService(
                             Activity.INPUT_METHOD_SERVICE);
             try {
                 inputMethodManager.hideSoftInputFromWindow(
-                        getActivity().getCurrentFocus().getWindowToken(), 0);
+                getActivity().getCurrentFocus().getWindowToken(), 0);
             } catch (NullPointerException e){
                 e.printStackTrace();
             }
-
+            mExpandedSearchLayout.setVisibility(View.INVISIBLE);
+            mSearchAppbarLayout.setVisibility(View.VISIBLE);
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
         }
     }
 

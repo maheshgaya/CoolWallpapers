@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:design="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_main"
@@ -20,4 +20,4 @@
         design:elevation="8dp"
         android:background="@color/colorGray100"
         design:menu="@menu/bottom_navigation_items" />
-</FrameLayout>
+</merge>

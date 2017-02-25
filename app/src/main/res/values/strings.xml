@@ -4,6 +4,7 @@
     <string name="set_wallpaper">Set Wallpaper</string>
     <string name="category">Categories</string>
     <string name="ok">OK</string>
+    <string name="delete">Delete</string>
 
     <!-- Bottom Navigation -->
     <string name="bottom_nav_home">Home</string>
@@ -24,7 +25,7 @@
     <string name="likes">Likes</string>
 
     <!-- post -->
-    <string name="post_content_desc">Wallpaper</string>
+    <string name="post_content_description">Wallpaper</string>
     <string name="post_add_image">Add image</string>
     <string name="enter_post_description">Add a description</string>
     <string name="enter_post_tags">Add more tags</string>
@@ -52,7 +53,10 @@
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>
-    
+    <string name="search_content_description">Search wallpapers</string>
+    <string name="search_cancel_content_description">Cancel search</string>
+    <string name="empty_content">Empty Content</string>
+
     <!-- entries for categories -->
     <string name="category_choose">Choose a category *</string>
     <string name="category_nature">Nature</string>

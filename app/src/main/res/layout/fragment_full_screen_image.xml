@@ -154,12 +154,13 @@
         android:id="@+id/full_screen_appbarlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
         app:elevation="0dp"
         android:background="@color/colorToolbar">
         <android.support.v7.widget.Toolbar
             android:fitsSystemWindows="@string/fs_toolbar_flag"
             android:id="@+id/full_screen_toolbar"
-            app:theme="@style/AppTheme.FullScreen"
+            app:popupTheme="@style/AppTheme.FullScreen"
             android:layout_width="match_parent"
             android:layout_height="72dp">
         </android.support.v7.widget.Toolbar>
