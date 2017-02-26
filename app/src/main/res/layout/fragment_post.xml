@@ -122,7 +122,8 @@
                             android:layout_height="wrap_content" />
                         <Spinner
                             android:id="@+id/post_category_spinner"
-                            android:padding="@dimen/post_content_padding"
+                            android:paddingTop="@dimen/post_content_padding"
+                            android:paddingBottom="@dimen/post_content_padding"
                             android:entries="@array/categories"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>

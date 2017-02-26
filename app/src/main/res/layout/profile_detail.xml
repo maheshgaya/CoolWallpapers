@@ -21,9 +21,10 @@
         <android.support.v7.widget.CardView
             app:cardCornerRadius="@dimen/profile_image_round_edge"
             android:innerRadius="0dp"
+            app:cardPreventCornerOverlap="false"
             android:shape="ring"
             app:cardBackgroundColor="@android:color/transparent"
-            android:thicknessRatio="1.9"
+            android:thicknessRatio="0"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/profile_image_margin_top"
             android:layout_height="@dimen/profile_image_height"

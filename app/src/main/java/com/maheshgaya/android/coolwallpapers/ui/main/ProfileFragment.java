@@ -1,19 +1,16 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,14 +36,11 @@ import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.data.User;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
-import com.maheshgaya.android.coolwallpapers.util.DatabaseUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,24 +64,23 @@ public class ProfileFragment extends Fragment{
     @BindView(R.id.follower_textview)TextView mFollowerTextView;
     @BindView(R.id.following_textview)TextView mFollowingTextView;
     @BindView(R.id.likes_textview)TextView mLikesTextView;
-    @BindView(R.id.swipe_refresh_layout)SwipeRefreshLayout mSwipeRefreshLayout;
 
     /** gets the current user */
     private User mCurrentUser;
 
     @BindView(R.id.recycle_view)RecyclerView mRecycleView;
-    private ArrayList<Object> mImageUriList;
+    private ArrayList<Object> mImageList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
 
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            if (mImageUriList.size() != 0) {
-                mImageUriList.clear();
+            if (mImageList.size() != 0) {
+                mImageList.clear();
             }
             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                mImageUriList.add(new Post(
+                mImageList.add(new Post(
                         postSnapshot.child(Post.COLUMN_UID).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_TITLE).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_IMAGE_URL).getValue().toString(),
@@ -98,9 +90,8 @@ public class ProfileFragment extends Fragment{
                         postSnapshot.child(Post.COLUMN_TAGS).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_LOCATION).getValue().toString()));
             }
-            Collections.reverse(mImageUriList);
+            Collections.reverse(mImageList);
             mImageAdapter.notifyDataSetChanged();
-            mSwipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -153,8 +144,8 @@ public class ProfileFragment extends Fragment{
         });
 
         //Add gridview and Initialize it
-        mImageUriList = new ArrayList<>();
-        mImageAdapter = new ImageAdapter(getContext(), mImageUriList);
+        mImageList = new ArrayList<>();
+        mImageAdapter = new ImageAdapter(getContext(), mImageList);
         mRecycleView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.grid_item_columns));
         mRecycleView.setLayoutManager(gridLayoutManager);
@@ -163,18 +154,6 @@ public class ProfileFragment extends Fragment{
         mRecycleView.setDrawingCacheEnabled(true);
         mRecycleView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         mRecycleView.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshContent();
-            }
-        });
-
-        mSwipeRefreshLayout.setColorSchemeResources(
-                R.color.colorPrimary,
-                R.color.colorAccent
-        );
 
         return rootView;
     }
@@ -233,7 +212,7 @@ public class ProfileFragment extends Fragment{
                         mLikesTextView.setText(mCurrentUser.getLikes()  + " " + getString(R.string.likes));
                         Glide.with(getContext())
                                 .load(mCurrentUser.getImageUrl())
-                                .error(R.drawable.ic_account_circle_black)
+                                .error(R.drawable.ic_user_profile)
                                 .into(mProfileImageView);
                     } catch (Exception e){
                         e.printStackTrace();

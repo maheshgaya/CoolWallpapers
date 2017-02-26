@@ -39,6 +39,10 @@
             android:theme="@style/AppTheme.FullScreenActivity"
             android:label=""/>
 
+        <!-- full screen search -->
+        <activity android:name=".ui.search.ExpandedSearchActivity"
+            android:label=""/>
+
         <!-- keep the data sync -->
         <service
             android:exported="false"

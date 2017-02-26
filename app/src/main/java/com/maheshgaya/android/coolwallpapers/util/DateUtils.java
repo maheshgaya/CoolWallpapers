@@ -23,9 +23,10 @@ public class DateUtils {
      * @return
      */
     public static String getFriendlyDate(String date){
+        DateFormat originalFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
         DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault());
         try {
-            return dateFormat.parse(date).toString();
+            return dateFormat.format(originalFormat.parse(date));
         } catch (ParseException e) {
             Log.e(TAG, "getFriendlyDate: ", e);
             e.printStackTrace();

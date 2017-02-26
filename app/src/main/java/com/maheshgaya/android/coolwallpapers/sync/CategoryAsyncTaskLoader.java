@@ -19,11 +19,11 @@ public class CategoryAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Category>
     //TODO Replace this with actual icons
     private int[] mCategoryIcons = {
             HEADER_TITLE,
-            R.drawable.ic_account_circle_black,
-            R.drawable.ic_account_circle_black,
-            R.drawable.ic_account_circle_black,
-            R.drawable.ic_account_circle_black,
-            R.drawable.ic_account_circle_black,
+            android.R.color.holo_blue_dark,
+            android.R.color.holo_red_light,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_purple,
     };
 
     public CategoryAsyncTaskLoader(Context context) {

@@ -56,6 +56,8 @@
     <string name="search_content_description">Search wallpapers</string>
     <string name="search_cancel_content_description">Cancel search</string>
     <string name="empty_content">Empty Content</string>
+    <string name="empty_search">Search wallpapers</string>
+    <string name="empty_results">Oops! No results!</string>
 
     <!-- entries for categories -->
     <string name="category_choose">Choose a category *</string>
@@ -72,5 +74,7 @@
     <string name="favorite_tag">Favorite</string>
 
     <string name="fs_toolbar_flag">false</string>
+
+
 
 </resources>
