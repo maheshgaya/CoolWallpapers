@@ -1,4 +1,4 @@
-package com.maheshgaya.android.coolwallpapers.sync;
+package com.maheshgaya.android.coolwallpapers.loader;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;

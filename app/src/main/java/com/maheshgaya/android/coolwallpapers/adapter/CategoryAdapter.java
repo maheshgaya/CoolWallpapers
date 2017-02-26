@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Category;
-import com.maheshgaya.android.coolwallpapers.sync.CategoryAsyncTaskLoader;
+import com.maheshgaya.android.coolwallpapers.loader.CategoryAsyncTaskLoader;
 import com.maheshgaya.android.coolwallpapers.ui.search.ExpandedSearchActivity;
 import com.maheshgaya.android.coolwallpapers.ui.search.ExpandedSearchFragment;
 

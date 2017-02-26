@@ -43,15 +43,6 @@
         <activity android:name=".ui.search.ExpandedSearchActivity"
             android:label=""/>
 
-        <!-- keep the data sync -->
-        <service
-            android:exported="false"
-            android:name=".sync.PostJobService">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
-            </intent-filter>
-        </service>
-
         <!-- sets wallpaper in a background thread -->
         <service android:name=".service.SetWallpaperIntentService"/>
 
