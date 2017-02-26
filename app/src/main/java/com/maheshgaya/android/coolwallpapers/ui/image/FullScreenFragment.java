@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -88,7 +91,7 @@ public class FullScreenFragment extends Fragment {
     private String postRef;
     private static int mLikeCount;
     private static int mFollowing;
-    private static int mFollowers;
+    private int mFollowers;
 
     private final ChildEventListener userChildEventListener = new ChildEventListener() {
         @Override
@@ -136,20 +139,8 @@ public class FullScreenFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         setupToolbar();
         if (getActivity().getIntent().getData() != null){
-            try {
-                //todo push this to intent service
-                Uri selectedImageUri = getActivity().getIntent().getData();
-                if (mSelectedBitmap != null) {
-                    mSelectedBitmap.recycle();
-                }
-                mSelectedBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
-                mImageView.setImageBitmap(mSelectedBitmap);
-                showDetail = false;
-                mDetailLinearLayout.setVisibility(View.GONE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            LoadBitmapAsyncTask loadBitmapAsyncTask = new LoadBitmapAsyncTask();
+            loadBitmapAsyncTask.execute();
         }
 
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
@@ -235,7 +226,6 @@ public class FullScreenFragment extends Fragment {
                         if (user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
                             mLikeCount = Integer.parseInt(user.child(User.COLUMN_LIKES).toString());
                             mFollowing = Integer.parseInt(user.child(User.COLUMN_FOLLOWING).toString());
-                            Log.d(TAG, "onCDataChange: "+ mLikeCount);
                         }
                     }
                 }
@@ -245,6 +235,25 @@ public class FullScreenFragment extends Fragment {
 
                 }
             });
+
+            DatabaseReference postUserRef = FirebaseDatabase.getInstance()
+                    .getReference(User.TABLE_NAME + "/" + mPost.getUid());
+            postUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot user: dataSnapshot.getChildren()){
+                        if (user.getKey().equals(mPost.getUid())){
+                            mFollowers = Integer.parseInt(user.child(User.COLUMN_FOLLOWERS).toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
 
         mGestureDetector = new GestureDetector(getContext(),new GestureListener(getContext()));
@@ -300,9 +309,18 @@ public class FullScreenFragment extends Fragment {
             }
 
             if (!(mPost.getLocation().equals(""))){
-                String location = mPost.getLocation();
-                location = location.replaceAll("\\n",", ");
+                final String location = mPost.getLocation().replaceAll("\\n",", ");
                 mLocationTextView.setText(location);
+                mLocationTextView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + location);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        startActivity(mapIntent);
+                    }
+                });
+
             } else {
                 mLocationTextView.setVisibility(View.GONE);
             }
@@ -385,16 +403,52 @@ public class FullScreenFragment extends Fragment {
         int resourceId;
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         try {
-            if (currentUser.getUid().equals(mPost.getUid())){
+            if (mPost == null){
+                //user is just posting
+                resourceId = R.menu.full_screen_image_post_menu;
+            } else if (currentUser.getUid().equals(mPost.getUid())){
+                //user is viewing his own post
                 resourceId = R.menu.full_screen_image_current_menu;
             } else {
+                //user is viewing someone else post
                 resourceId = R.menu.full_screen_image_menu;
             }
         } catch (NullPointerException e){
             e.printStackTrace();
             resourceId = R.menu.full_screen_image_menu;
         }
+
         inflater.inflate(resourceId, menu);
+        initializeFollowingMenutItem(menu.findItem(R.id.action_follow_user));
+    }
+
+    private void initializeFollowingMenutItem(final MenuItem menuItem){
+        if (menuItem != null) {
+            DatabaseReference followingRef = FirebaseDatabase.getInstance()
+                    .getReference(Constants.FOLLOWING_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+            followingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot followingSnapshot : dataSnapshot.getChildren()) {
+                        if (followingSnapshot.getKey().equals(mPost.getUid())) {
+                            if (followingSnapshot.getValue().equals(Constants.TRUE_STR)){
+                                menuItem.setIcon(R.drawable.ic_user_following);
+                                menuItem.setTitle(getString(R.string.unfollow_user));
+                            } else {
+                                menuItem.setIcon(R.drawable.ic_follow_user);
+                                menuItem.setTitle(getString(R.string.follow_user));
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
 
     }
 
@@ -443,21 +497,36 @@ public class FullScreenFragment extends Fragment {
         DatabaseReference userRef = FirebaseDatabase.getInstance()
                 .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + User.COLUMN_FOLLOWING);
+        DatabaseReference postRef = FirebaseDatabase.getInstance()
+                .getReference(User.TABLE_NAME + "/" + mPost.getUid() +
+                        "/" + User.COLUMN_FOLLOWERS);
         DatabaseReference followingRef = FirebaseDatabase.getInstance()
                 .getReference(Constants.FOLLOWING_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + mPost.getUid());
+        DatabaseReference followerRef = FirebaseDatabase.getInstance()
+                .getReference(Constants.FOLLOWER_TABLE_NAME + "/" + mPost.getUid() +
+                        "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         if (item.getTitle().equals(getString(R.string.follow_user))){
-            item.setIcon(R.drawable.ic_unfollow_user);
+            item.setIcon(R.drawable.ic_user_following);
+            Snackbar.make(mCoordinatorLayout, getString(R.string.following), Snackbar.LENGTH_SHORT).show();
             item.setTitle(getString(R.string.unfollow_user));
             userRef.setValue(++mFollowing);
             followingRef.setValue(Constants.TRUE_STR);
+            followerRef.setValue(Constants.TRUE_STR);
+            postRef.setValue(++mFollowers);
         } else if (item.getTitle().equals(getString(R.string.unfollow_user))){
             item.setIcon(R.drawable.ic_follow_user);
             item.setTitle(getString(R.string.follow_user));
+            Snackbar.make(mCoordinatorLayout, getString(R.string.unfollow_user), Snackbar.LENGTH_SHORT).show();
             if (mFollowing > 0) {
                 userRef.setValue(--mFollowing);
             }
+            if (mFollowers > 0){
+                postRef.setValue(--mFollowers);
+            }
             followingRef.setValue(Constants.FALSE_STR);
+            followerRef.setValue(Constants.FALSE_STR);
         }
 
 
@@ -569,6 +638,31 @@ public class FullScreenFragment extends Fragment {
             return false;
         }
 
+    }
+
+    class LoadBitmapAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            mImageView.setImageBitmap(mSelectedBitmap);
+            showDetail = false;
+            mDetailLinearLayout.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                Uri selectedImageUri = getActivity().getIntent().getData();
+                if (mSelectedBitmap != null) {
+                    mSelectedBitmap.recycle();
+                }
+                mSelectedBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImageUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 
 }

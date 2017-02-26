@@ -241,9 +241,11 @@ public class ProfileFragment extends Fragment{
                                 Integer.parseInt(dataSnapshot.child(User.COLUMN_LIKES).getValue().toString())
                         );
                         mProfileNameTextView.setText(mCurrentUser.getName());
-                        mFollowerTextView.setText(mCurrentUser.getFollowers() + " " + getString(R.string.followers));
+                        mFollowerTextView.setText(mCurrentUser.getFollowers() + " " +
+                                ((mCurrentUser.getFollowers() > 1) ? getString(R.string.followers) : getString(R.string.follower)));
                         mFollowingTextView.setText(mCurrentUser.getFollowing()  + " " + getString(R.string.following));
-                        mLikesTextView.setText(mCurrentUser.getLikes()  + " " + getString(R.string.likes));
+                        mLikesTextView.setText(mCurrentUser.getLikes()  + " " +
+                                ((mCurrentUser.getLikes() > 1) ? getString(R.string.likes) : getString(R.string.like)));
                         Glide.with(getContext())
                                 .load(mCurrentUser.getImageUrl())
                                 .error(R.drawable.ic_user_profile)

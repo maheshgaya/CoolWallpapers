@@ -63,7 +63,6 @@ public class HomeFragment extends Fragment {
             if (mImageList.size() != 0) {
                 mImageList.clear();
             }
-            Log.d(TAG, "onDataChange: " + dataSnapshot.getChildrenCount());
             if (dataSnapshot.getChildrenCount() > 0) {
                 showContent(true);
             } else {

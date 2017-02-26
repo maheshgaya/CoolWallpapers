@@ -23,8 +23,10 @@
     <string name="follow_user_button">@string/follow_user</string>
     <string name="following_user_button">@string/following</string>
     <string name="followers">Followers</string>
+    <string name="follower">Follower</string>
     <string name="following">Following</string>
     <string name="likes">Likes</string>
+    <string name="like">Like</string>
 
     <!-- post -->
     <string name="post_content_description">Wallpaper</string>
