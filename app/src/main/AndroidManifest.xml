@@ -42,6 +42,8 @@
         <!-- full screen search -->
         <activity android:name=".ui.search.ExpandedSearchActivity"
             android:label=""/>
+        <activity android:name=".ui.profile.ProfileEditActivity"
+            android:label=""/>
 
         <!-- sets wallpaper in a background thread -->
         <service android:name=".service.SetWallpaperIntentService"/>

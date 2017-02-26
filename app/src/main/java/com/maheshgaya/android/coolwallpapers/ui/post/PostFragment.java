@@ -189,6 +189,7 @@ public class PostFragment extends Fragment{
      */
     private boolean isInputEmpty(){
         return (mTitleEditText.getText().toString().equals("") ||
+                mTitleEditText.getText().toString().replaceAll("\\s+", "").equals("") ||
         mSelectedImageUri == null ||
         mCategorySpinner.getSelectedItemPosition() == 0);
 
@@ -291,6 +292,7 @@ public class PostFragment extends Fragment{
             }
             case android.R.id.home:{
                 showAlertDialog();
+                return true;
 
             }
             default:

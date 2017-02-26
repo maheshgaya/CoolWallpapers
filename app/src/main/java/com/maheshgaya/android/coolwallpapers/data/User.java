@@ -1,10 +1,13 @@
 package com.maheshgaya.android.coolwallpapers.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Mahesh Gaya on 2/13/17.
  */
 
-public class User {
+public class User implements Parcelable{
     private String uid;
     private String name;
     private String email;
@@ -120,4 +123,48 @@ public class User {
     public void decrementLikes(){
         this.likes--;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    private User(){
+        //for parcelable
+    }
+    private User(Parcel in){
+        this.uid = in.readString();
+        this.name = in.readString();
+        this.email = in.readString();
+        this.imageUrl = in.readString();
+        this.followers = in.readInt();
+        this.following = in.readInt();
+        this.likes = in.readInt();
+
+    }
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(uid);
+        out.writeString(name);
+        out.writeString(email);
+        out.writeString(imageUrl);
+        out.writeInt(followers);
+        out.writeInt(following);
+        out.writeInt(likes);
+    }
+    public static final Parcelable.Creator<User> CREATOR
+            = new Parcelable.Creator<User>() {
+
+        // This simply calls our new constructor (typically private) and
+        // passes along the unmarshalled `Parcel`, and then returns the new object!
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        // We just need to copy this and change the type to match our class.
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

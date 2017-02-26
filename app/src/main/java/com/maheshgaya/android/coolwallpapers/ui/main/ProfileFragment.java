@@ -36,6 +36,8 @@ import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.data.User;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
+import com.maheshgaya.android.coolwallpapers.ui.profile.ProfileEditActivity;
+import com.maheshgaya.android.coolwallpapers.ui.profile.ProfileEditFragment;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
@@ -146,14 +148,6 @@ public class ProfileFragment extends Fragment{
             }
         });
 
-        mEditProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: change this
-                DisplayUtils.showSnackBar(mCoordinatorLayout, "Test: button is working").show();
-            }
-        });
-
         //Add gridview and Initialize it
         mImageList = new ArrayList<>();
         mImageAdapter = new ImageAdapter(getContext(), mImageList);
@@ -172,6 +166,17 @@ public class ProfileFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 addPost();
+            }
+        });
+
+        mEditProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCurrentUser != null){
+                    Intent profileIntent = new Intent(getActivity(), ProfileEditActivity.class);
+                    profileIntent.putExtra(ProfileEditFragment.EDIT_EXTRA, mCurrentUser);
+                    getActivity().startActivity(profileIntent);
+                }
             }
         });
         return rootView;

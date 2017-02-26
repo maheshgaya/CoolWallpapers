@@ -12,6 +12,10 @@
     <dimen name="profile_name_top_padding">16dp</dimen>
     <dimen name="profile_button_vertical_margin">8dp</dimen>
 
+    <!-- profile edit -->
+    <dimen name="profile_edit_image_height">160dp</dimen>
+    <dimen name="profile_edit_image_round_edge">80dp</dimen>
+
     <!-- text size -->
     <dimen name="profile_name_text_size">22sp</dimen>
     <dimen name="profile_toolbar_text_size">18sp</dimen>

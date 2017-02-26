@@ -17,8 +17,10 @@
     <string name="unfollow_user">Unfollow</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="action_post">Post</string>
+    <string name="action_save">Save</string>
 
     <!-- profile -->
+    <string name="edit">Edit</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="follow_user_button">@string/follow_user</string>
     <string name="following_user_button">@string/following</string>
@@ -27,6 +29,7 @@
     <string name="following">Following</string>
     <string name="likes">Likes</string>
     <string name="like">Like</string>
+    <string name="edit_name">Edit Name</string>
 
     <!-- post -->
     <string name="post_content_description">Wallpaper</string>
@@ -60,6 +63,10 @@
     <string name="post_deleted">was deleted</string>
     <string name="add_post">Post an image</string>
     <string name="add_post_message">Seems like your feed is empty. How about posting a wallpaper?</string>
+    <string name="name_empty">Name cannot be empty!</string>
+    <string name="profile_updated">Profile Updated</string>
+    <string name="profile_edit_failed">Failed to update Profile!</string>
+    <string name="upload">Upload Picture</string>
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>

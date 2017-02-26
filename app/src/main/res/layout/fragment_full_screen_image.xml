@@ -55,6 +55,7 @@
                     android:id="@+id/fs_image_view"
                     android:contentDescription="@string/profile_image_description"
                     tools:src="@mipmap/ic_launcher"
+                    android:scaleType="centerCrop"
                     android:layout_alignParentTop="true"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
