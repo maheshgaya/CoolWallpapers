@@ -15,6 +15,7 @@
         android:layout_gravity="center"
         android:layout_height="match_parent">
         <ImageView
+            android:contentDescription="@string/post_content_description"
             android:focusable="true"
             android:focusableInTouchMode="true"
             tools:src="@drawable/background"
@@ -109,8 +110,8 @@
                 android:layout_height="wrap_content">
                 <ImageButton
                     android:id="@+id/fs_favorite_imagebutton"
+                    android:contentDescription="@string/favorite_tag"
                     android:background="@android:color/transparent"
-                    android:tag="@string/unfavorite_tag"
                     android:layout_weight="2"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_heart"

@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -65,19 +65,30 @@ public class ProfileFragment extends Fragment{
     @BindView(R.id.following_textview)TextView mFollowingTextView;
     @BindView(R.id.likes_textview)TextView mLikesTextView;
 
+    @BindView(R.id.profile_layout)LinearLayout mPostLinearLayout;
+    @BindView(R.id.empty_linearlayout)LinearLayout mEmptyLayout;
+    @BindView(R.id.empty_image_view)ImageView mEmptyImageView;
+    @BindView(R.id.empty_text_view)TextView mEmptyTextView;
+    @BindView(R.id.empty_action_text_view)TextView mEmptyActionTextView;
+
+
     /** gets the current user */
     private User mCurrentUser;
 
     @BindView(R.id.recycle_view)RecyclerView mRecycleView;
     private ArrayList<Object> mImageList;
     private ImageAdapter mImageAdapter;
-    private DatabaseReference mDatabaseReference;
 
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
             if (mImageList.size() != 0) {
                 mImageList.clear();
+            }
+            if (dataSnapshot.getChildrenCount() > 0){
+                showContent(true);
+            } else {
+                showContent(false);
             }
             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
                 mImageList.add(new Post(
@@ -154,7 +165,15 @@ public class ProfileFragment extends Fragment{
         mRecycleView.setDrawingCacheEnabled(true);
         mRecycleView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         mRecycleView.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-
+        mEmptyImageView.setImageResource(R.drawable.ic_big_post);
+        mEmptyTextView.setText(getString(R.string.add_post_message));
+        mEmptyActionTextView.setText(getString(R.string.action_post));
+        mEmptyActionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPost();
+            }
+        });
         return rootView;
     }
 
@@ -165,8 +184,8 @@ public class ProfileFragment extends Fragment{
     }
 
     private void refreshContent(){
-        mDatabaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
-        Query query = mDatabaseReference.orderByChild(Post.COLUMN_UID).equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+        Query query = databaseReference.orderByChild(Post.COLUMN_UID).equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         query.addValueEventListener(mValueEventListener);
     }
 
@@ -178,6 +197,21 @@ public class ProfileFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+    }
+
+    private void addPost(){
+        Intent postIntent = new Intent(getActivity(), PostActivity.class);
+        startActivity(postIntent);
+    }
+
+    private void showContent(boolean value){
+        if (value){
+            mEmptyLayout.setVisibility(View.GONE);
+            mPostLinearLayout.setVisibility(View.VISIBLE);
+        } else {
+            mPostLinearLayout.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

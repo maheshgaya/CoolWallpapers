@@ -3,19 +3,14 @@ package com.maheshgaya.android.coolwallpapers.ui.post;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -33,7 +28,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -50,16 +44,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.maheshgaya.android.coolwallpapers.Constants;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.ui.image.FullScreenActivity;
-import com.maheshgaya.android.coolwallpapers.ui.main.MainActivity;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -299,14 +290,8 @@ public class PostFragment extends Fragment{
                 return true;
             }
             case android.R.id.home:{
-                //// TODO: test
-                if (!isInputEmpty()) {
-                    Log.d(TAG, "onOptionsItemSelected: " + isInputEmpty());
-                    showAlertDialog();
-                } else if (isInputEmpty()){
-                    Log.d(TAG, "onOptionsItemSelected: " + isInputEmpty());
-                    getActivity().finish();
-                }
+                showAlertDialog();
+
             }
             default:
                  return super.onOptionsItemSelected(item);
@@ -316,21 +301,23 @@ public class PostFragment extends Fragment{
     }
 
     private void showAlertDialog(){
-        AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
-        alertDialog.setTitle(getString(R.string.discard_message));
-        alertDialog.setMessage(getString(R.string.confirmation_message));
-        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, getString(R.string.no),
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.AppTheme_AlertDialog).create();
+        alertDialog.setTitle(getString(R.string.discard_alert));
+        alertDialog.setMessage(getString(R.string.discard_message));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.no),
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
+
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.yes),
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         getActivity().finish();
                     }
                 });
+
         alertDialog.show();
         alertDialog.getWindow().setLayout(800, 500);
     }

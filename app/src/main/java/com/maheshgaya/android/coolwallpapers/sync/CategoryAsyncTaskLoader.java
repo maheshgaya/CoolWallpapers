@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class CategoryAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Category>> {
     private static final String TAG = CategoryAsyncTaskLoader.class.getSimpleName();
-    private ArrayList<Category> mCategoryList;
     public static final int HEADER_TITLE = -1;
     //TODO Replace this with actual icons
     private int[] mCategoryIcons = {
@@ -32,7 +31,7 @@ public class CategoryAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Category>
 
     @Override
     public ArrayList<Category> loadInBackground() {
-        mCategoryList = new ArrayList<>();
+        ArrayList<Category> mCategoryList = new ArrayList<>();
         String[] categoryArray = getContext().getApplicationContext().getResources().getStringArray(R.array.category_array);
         for (int i = 0; i < categoryArray.length; i++){
             mCategoryList.add(new Category(categoryArray[i], mCategoryIcons[i]));

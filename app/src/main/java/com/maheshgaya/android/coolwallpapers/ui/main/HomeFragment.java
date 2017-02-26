@@ -1,9 +1,6 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,14 +8,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -49,18 +48,30 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.toolbar_title)TextView mToolbarTitle;
     @BindView(R.id.swipe_refresh_layout)SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.recycle_view) RecyclerView mRecycleView;
-    private ArrayList<Object> mImageUriList;
+    @BindView(R.id.empty_linearlayout)LinearLayout mEmptyLayout;
+    @BindView(R.id.empty_image_view)ImageView mEmptyImageView;
+    @BindView(R.id.empty_text_view)TextView mEmptyTextView;
+    @BindView(R.id.empty_action_text_view)TextView mEmptyActionTextView;
+
+    private ArrayList<Object> mImageList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
 
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-            if (mImageUriList.size() != 0) {
-                mImageUriList.clear();
+            if (mImageList.size() != 0) {
+                mImageList.clear();
             }
+            Log.d(TAG, "onDataChange: " + dataSnapshot.getChildrenCount());
+            if (dataSnapshot.getChildrenCount() > 0) {
+                showContent(true);
+            } else {
+                showContent(false);
+            }
+
             for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                mImageUriList.add(new Post(
+                mImageList.add(new Post(
                         postSnapshot.child(Post.COLUMN_UID).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_TITLE).getValue().toString(),
                         postSnapshot.child(Post.COLUMN_IMAGE_URL).getValue().toString(),
@@ -71,7 +82,7 @@ public class HomeFragment extends Fragment {
                         postSnapshot.child(Post.COLUMN_LOCATION).getValue().toString()));
             }
             //reverse chronological order, Firebase does not provide reverse order query
-            Collections.reverse(mImageUriList);
+            Collections.reverse(mImageList);
             mImageAdapter.notifyDataSetChanged();
             mSwipeRefreshLayout.setRefreshing(false);
 
@@ -103,8 +114,7 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 //Open PostActivity
-                Intent postIntent = new Intent(getActivity(), PostActivity.class);
-                startActivity(postIntent); //TODO startActivityForResult(postIntent);
+                addPost();
                 return true;
             }
         });
@@ -116,6 +126,21 @@ public class HomeFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    private void addPost(){
+        Intent postIntent = new Intent(getActivity(), PostActivity.class);
+        startActivity(postIntent);
+    }
+
+    private void showContent(boolean value){
+        if (value){
+            mEmptyLayout.setVisibility(View.GONE);
+            mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        } else {
+            mSwipeRefreshLayout.setVisibility(View.GONE);
+            mEmptyLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -139,8 +164,8 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbarTitle.setText(getString(R.string.bottom_nav_home));
 
-        mImageUriList = new ArrayList<>();
-        mImageAdapter = new ImageAdapter(getContext(), mImageUriList);
+        mImageList = new ArrayList<>();
+        mImageAdapter = new ImageAdapter(getContext(), mImageList);
         mRecycleView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.grid_item_columns));
         mRecycleView.setLayoutManager(gridLayoutManager);
@@ -162,6 +187,15 @@ public class HomeFragment extends Fragment {
                 R.color.colorAccent
         );
 
+        mEmptyTextView.setText(getString(R.string.add_post_message));
+        mEmptyImageView.setImageResource(R.drawable.ic_big_post);
+        mEmptyActionTextView.setText(getString(R.string.action_post));
+        mEmptyActionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPost();
+            }
+        });
 
         return rootView;
     }

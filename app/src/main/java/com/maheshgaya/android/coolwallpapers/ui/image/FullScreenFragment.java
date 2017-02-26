@@ -3,12 +3,10 @@ package com.maheshgaya.android.coolwallpapers.ui.image;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -16,11 +14,9 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.ViewDragHelper;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,7 +29,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -45,19 +40,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.maheshgaya.android.coolwallpapers.Constants;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.data.User;
 import com.maheshgaya.android.coolwallpapers.service.SetWallpaperIntentService;
-import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
-import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,6 +61,8 @@ import butterknife.ButterKnife;
 
 public class FullScreenFragment extends Fragment {
     private static final String TAG = FullScreenActivity.class.getSimpleName();
+    public static final int FULL_IMAGE_CODE = 1205;
+    public static final String IMAGE_DELETE_KEY = "image_deleted";
     @BindView(R.id.full_screen_image_view)ImageView mImageView;
     @BindView(R.id.full_screen_toolbar)Toolbar mToolbar;
     @BindView(R.id.layout_full_screen_image)CoordinatorLayout mCoordinatorLayout;
@@ -90,6 +85,10 @@ public class FullScreenFragment extends Fragment {
     public static final String POST_EXTRA = "post_extra";
     private Post mPost;
     private boolean showDetail = true;
+    private String postRef;
+    private static int mLikeCount;
+    private static int mFollowing;
+    private static int mFollowers;
 
     private final ChildEventListener userChildEventListener = new ChildEventListener() {
         @Override
@@ -156,24 +155,28 @@ public class FullScreenFragment extends Fragment {
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Hello World", Toast.LENGTH_SHORT).show();
-                if (Build.VERSION.SDK_INT >= 21) {
-                    if (mFavoriteButton.getTag() == getString(R.string.unfavorite_tag)) {
-                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_colored, null));
-                        mFavoriteButton.setTag(getString(R.string.favorite_tag));
-                    } else {
-                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart, null));
-                        mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
-                    }
+                DatabaseReference reference = FirebaseDatabase.getInstance()
+                        .getReference(Constants.FAVORITE_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                        "/" + postRef);
+                DatabaseReference userRef = FirebaseDatabase.getInstance()
+                        .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                        "/" + User.COLUMN_LIKES);
+
+                if (mFavoriteButton.getTag() == getString(R.string.unfavorite_tag)) {
+                    //if initial was unfavorite then change it to favorite
+                    mFavoriteButton.setImageResource(R.drawable.ic_heart_colored);
+                    mFavoriteButton.setTag(getString(R.string.favorite_tag));
+                    userRef.setValue(++mLikeCount);
+                    reference.setValue(Constants.TRUE_STR);
                 } else {
-                    if (mFavoriteButton.getTag() == getString(R.string.unfavorite_tag)) {
-                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_colored));
-                        mFavoriteButton.setTag(getString(R.string.favorite_tag));
-                    } else {
-                        mFavoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart));
-                        mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+                    mFavoriteButton.setImageResource(R.drawable.ic_heart);
+                    mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+                    if (mLikeCount > 0) {
+                        userRef.setValue(--mLikeCount);
                     }
+                    reference.setValue(Constants.FALSE_STR);
                 }
+
             }
         });
 
@@ -181,10 +184,67 @@ public class FullScreenFragment extends Fragment {
             mPost = getActivity().getIntent().getParcelableExtra(POST_EXTRA);
             //query database to see if user is there
             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(User.TABLE_NAME);
-            Query query = userRef.orderByKey().equalTo(mPost.getUid());
-            query.addChildEventListener(userChildEventListener);
+            Query userQuery = userRef.orderByKey().equalTo(mPost.getUid());
+            userQuery.addChildEventListener(userChildEventListener);
             showDetail = true;
             displayPost();
+
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+            Query query = reference.orderByChild(Post.COLUMN_TITLE).equalTo(mPost.getTitle());
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot postDataSnapShot: dataSnapshot.getChildren()){
+                        if (postDataSnapShot.child(Post.COLUMN_TITLE).getValue().toString().equals(mPost.getTitle()) &&
+                                postDataSnapShot.child(Post.COLUMN_UID).getValue().toString().equals(mPost.getUid()) &&
+                                postDataSnapShot.child(Post.COLUMN_CATEGORY).getValue().toString().equals(mPost.getCategory())) {
+                            postRef = postDataSnapShot.getRef().getKey();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            DatabaseReference favoriteReference = FirebaseDatabase.getInstance()
+                    .getReference(Constants.FAVORITE_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+            favoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot favoriteSnapshot: dataSnapshot.getChildren()){
+                        if (favoriteSnapshot.getKey().equals(postRef)) {
+                            updateFavoriteButton(favoriteSnapshot.getValue().toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            DatabaseReference userReference = FirebaseDatabase.getInstance()
+                    .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
+            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot user: dataSnapshot.getChildren()){
+                        if (user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
+                            mLikeCount = Integer.parseInt(user.child(User.COLUMN_LIKES).toString());
+                            mFollowing = Integer.parseInt(user.child(User.COLUMN_FOLLOWING).toString());
+                            Log.d(TAG, "onCDataChange: "+ mLikeCount);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         mGestureDetector = new GestureDetector(getContext(),new GestureListener(getContext()));
@@ -196,6 +256,16 @@ public class FullScreenFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void updateFavoriteButton(String value){
+        if (value.equals(Constants.TRUE_STR)){
+            mFavoriteButton.setImageResource(R.drawable.ic_heart_colored);
+            mFavoriteButton.setTag(getString(R.string.favorite_tag));
+        } else {
+            mFavoriteButton.setImageResource(R.drawable.ic_heart);
+            mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+        }
     }
 
     private void updateUserInfo(String name, String imageUrl){
@@ -313,9 +383,9 @@ public class FullScreenFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         int resourceId;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         try {
-            if (user.getUid().equals(mPost.getUid())){
+            if (currentUser.getUid().equals(mPost.getUid())){
                 resourceId = R.menu.full_screen_image_current_menu;
             } else {
                 resourceId = R.menu.full_screen_image_menu;
@@ -334,12 +404,89 @@ public class FullScreenFragment extends Fragment {
             case R.id.action_set_wallpaper:
                 setImage();
                 return true;
+            case R.id.action_follow_user:
+                followUser(item);
+                return true;
+            case R.id.action_delete:
+                showAlertDialog();
+                return true;
             case android.R.id.home:
                 getActivity().finish();
                 return true;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAlertDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.AppTheme_AlertDialog).create();
+        alertDialog.setTitle(getString(R.string.delete_alert));
+        alertDialog.setMessage(getString(R.string.delete_message));
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.no),
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.yes),
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int which) {
+                        deletePost();
+                    }
+                });
+        alertDialog.show();
+        alertDialog.getWindow().setLayout(890, 525);
+    }
+
+    private void followUser(MenuItem item){
+        DatabaseReference userRef = FirebaseDatabase.getInstance()
+                .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                        "/" + User.COLUMN_FOLLOWING);
+        DatabaseReference followingRef = FirebaseDatabase.getInstance()
+                .getReference(Constants.FOLLOWING_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
+                        "/" + mPost.getUid());
+        if (item.getTitle().equals(getString(R.string.follow_user))){
+            item.setIcon(R.drawable.ic_unfollow_user);
+            item.setTitle(getString(R.string.unfollow_user));
+            userRef.setValue(++mFollowing);
+            followingRef.setValue(Constants.TRUE_STR);
+        } else if (item.getTitle().equals(getString(R.string.unfollow_user))){
+            item.setIcon(R.drawable.ic_follow_user);
+            item.setTitle(getString(R.string.follow_user));
+            if (mFollowing > 0) {
+                userRef.setValue(--mFollowing);
+            }
+            followingRef.setValue(Constants.FALSE_STR);
+        }
+
+
+    }
+
+    private void deletePost(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+        Query query = reference.orderByChild(Post.COLUMN_TITLE).equalTo(mPost.getTitle());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot postDataSnapShot: dataSnapshot.getChildren()){
+                    if (postDataSnapShot.child(Post.COLUMN_TITLE).getValue().toString().equals(mPost.getTitle()) &&
+                            postDataSnapShot.child(Post.COLUMN_UID).getValue().toString().equals(mPost.getUid()) &&
+                            postDataSnapShot.child(Post.COLUMN_CATEGORY).getValue().toString().equals(mPost.getCategory())) {
+                        postDataSnapShot.getRef().removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(IMAGE_DELETE_KEY, mPost.getTitle());
+        getActivity().setResult(Activity.RESULT_OK, returnIntent);
+        getActivity().finish();
     }
 
     public void setImage(){

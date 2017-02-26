@@ -112,6 +112,7 @@
                         android:layout_height="wrap_content">
                         <ImageView
                             android:id="@+id/tag_imageview"
+                            android:contentDescription="@string/tag"
                             android:layout_gravity="center"
                             android:paddingLeft="@dimen/post_content_padding"
                             android:paddingStart="@dimen/post_content_padding"

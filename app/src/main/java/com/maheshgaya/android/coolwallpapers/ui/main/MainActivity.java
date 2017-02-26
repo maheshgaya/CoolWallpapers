@@ -1,44 +1,27 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.ResultCodes;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.maheshgaya.android.coolwallpapers.BuildConfig;
 import com.maheshgaya.android.coolwallpapers.R;
-import com.maheshgaya.android.coolwallpapers.data.User;
+import com.maheshgaya.android.coolwallpapers.ui.image.FullScreenFragment;
 import com.maheshgaya.android.coolwallpapers.util.DatabaseUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -161,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
                 if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     Log.d(TAG, "onActivityResult: Unknown error");
                 }
+            }
+        }
+        if (requestCode == FullScreenFragment.FULL_IMAGE_CODE){
+            if (resultCode == ResultCodes.OK){
+                String result = data.getStringExtra(FullScreenFragment.IMAGE_DELETE_KEY);
+                View rootView = getWindow().getDecorView().findViewById(android.R.id.content);
+                Snackbar.make(rootView, result + " " + getString(R.string.post_deleted), Snackbar.LENGTH_SHORT).show();
             }
         }
     }

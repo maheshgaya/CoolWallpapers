@@ -16,6 +16,7 @@
     <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/category_image_view"
+        android:contentDescription="@string/category"
         tools:src="@drawable/background"
         android:scaleType="centerCrop"
         android:layout_width="match_parent"

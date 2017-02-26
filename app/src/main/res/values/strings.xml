@@ -13,12 +13,14 @@
 
     <!-- menus -->
     <string name="action_add">Add</string>
+    <string name="follow_user">Follow</string>
+    <string name="unfollow_user">Unfollow</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="action_post">Post</string>
 
     <!-- profile -->
     <string name="edit_profile">Edit Profile</string>
-    <string name="follow_user_button">Follow</string>
+    <string name="follow_user_button">@string/follow_user</string>
     <string name="following_user_button">@string/following</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
@@ -32,6 +34,7 @@
     <string name="enter_post_location">Add location</string>
     <string name="enter_title">Enter a beautiful title *</string>
     <string name="post_information">Fields with * are required</string>
+    <string name="tag">Tag</string>
 
     <!-- Error Handling and messages -->
     <string name="no_internet_connection">No internet connection available!</string>
@@ -46,10 +49,15 @@
     <string name="set_wallpaper_failed_friendly">Oops!</string>
     <string name="complete_action">Complete action using</string>
     <string name="search_hint">Search for wallpapers&#8230;</string>
-    <string name="discard_message">Discard post?</string>
-    <string name="confirmation_message">Your data is not saved, yet! Do you still want to discard it?</string>
+    <string name="discard_alert">Discard post?</string>
+    <string name="discard_message">Your data is not saved, yet! Do you still want to discard it?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="delete_alert">Delete post?</string>
+    <string name="delete_message">This will delete the post permanently! Are you sure to delete this post?</string>
+    <string name="post_deleted">was deleted</string>
+    <string name="add_post">Post an image</string>
+    <string name="add_post_message">Seems like your feed is empty. How about posting a wallpaper?</string>
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>

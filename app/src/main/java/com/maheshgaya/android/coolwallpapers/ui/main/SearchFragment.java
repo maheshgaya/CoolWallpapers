@@ -1,45 +1,31 @@
 package com.maheshgaya.android.coolwallpapers.ui.main;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.CategoryAdapter;
 import com.maheshgaya.android.coolwallpapers.sync.CategoryAsyncTaskLoader;
 import com.maheshgaya.android.coolwallpapers.data.Category;
 import com.maheshgaya.android.coolwallpapers.ui.search.ExpandedSearchActivity;
-import com.maheshgaya.android.coolwallpapers.ui.search.ExpandedSearchFragment;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

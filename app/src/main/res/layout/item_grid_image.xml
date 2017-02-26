@@ -14,6 +14,7 @@
     android:descendantFocusability="blocksDescendants">
 
     <ImageView
+        android:contentDescription="@string/post_content_description"
         tools:src="@mipmap/ic_launcher"
         android:layout_width="match_parent"
         android:layout_height="250dp"

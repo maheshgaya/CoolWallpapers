@@ -1,6 +1,5 @@
 package com.maheshgaya.android.coolwallpapers.ui.search;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,18 +8,15 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
-import com.maheshgaya.android.coolwallpapers.ui.main.SearchFragment;
 
 import java.util.ArrayList;
 
@@ -191,10 +186,8 @@ public class ExpandedSearchFragment extends Fragment {
 
         @Override
         protected Void doInBackground(String... params) {
-            Log.d(TAG, "doInBackground: " + params[0]);
             mDatabaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
             if (params.length > 1){
-                Log.d(TAG, "doInBackground: " + params[1]);
                 Query query = mDatabaseReference.orderByChild(Post.COLUMN_CATEGORY)
                         .equalTo(params[0]);
                 query.addValueEventListener(mValueEventListener);

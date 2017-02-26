@@ -5,14 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.main.HomeFragment;
 import com.maheshgaya.android.coolwallpapers.ui.main.ProfileFragment;
 import com.maheshgaya.android.coolwallpapers.ui.main.SearchFragment;
-import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 
 /**
  * Created by Mahesh Gaya on 2/8/17.
@@ -50,15 +46,19 @@ public class FragmentUtils {
 
     public static Toolbar getToolbar(Context context, Toolbar toolbar, boolean parent){
         ((AppCompatActivity) context).setSupportActionBar(toolbar);
-        ((AppCompatActivity) context).getSupportActionBar().setHomeButtonEnabled(!parent);
-        ((AppCompatActivity) context).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(!parent);
-        ((AppCompatActivity) context).getSupportActionBar().setDisplayHomeAsUpEnabled(!parent);
+        try {
+            ((AppCompatActivity) context).getSupportActionBar().setHomeButtonEnabled(!parent);
+            ((AppCompatActivity) context).getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(!parent);
+            ((AppCompatActivity) context).getSupportActionBar().setDisplayHomeAsUpEnabled(!parent);
+        } catch (NullPointerException e){
+            e.printStackTrace();
+        }
         return toolbar;
     }
 
     public static Toolbar getToolbar(Context context, Toolbar toolbar, String title){
         ((AppCompatActivity) context).setSupportActionBar(toolbar);
-        toolbar.setTitle("");
+        toolbar.setTitle(title);
         return toolbar;
     }
 

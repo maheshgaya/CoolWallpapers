@@ -5,7 +5,7 @@
     android:visibility="gone"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <ImageView
         android:contentDescription="@string/empty_content"
         tools:src="@drawable/ic_big_search_dark"
@@ -16,8 +16,9 @@
         android:id="@+id/empty_image_view" />
     <TextView
         tools:text="hello world"
+        android:padding="16dp"
         android:gravity="center"
-        android:textSize="22sp"
+        android:textSize="16sp"
         android:id="@+id/empty_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -25,6 +26,7 @@
         tools:text="hello world"
         android:gravity="center"
         android:textSize="18sp"
+        android:textColor="@color/colorPrimary"
         android:id="@+id/empty_action_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

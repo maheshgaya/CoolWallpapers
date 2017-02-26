@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_follow_user"
+        android:title="@string/follow_user"
+        android:icon="@drawable/ic_follow_user"
+        app:showAsAction="always"/>
     <item android:id="@+id/action_set_wallpaper"
         android:title="@string/set_wallpaper"
         app:showAsAction="always"/>
