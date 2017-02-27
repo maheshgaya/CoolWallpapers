@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -251,6 +252,10 @@ public class PostFragment extends Fragment{
         switch (item.getItemId()) {
             case R.id.action_post:{
                 //all the input fields have not been filled out, so just disable the button
+                if (isInputEmpty()){
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.empty_content), Snackbar.LENGTH_SHORT).show();
+                    return false;
+                }
                 //save image and then save data
                 final DatabaseReference postDBReference = mPostDatabase.getReference().child(Post.TABLE_NAME);
                 if (mUser != null) {

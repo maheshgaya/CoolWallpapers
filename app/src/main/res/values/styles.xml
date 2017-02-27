@@ -65,6 +65,7 @@
         <item name="android:singleLine">true</item>
         <item name="android:lines">1</item>
         <item name="android:gravity">start</item>
+        <item name="android:inputType">textCapSentences</item>
         <item name="android:imeOptions">actionSearch|flagNoFullscreen</item>
         <item name="android:textColorHint">@android:color/darker_gray</item>
         <item name="android:textSize">@dimen/profile_toolbar_text_size</item>
@@ -72,7 +73,8 @@
     </style>
 
     <!-- Back Button for toolbar-->
-    <style name="AppTheme.CancelButton" parent="android:Theme.Holo">
+    <style name="AppTheme.CancelButton" parent="AppTheme">
+        <item name="android:actionMenuTextColor">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_close_white</item>
     </style>
@@ -82,6 +84,7 @@
         <item name="android:layout_marginBottom">@dimen/post_content_padding</item>
         <item name="android:imeOptions">flagNoFullscreen</item>
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:inputType">textCapSentences</item>
         <item name="android:drawablePadding">@dimen/post_drawable_content_padding</item>
         <item name="android:textSize">16sp</item>
         <item name="colorAccent">@color/colorPrimary</item>

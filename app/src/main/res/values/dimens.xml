@@ -8,7 +8,7 @@
     <dimen name="profile_image_margin_bottom">16dp</dimen>
     <dimen name="profile_button_side_padding">16dp</dimen>
     <dimen name="profile_button_padding">16dp</dimen>
-    <dimen name="profile_toolbar_height">290dp</dimen>
+    <dimen name="profile_toolbar_height">310dp</dimen>
     <dimen name="profile_name_top_padding">16dp</dimen>
     <dimen name="profile_button_vertical_margin">8dp</dimen>
 

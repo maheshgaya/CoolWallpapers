@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/profile_appbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/profile_toolbar_height"
+        android:layout_height="wrap_content"
         android:elevation="8dp"
         android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -22,6 +22,7 @@
             app:expandedTitleTextAppearance="@style/ExpandedTextToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
             app:contentScrim="@color/colorPrimaryDark"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
