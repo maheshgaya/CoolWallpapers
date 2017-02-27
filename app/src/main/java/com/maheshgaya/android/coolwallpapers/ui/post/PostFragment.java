@@ -52,6 +52,7 @@ import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Locale;
 
@@ -255,7 +256,7 @@ public class PostFragment extends Fragment{
                 if (mUser != null) {
                     //save image
                     final StorageReference storageReference = mStorage.getReference().child(mUser.getUid() + "_" +
-                            DateUtils.getCurrentDate().replaceAll("\\s+|/+", ""));
+                            new Timestamp(System.currentTimeMillis()));
                     storageReference.putFile(mSelectedImageUri)
                             .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override

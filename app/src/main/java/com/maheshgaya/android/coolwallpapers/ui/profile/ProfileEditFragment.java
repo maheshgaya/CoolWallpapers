@@ -129,7 +129,7 @@ public class ProfileEditFragment extends Fragment {
                     //save new image
                     final StorageReference storageReference = FirebaseStorage.getInstance()
                             .getReference().child(mUser.getUid() + "_" +
-                            DateUtils.getCurrentDate().replaceAll("\\s+|/+", ""));
+                            getString(R.string.profile_pic_url)); //profile will always be the same url so that it can be overridden
                     storageReference.putFile(mSelectedImageUri)
                             .addOnSuccessListener(getActivity(), new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override

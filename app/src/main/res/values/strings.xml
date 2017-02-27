@@ -5,6 +5,7 @@
     <string name="category">Categories</string>
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
+    <string name="profile_pic_url" translatable="false">profile</string> <!-- will always be constant -->
 
     <!-- Bottom Navigation -->
     <string name="bottom_nav_home">Home</string>

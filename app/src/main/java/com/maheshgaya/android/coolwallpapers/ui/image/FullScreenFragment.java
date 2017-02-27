@@ -567,7 +567,7 @@ public class FullScreenFragment extends Fragment {
                 snackbar.show();
             } else if (mPost != null){
                 Intent setWallpaperIntent = new Intent(getActivity(), SetWallpaperIntentService.class);
-                setWallpaperIntent.putExtra(SetWallpaperIntentService.WALLPAPER_EXTRA, mPost.getImageUrl());
+                setWallpaperIntent.putExtra(SetWallpaperIntentService.WALLPAPER_EXTRA, mPost);
                 getActivity().startService(setWallpaperIntent);
 
             }
