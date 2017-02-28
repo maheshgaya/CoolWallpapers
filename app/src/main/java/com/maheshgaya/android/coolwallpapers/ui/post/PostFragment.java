@@ -273,7 +273,7 @@ public class PostFragment extends Fragment{
                                     postDBReference.push().setValue(new Post(mUser.getUid(),
                                             mTitleEditText.getText().toString(),
                                             imageUrl,
-                                            DateUtils.getCurrentDate(), //todo save locale
+                                            DateUtils.getCurrentDate(),
                                             mDescriptionEditText.getText().toString(),
                                             mCategorySpinner.getSelectedItem().toString(),
                                             mTagsEditText.getText().toString(),
@@ -385,7 +385,6 @@ public class PostFragment extends Fragment{
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
                 // reset location
                 mLocationEditText.setText("");
-                Log.d(TAG, "onActivityResult: " + status.getStatus());
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
                 mLocationEditText.setText("");

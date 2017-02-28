@@ -307,7 +307,7 @@ public class ProfileFragment extends Fragment{
             public boolean onMenuItemClick(MenuItem item) {
                 //Open PostActivity
                 Intent postIntent = new Intent(getActivity(), PostActivity.class);
-                startActivity(postIntent); //TODO startActivityForResult(postIntent);
+                startActivity(postIntent);
                 return true;
             }
         });

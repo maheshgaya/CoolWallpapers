@@ -33,7 +33,6 @@ public class ImageAppWidgetProvider extends AppWidgetProvider {
             final int appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
             Intent fullScreenIntent = new Intent(context, FullScreenActivity.class);
-            Log.d(TAG, "onReceive: " + intent.getStringExtra(ImageAppWidgetProvider.EXTRA_ITEM));
             fullScreenIntent.setData(Uri.parse(intent.getStringExtra(EXTRA_ITEM)));
             fullScreenIntent.addFlags(intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(fullScreenIntent);

@@ -27,7 +27,6 @@ public class DateUtils {
         try {
             return dateFormat.format(originalFormat.parse(date));
         } catch (ParseException e) {
-            Log.e(TAG, "getFriendlyDate: ", e);
             e.printStackTrace();
             return date;
         }

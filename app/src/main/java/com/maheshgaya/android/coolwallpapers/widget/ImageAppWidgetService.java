@@ -132,7 +132,6 @@ public class ImageAppWidgetService extends RemoteViewsService{
             extras.putString(ImageAppWidgetProvider.EXTRA_ITEM, post.getImageUrl());
             Intent fillInIntent = new Intent();
             fillInIntent.putExtras(extras);
-            Log.d(TAG, "getViewAt: " + fillInIntent.getExtras().toString());
             itemRemoteViews.setOnClickFillInIntent(R.id.app_widget_item, fillInIntent);
             return itemRemoteViews;
         }

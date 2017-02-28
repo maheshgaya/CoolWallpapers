@@ -63,7 +63,7 @@ import butterknife.ButterKnife;
  */
 
 public class FullScreenFragment extends Fragment {
-    private static final String TAG = FullScreenActivity.class.getSimpleName();
+    private static final String TAG = FullScreenFragment.class.getSimpleName();
     public static final int FULL_IMAGE_CODE = 1205;
     public static final String IMAGE_DELETE_KEY = "image_deleted";
     @BindView(R.id.full_screen_image_view)ImageView mImageView;
@@ -141,6 +141,13 @@ public class FullScreenFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         setupToolbar();
         if (getActivity().getIntent().getData() != null){
+            showDetail = false;
+            mDetailLinearLayout.setVisibility(View.GONE);
+            Glide.with(getContext())
+                    .load(getActivity().getIntent().getData())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .error(R.drawable.ic_image)
+                    .into(mImageView);
             LoadBitmapAsyncTask loadBitmapAsyncTask = new LoadBitmapAsyncTask();
             loadBitmapAsyncTask.execute();
         }
@@ -148,7 +155,6 @@ public class FullScreenFragment extends Fragment {
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: " + mLikeCount);
                 DatabaseReference reference = mDatabase
                         .getReference(Constants.FAVORITE_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + postRef);
@@ -648,14 +654,6 @@ public class FullScreenFragment extends Fragment {
     }
 
     class LoadBitmapAsyncTask extends AsyncTask<Void, Void, Void>{
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            mImageView.setImageBitmap(mSelectedBitmap);
-            showDetail = false;
-            mDetailLinearLayout.setVisibility(View.GONE);
-        }
 
         @Override
         protected Void doInBackground(Void... params) {
