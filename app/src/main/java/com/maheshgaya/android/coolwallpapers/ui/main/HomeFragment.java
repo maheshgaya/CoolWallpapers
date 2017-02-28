@@ -9,13 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,6 +44,7 @@ import butterknife.ButterKnife;
 
 public class HomeFragment extends Fragment {
     private static final String TAG = HomeFragment.class.getSimpleName();
+    private static final String SELECTED_KEY = "position";
     @BindView(R.id.toolbar)Toolbar mToolbar;
     @BindView(R.id.toolbar_title)TextView mToolbarTitle;
     @BindView(R.id.swipe_refresh_layout)SwipeRefreshLayout mSwipeRefreshLayout;
@@ -56,6 +57,7 @@ public class HomeFragment extends Fragment {
     private ArrayList<Object> mImageList;
     private ImageAdapter mImageAdapter;
     private DatabaseReference mDatabaseReference;
+    private int mPosition = GridView.INVALID_POSITION;
 
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
@@ -92,6 +94,14 @@ public class HomeFragment extends Fragment {
 
         }
     };
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (mImageAdapter.getPosition() != GridView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mImageAdapter.getPosition());
+        }
+        super.onSaveInstanceState(outState);
+    }
 
     /**
      * set options for fragment
@@ -163,6 +173,9 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbarTitle.setText(getString(R.string.bottom_nav_home));
 
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)){
+            mPosition = savedInstanceState.getInt(SELECTED_KEY);
+        }
         mImageList = new ArrayList<>();
         mImageAdapter = new ImageAdapter(getContext(), mImageList);
         mRecycleView.setHasFixedSize(true);
@@ -173,7 +186,9 @@ public class HomeFragment extends Fragment {
         mRecycleView.setDrawingCacheEnabled(true);
         mRecycleView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         mRecycleView.setPersistentDrawingCache(ViewGroup.PERSISTENT_SCROLLING_CACHE);
-
+        if (mPosition != GridView.INVALID_POSITION) {
+            mRecycleView.smoothScrollToPosition(mPosition);
+        }
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

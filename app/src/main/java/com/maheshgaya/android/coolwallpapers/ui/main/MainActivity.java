@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 // No network
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
+                    //todo show empty view
                     return;
                 }
                 // Boo boo

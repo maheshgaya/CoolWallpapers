@@ -7,33 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.post.PostFragment">
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/profile_appbarlayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="8dp"
-        android:background="@color/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/post_toolbar"
-            android:theme="@style/AppTheme.CancelButton"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-        </android.support.v7.widget.Toolbar>
-        <EditText
-            android:theme="@style/AppTheme.EditText"
-            android:layout_marginLeft="@dimen/post_title_side_padding"
-            android:layout_marginRight="@dimen/post_title_side_padding"
-            android:layout_marginStart="@dimen/post_title_side_padding"
-            android:layout_marginEnd="@dimen/post_title_side_padding"
-            android:id="@+id/title_edittext"
-            android:hint="@string/enter_title"
-            android:paddingBottom="@dimen/post_title_side_padding"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </android.support.design.widget.AppBarLayout>
-
 
     <android.support.v4.widget.NestedScrollView
         android:fitsSystemWindows="true"
@@ -153,5 +126,31 @@
         android:src="@drawable/ic_photo_camera_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/profile_appbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="8dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/post_toolbar"
+            android:theme="@style/AppTheme.CancelButton"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize">
+        </android.support.v7.widget.Toolbar>
+        <EditText
+            android:theme="@style/AppTheme.EditText"
+            android:layout_marginLeft="@dimen/post_title_side_padding"
+            android:layout_marginRight="@dimen/post_title_side_padding"
+            android:layout_marginStart="@dimen/post_title_side_padding"
+            android:layout_marginEnd="@dimen/post_title_side_padding"
+            android:id="@+id/title_edittext"
+            android:hint="@string/enter_title"
+            android:paddingBottom="@dimen/post_title_side_padding"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.AppBarLayout>
 
 </android.support.design.widget.CoordinatorLayout>

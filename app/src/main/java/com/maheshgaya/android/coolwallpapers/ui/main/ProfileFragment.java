@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.maheshgaya.android.coolwallpapers.MainApplication;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
@@ -80,6 +81,7 @@ public class ProfileFragment extends Fragment{
     @BindView(R.id.recycle_view)RecyclerView mRecycleView;
     private ArrayList<Object> mImageList;
     private ImageAdapter mImageAdapter;
+    private FirebaseDatabase mDatabase;
 
     private ValueEventListener mValueEventListener = new ValueEventListener() {
         @Override
@@ -189,9 +191,13 @@ public class ProfileFragment extends Fragment{
     }
 
     private void refreshContent(){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
-        Query query = databaseReference.orderByChild(Post.COLUMN_UID).equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        query.addValueEventListener(mValueEventListener);
+        DatabaseReference databaseReference = mDatabase.getReference(Post.TABLE_NAME);
+        try {
+            Query query = databaseReference.orderByChild(Post.COLUMN_UID).equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            query.addValueEventListener(mValueEventListener);
+        } catch (java.lang.NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -202,6 +208,7 @@ public class ProfileFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        mDatabase = FirebaseDatabase.getInstance();
     }
 
     private void addPost(){
@@ -225,7 +232,8 @@ public class ProfileFragment extends Fragment{
         FirebaseUser user = UserAuthUtils.getCurrentUser();
         if (user != null) {
             //query database to see if user is there
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(User.TABLE_NAME);
+            DatabaseReference userRef = mDatabase.getReference(User.TABLE_NAME);
+            userRef.keepSynced(true);
             Query query = userRef.orderByKey().equalTo(user.getUid());
 
             //if user is present in database, return the record as a User object

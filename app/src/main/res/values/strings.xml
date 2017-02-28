@@ -30,7 +30,7 @@
     <string name="following">Following</string>
     <string name="likes">Likes</string>
     <string name="like">Like</string>
-    <string name="edit_name">Edit Name</string>
+    <string name="edit_name">Name</string>
 
     <!-- post -->
     <string name="post_content_description">Wallpaper</string>

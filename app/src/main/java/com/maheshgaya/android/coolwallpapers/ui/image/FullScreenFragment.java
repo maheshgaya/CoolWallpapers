@@ -92,6 +92,7 @@ public class FullScreenFragment extends Fragment {
     private static int mLikeCount;
     private static int mFollowing;
     private int mFollowers;
+    private FirebaseDatabase mDatabase;
 
     private final ChildEventListener userChildEventListener = new ChildEventListener() {
         @Override
@@ -130,6 +131,7 @@ public class FullScreenFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mDatabase = FirebaseDatabase.getInstance();
     }
 
     @Nullable
@@ -146,10 +148,11 @@ public class FullScreenFragment extends Fragment {
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference reference = FirebaseDatabase.getInstance()
+                Log.d(TAG, "onClick: " + mLikeCount);
+                DatabaseReference reference = mDatabase
                         .getReference(Constants.FAVORITE_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + postRef);
-                DatabaseReference userRef = FirebaseDatabase.getInstance()
+                DatabaseReference userRef = mDatabase
                         .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + User.COLUMN_LIKES);
 
@@ -174,13 +177,13 @@ public class FullScreenFragment extends Fragment {
         if (getActivity().getIntent().getParcelableExtra(POST_EXTRA) != null){
             mPost = getActivity().getIntent().getParcelableExtra(POST_EXTRA);
             //query database to see if user is there
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference(User.TABLE_NAME);
+            DatabaseReference userRef = mDatabase.getReference(User.TABLE_NAME);
             Query userQuery = userRef.orderByKey().equalTo(mPost.getUid());
             userQuery.addChildEventListener(userChildEventListener);
             showDetail = true;
             displayPost();
 
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+            DatabaseReference reference = mDatabase.getReference(Post.TABLE_NAME);
             Query query = reference.orderByChild(Post.COLUMN_TITLE).equalTo(mPost.getTitle());
             query.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -199,7 +202,7 @@ public class FullScreenFragment extends Fragment {
 
                 }
             });
-            DatabaseReference favoriteReference = FirebaseDatabase.getInstance()
+            DatabaseReference favoriteReference = mDatabase
                     .getReference(Constants.FAVORITE_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
             favoriteReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -217,7 +220,7 @@ public class FullScreenFragment extends Fragment {
                 }
             });
 
-            DatabaseReference userReference = FirebaseDatabase.getInstance()
+            DatabaseReference userReference = mDatabase
                     .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
             userReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -236,7 +239,7 @@ public class FullScreenFragment extends Fragment {
                 }
             });
 
-            DatabaseReference postUserRef = FirebaseDatabase.getInstance()
+            DatabaseReference postUserRef = mDatabase
                     .getReference(User.TABLE_NAME + "/" + mPost.getUid());
             postUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -268,12 +271,16 @@ public class FullScreenFragment extends Fragment {
     }
 
     private void updateFavoriteButton(String value){
-        if (value.equals(Constants.TRUE_STR)){
-            mFavoriteButton.setImageResource(R.drawable.ic_heart_colored);
-            mFavoriteButton.setTag(getString(R.string.favorite_tag));
-        } else {
-            mFavoriteButton.setImageResource(R.drawable.ic_heart);
-            mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+        try {
+            if (value.equals(Constants.TRUE_STR)) {
+                mFavoriteButton.setImageResource(R.drawable.ic_heart_colored);
+                mFavoriteButton.setTag(getString(R.string.favorite_tag));
+            } else {
+                mFavoriteButton.setImageResource(R.drawable.ic_heart);
+                mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
+            }
+        } catch (java.lang.IllegalStateException e){
+            e.printStackTrace();
         }
     }
 
@@ -424,7 +431,7 @@ public class FullScreenFragment extends Fragment {
 
     private void initializeFollowingMenutItem(final MenuItem menuItem){
         if (menuItem != null) {
-            DatabaseReference followingRef = FirebaseDatabase.getInstance()
+            DatabaseReference followingRef = mDatabase
                     .getReference(Constants.FOLLOWING_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
             followingRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -494,16 +501,16 @@ public class FullScreenFragment extends Fragment {
     }
 
     private void followUser(MenuItem item){
-        DatabaseReference userRef = FirebaseDatabase.getInstance()
+        DatabaseReference userRef = mDatabase
                 .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + User.COLUMN_FOLLOWING);
-        DatabaseReference postRef = FirebaseDatabase.getInstance()
+        DatabaseReference postRef = mDatabase
                 .getReference(User.TABLE_NAME + "/" + mPost.getUid() +
                         "/" + User.COLUMN_FOLLOWERS);
-        DatabaseReference followingRef = FirebaseDatabase.getInstance()
+        DatabaseReference followingRef = mDatabase
                 .getReference(Constants.FOLLOWING_TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid() +
                         "/" + mPost.getUid());
-        DatabaseReference followerRef = FirebaseDatabase.getInstance()
+        DatabaseReference followerRef = mDatabase
                 .getReference(Constants.FOLLOWER_TABLE_NAME + "/" + mPost.getUid() +
                         "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -533,7 +540,7 @@ public class FullScreenFragment extends Fragment {
     }
 
     private void deletePost(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
+        DatabaseReference reference = mDatabase.getReference(Post.TABLE_NAME);
         Query query = reference.orderByChild(Post.COLUMN_TITLE).equalTo(mPost.getTitle());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

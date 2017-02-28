@@ -90,6 +90,9 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:padding">@dimen/post_content_padding</item>
     </style>
+    <style name="AppTheme.TextInput" parent="TextAppearance.AppCompat">
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 
     <style name="AppTheme.FullScreen" parent="Theme.AppCompat.NoActionBar">
         <item name="android:actionMenuTextColor">@android:color/white</item>

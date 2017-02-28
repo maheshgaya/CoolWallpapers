@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import butterknife.ButterKnife;
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Object>  mImageUriList;
+    private int mPosition = GridView.INVALID_POSITION;
 
     public ImageAdapter(Context context, ArrayList<Object> imageUriList){
         this.mContext = context;
@@ -43,8 +45,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         return new ViewHolder(itemView);
     }
 
+    public int getPosition(){
+        return mPosition;
+    }
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         if (mImageUriList.get(position) instanceof  Post) {
             final Post post = (Post)mImageUriList.get(position);
             Glide.with(mContext)
@@ -56,6 +62,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             holder.thumbnailCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mPosition = position;
                     Activity activity = (Activity)mContext;
                     Intent fullScreenIntent = new Intent(activity, FullScreenActivity.class);
                     //For Full Screen, intent for post
