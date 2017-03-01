@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 
+import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.main.MainActivity;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
@@ -31,27 +32,28 @@ public class ImageAppWidgetIntentService extends IntentService {
         for (int appWidgetId : appWidgetIds) {
             int layoutId = R.layout.image_appwidget;
 
-            Intent remoteViewsIntent = new Intent(getApplicationContext(), ImageAppWidgetService.class);
+//            Intent remoteViewsIntent = new Intent(getApplicationContext(), ImageAppWidgetService.class);
 
             // Add the app widget ID to the intent extras.
-            remoteViewsIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            remoteViewsIntent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+//            remoteViewsIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+//            remoteViewsIntent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
             RemoteViews remoteViews = new RemoteViews(getPackageName(), layoutId);
             // Add the adapter to the RemoteViews
-            remoteViews.setRemoteAdapter(R.id.widget_gridview, remoteViewsIntent); //for gridlayout
+//            remoteViews.setRemoteAdapter(R.id.widget_gridview, remoteViewsIntent); //for gridlayout
             //empty list
-            remoteViews.setEmptyView(R.id.widget_gridview, R.layout.empty_widget);
+//            remoteViews.setEmptyView(R.id.widget_gridview, R.layout.empty_widget);
+
 
             //set individual clicks
-            Intent fullScreenIntent = new Intent(getApplicationContext(), ImageAppWidgetProvider.class);
+//            Intent fullScreenIntent = new Intent(getApplicationContext(), ImageAppWidgetProvider.class);
             // Set the action for the intent.
-            fullScreenIntent.setAction(ImageAppWidgetProvider.CLICK_ACTION);
-            fullScreenIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
-            PendingIntent fullScreenPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, fullScreenIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setPendingIntentTemplate(R.id.widget_gridview, fullScreenPendingIntent);
+//            fullScreenIntent.setAction(ImageAppWidgetProvider.CLICK_ACTION);
+//            fullScreenIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+//            intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
+//            PendingIntent fullScreenPendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, fullScreenIntent,
+//                    PendingIntent.FLAG_UPDATE_CURRENT);
+//            remoteViews.setPendingIntentTemplate(R.id.widget_gridview, fullScreenPendingIntent);
 
 
             // Create an Intent to launch MainActivity

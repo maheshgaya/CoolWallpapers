@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,20 +22,21 @@ import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Mahesh Gaya on 2/27/17.
  */
-
+@Deprecated
 public class ImageAppWidgetService extends RemoteViewsService{
     private static final String TAG = ImageAppWidgetService.class.getSimpleName();
     private ArrayList<Post> mPostList;
@@ -50,7 +50,7 @@ public class ImageAppWidgetService extends RemoteViewsService{
         mPostList = new ArrayList<>();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(Post.TABLE_NAME);
         databaseReference.keepSynced(true);
-        Query postQuery = databaseReference.orderByKey().limitToLast(10);
+        Query postQuery = databaseReference.orderByKey().limitToLast(6);
         postQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,31 +108,40 @@ public class ImageAppWidgetService extends RemoteViewsService{
 
         @Override
         public void onDestroy() {
-            mBitmaps = null;
         }
 
         @Override
         public int getCount() {
             //get count
             if (mPostList != null) {
+                Log.d(TAG, "getCount: " + mPostList.size());
                 return mPostList.size();
             }
+            Log.d(TAG, "getCount: " + 0);
             return 0;
         }
 
         @Override
         public RemoteViews getViewAt(int position) {
+            Log.d(TAG, "getViewAt: " + position);
             //implement views
             RemoteViews itemRemoteViews = new RemoteViews(mContext.getPackageName(), R.layout.item_appwidget);
-            Post post = mPostList.get(position);
-            if (mBitmaps != null) {
-                itemRemoteViews.setImageViewBitmap(R.id.thumbnail_image_view, mBitmaps.get(post));
+            try {
+                Post post = mPostList.get(position);
+                if (mBitmaps != null) {
+                    //TODO: Fix images is lost after a certain time
+                    Log.d(TAG, "getViewAt: " + post.getImageUrl());
+                    itemRemoteViews.setImageViewBitmap(R.id.thumbnail_image_view, mBitmaps.get(post));
+
+                }
+                Bundle extras = new Bundle();
+                extras.putString(ImageAppWidgetProvider.EXTRA_ITEM, post.getImageUrl());
+                Intent fillInIntent = new Intent();
+                fillInIntent.putExtras(extras);
+                itemRemoteViews.setOnClickFillInIntent(R.id.app_widget_item, fillInIntent);
+            } catch (java.lang.IndexOutOfBoundsException e){
+                e.printStackTrace();
             }
-            Bundle extras = new Bundle();
-            extras.putString(ImageAppWidgetProvider.EXTRA_ITEM, post.getImageUrl());
-            Intent fillInIntent = new Intent();
-            fillInIntent.putExtras(extras);
-            itemRemoteViews.setOnClickFillInIntent(R.id.app_widget_item, fillInIntent);
             return itemRemoteViews;
         }
 
@@ -157,38 +166,48 @@ public class ImageAppWidgetService extends RemoteViewsService{
         }
     }
 
-    //TODO consider LRUCache
     class LoadBitmapAsyncTask extends AsyncTask<Object, Void, Void>{
         @Override
         protected void onPostExecute(Void aVoid) {
-            if (mBitmaps != null && mBitmaps.size() > 0) {
-                mAppWidgetManager.notifyAppWidgetViewDataChanged(mAppWidgetId, R.id.widget_gridview);
-            }
+            mAppWidgetManager.notifyAppWidgetViewDataChanged(mAppWidgetId, R.id.widget_gridview);
         }
 
         @Override
         protected Void doInBackground(Object... params) {
             mBitmaps = new HashMap<>();
             if (mPostList == null){
+                Log.d(TAG, "doInBackground: mPostList is null");
                 return null;
             }
+            Log.d(TAG, "doInBackground: " + mPostList.size());
             for (Post post: mPostList) {
-                Bitmap bitmap = null;
+                Bitmap bitmap;
+                InputStream inputStream;
+                BufferedInputStream bufferedInputStream;
                 try {
                     URL aURL = new URL(post.getImageUrl());
                     URLConnection connection = aURL.openConnection();
+                    connection.setUseCaches(true);
                     connection.connect();
-                    InputStream inputStream = connection.getInputStream();
-                    BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                    inputStream = connection.getInputStream();
+                    bufferedInputStream = new BufferedInputStream(inputStream);
                     bitmap = BitmapFactory.decodeStream(bufferedInputStream);
                     mBitmaps.put(post, bitmap);
+                    //release resources
+                    bitmap.recycle();
                     bufferedInputStream.close();
                     inputStream.close();
+
                 } catch (IOException e) {
                     Log.e(TAG, "Error getting bitmap", e);
+                } catch (java.lang.OutOfMemoryError e){
+                    Log.e(TAG, "Out of Memory: ", e);
+                    e.printStackTrace();
+                    return null;
                 }
             }
             return null;
         }
+
     }
 }

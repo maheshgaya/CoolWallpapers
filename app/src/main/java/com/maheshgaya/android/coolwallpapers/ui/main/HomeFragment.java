@@ -31,6 +31,7 @@ import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
+import com.maheshgaya.android.coolwallpapers.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -173,6 +174,8 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         mToolbarTitle.setText(getString(R.string.bottom_nav_home));
 
+
+
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)){
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
@@ -212,6 +215,12 @@ public class HomeFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void showNoNetworkMessage(){
+        if (!Utils.isOnline(getContext())){
+            //TODO Show Offline message
+        }
     }
 
     @Override
