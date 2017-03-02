@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         mFragmentManager = getSupportFragmentManager();
 
         if (getIntent().getExtras() != null && getIntent().getIntExtra(PENDING_KEY, R.id.menu_home) != 0){
-            Log.d(TAG, "onCreate: Intent has extra");
             mCurrentFragmentId = 0;
             mCurrentFragmentId = getIntent().getIntExtra(PENDING_KEY, R.id.menu_home);
             if (mCurrentFragmentId != 0 ){
@@ -82,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                         .setChecked(true);
             }
         } else {
-            Log.d(TAG, "onCreate: Intent does not have extra");
             if (mFragmentManager.findFragmentById(R.id.main_container) == null && savedInstanceState == null) {
                 //initialize the home fragment to the main container
                 mCurrentFragmentId = R.id.menu_home;
@@ -149,13 +147,12 @@ public class MainActivity extends AppCompatActivity {
                 // Sign in failed
                 if (response == null) {
                     // User pressed back button
-                    Log.d(TAG, "onActivityResult: user canceled");
+                    //Log.d(TAG, "onActivityResult: user canceled");
                     return;
                 }
                 // No network
                 if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
                     Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show();
-                    //todo show empty view
                     return;
                 }
                 // Boo boo
