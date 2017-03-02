@@ -7,19 +7,11 @@
 
     <!-- Gray -->
     <color name="colorGray100">#F5F5F5</color>
-    <color name="colorGray400">#BDBDBD</color>
-    <color name="colorGray600">#757575</color>
 
     <!-- light blue -->
     <color name="colorLightBlue300">#4FC3F7</color>
     <color name="colorLightBlue700">#0288D1</color>
-    <color name="colorLightBlue900">#01579B</color>
 
-    <!-- blue -->
-    <color name="colorBlue900">#0D47A1</color>
-
-    <!-- dark blue -->
-    <color name="colorBlueDark">#173a71</color>
 
     <!-- toolbar full screen -->
     <color name="colorToolbar">@color/colorTranslucent</color>

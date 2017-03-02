@@ -3,7 +3,6 @@
     <string name="post"> </string> <!-- should show no title -->
     <string name="set_wallpaper">Set Wallpaper</string>
     <string name="category">Categories</string>
-    <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="profile_pic_url" translatable="false">profile</string> <!-- will always be constant -->
 
@@ -21,10 +20,7 @@
     <string name="action_save">Save</string>
 
     <!-- profile -->
-    <string name="edit">Edit</string>
     <string name="edit_profile">Edit Profile</string>
-    <string name="follow_user_button">@string/follow_user</string>
-    <string name="following_user_button">@string/following</string>
     <string name="followers">Followers</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
@@ -34,7 +30,6 @@
 
     <!-- post -->
     <string name="post_content_description">Wallpaper</string>
-    <string name="post_add_image">Add image</string>
     <string name="enter_post_description">Add a description</string>
     <string name="enter_post_tags">Add more tags</string>
     <string name="enter_post_location">Add location</string>
@@ -69,7 +64,6 @@
     <string name="profile_updated">Profile Updated</string>
     <string name="profile_edit_failed">Failed to update Profile!</string>
     <string name="upload">Upload Picture</string>
-    <string name="loading">Loading</string>
 
     <!-- content description -->
     <string name="profile_image_description">Profile Picture</string>

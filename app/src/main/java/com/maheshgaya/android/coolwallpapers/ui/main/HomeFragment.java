@@ -216,7 +216,7 @@ public class HomeFragment extends Fragment {
 
         return rootView;
     }
-    
+
     @Override
     public void onStop() {
         super.onStop();
