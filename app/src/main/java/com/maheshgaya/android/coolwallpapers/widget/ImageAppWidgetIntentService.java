@@ -27,9 +27,9 @@ public class ImageAppWidgetIntentService extends IntentService {
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,
                 ImageAppWidgetProvider.class));
 
+        // configure each app widget
         for (int appWidgetId : appWidgetIds) {
             int layoutId = R.layout.image_appwidget;
-
             RemoteViews remoteViews = new RemoteViews(getPackageName(), layoutId);
 
             // Create an Intent to launch MainActivity
@@ -38,11 +38,13 @@ public class ImageAppWidgetIntentService extends IntentService {
             remoteViews.setOnClickPendingIntent(R.id.widget_home_imagebutton, pendingLaunchIntent);
             remoteViews.setOnClickPendingIntent(R.id.widget_logo_imagebutton, pendingLaunchIntent);
 
+            // Create an Intent to launch search Fragment
             Intent searchIntent = new Intent(this, MainActivity.class);
             searchIntent.putExtra(MainActivity.PENDING_KEY, R.id.menu_search);
             PendingIntent pendingSearchIntent = PendingIntent.getActivity(this, 1, searchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             remoteViews.setOnClickPendingIntent(R.id.widget_search_imagebutton, pendingSearchIntent);
 
+            // Create an Intent to launch user profile Fragment
             Intent userIntent = new Intent(this, MainActivity.class);
             userIntent.putExtra(MainActivity.PENDING_KEY, R.id.menu_profile);
             PendingIntent pendingUserIntent = PendingIntent.getActivity(this, 2, userIntent, PendingIntent.FLAG_UPDATE_CURRENT);

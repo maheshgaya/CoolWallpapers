@@ -59,6 +59,15 @@ public class ProfileEditFragment extends Fragment {
     public ProfileEditFragment(){
         setHasOptionsMenu(true);
     }
+
+    /**
+     * inflates the views and adds listeners
+     * also sets the name and image from the post being passed as parcel
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -90,11 +99,19 @@ public class ProfileEditFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * inflates the menu for toolbar
+     * @param menu
+     * @param inflater
+     */
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.profile_edit_menu, menu);
     }
 
+    /**
+     * open intent for photo picker
+     */
     public void addImage() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/jpeg");
@@ -102,11 +119,17 @@ public class ProfileEditFragment extends Fragment {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.complete_action)), RC_PHOTO_PICKER);
     }
 
+    /**
+     * Handles actions for the menu items on toolbar
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_save:{
                 String name = mNameEditText.getText().toString();
+                //Check if the name is empty
                 if (name.equals("")){
                     Toast.makeText(getContext(), getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
                     return false;
@@ -114,6 +137,7 @@ public class ProfileEditFragment extends Fragment {
                     Toast.makeText(getContext(), getString(R.string.name_empty), Toast.LENGTH_SHORT).show();
                     return false;
                 } else if (name.length() > 0){
+                    //if name is not empty
                     mUser.setName(name);
                     userUpdate.put(User.COLUMN_NAME, name);
                     //only name is changed
@@ -148,6 +172,7 @@ public class ProfileEditFragment extends Fragment {
                 return true;
             }
             case android.R.id.home:{
+                //close the activity
                 getActivity().finish();
                 return true;
             }
@@ -156,6 +181,9 @@ public class ProfileEditFragment extends Fragment {
         }
     }
 
+    /**
+     * Update user profile in the Firebase database
+     */
     private void updateUserProfile(){
         DatabaseReference userRef = FirebaseDatabase.getInstance()
                 .getReference(User.TABLE_NAME + "/" + mUser.getUid());
@@ -164,6 +192,13 @@ public class ProfileEditFragment extends Fragment {
         Toast.makeText(getContext(), getString(R.string.profile_updated), Toast.LENGTH_SHORT).show();
         getActivity().finish();
     }
+
+    /**
+     * Show user profile image once it is uploaded from the photo picker
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_PHOTO_PICKER && resultCode == RESULT_OK) {
