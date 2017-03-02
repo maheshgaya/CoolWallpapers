@@ -5,11 +5,8 @@ import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 
-import com.bumptech.glide.request.target.AppWidgetTarget;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.main.MainActivity;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;

@@ -1,6 +1,5 @@
 package com.maheshgaya.android.coolwallpapers.util;
 
-import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.ParseException;
