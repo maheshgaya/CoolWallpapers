@@ -24,9 +24,6 @@
         <include layout="@layout/empty_view"/>
     </LinearLayout>
 
-
     <include layout="@layout/image_recycleview"/>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

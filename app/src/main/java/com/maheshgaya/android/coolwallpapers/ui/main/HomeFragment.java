@@ -216,13 +216,7 @@ public class HomeFragment extends Fragment {
 
         return rootView;
     }
-
-    private void showNoNetworkMessage(){
-        if (!Utils.isOnline(getContext())){
-            //TODO Show Offline message
-        }
-    }
-
+    
     @Override
     public void onStop() {
         super.onStop();
