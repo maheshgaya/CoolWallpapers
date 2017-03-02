@@ -111,4 +111,13 @@
         <item name="android:windowTranslucentStatus">false</item>
     </style>
 
+    <style name="AppTheme.WidgetImageButton" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+
 </resources>

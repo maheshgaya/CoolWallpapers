@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
     /** handles main container for adding fragments */
     FragmentManager mFragmentManager;
     /** saved instance state for fragment */
-    private static final String FRAGMENT_KEY = "frag";
+    public static final String FRAGMENT_KEY = "frag";
+    public static final String PENDING_KEY = "pending_frag";
     private int mCurrentFragmentId = R.id.menu_home;
 
     /** failed states for */
@@ -65,26 +66,42 @@ public class MainActivity extends AppCompatActivity {
             UserAuthUtils.requireLogin(this);
         }
 
-        //bottom navigation initialization
         mFragmentManager = getSupportFragmentManager();
 
-        //initialize the home fragment to the main container
-        if (mFragmentManager.findFragmentById(R.id.main_container) == null && savedInstanceState == null){
-            mCurrentFragmentId = R.id.menu_home;
-            mFragmentManager.beginTransaction()
-                    .replace(R.id.main_container, new HomeFragment())
-                    .commit();
-        } else if (mFragmentManager.findFragmentById(R.id.main_container) != null && savedInstanceState != null){
-            //if rotation changes, set the correct selected item for bottom navigation
-            mCurrentFragmentId= savedInstanceState.getInt(FRAGMENT_KEY);
+        if (getIntent().getExtras() != null && getIntent().getIntExtra(PENDING_KEY, R.id.menu_home) != 0){
+            Log.d(TAG, "onCreate: Intent has extra");
+            mCurrentFragmentId = 0;
+            mCurrentFragmentId = getIntent().getIntExtra(PENDING_KEY, R.id.menu_home);
             if (mCurrentFragmentId != 0 ){
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.main_container, FragmentUtils.selectFragment(mCurrentFragmentId))
+                        .commit();
+
                 mBottomNavigation.getMenu()
                         .getItem(FragmentUtils.getBottomNavigationItemId(mCurrentFragmentId))
                         .setChecked(true);
             }
+        } else {
+            Log.d(TAG, "onCreate: Intent does not have extra");
+            if (mFragmentManager.findFragmentById(R.id.main_container) == null && savedInstanceState == null) {
+                //initialize the home fragment to the main container
+                mCurrentFragmentId = R.id.menu_home;
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.main_container, new HomeFragment())
+                        .commit();
+            } else if (mFragmentManager.findFragmentById(R.id.main_container) != null && savedInstanceState != null) {
+                //if rotation changes, set the correct selected item for bottom navigation
+                mCurrentFragmentId = savedInstanceState.getInt(FRAGMENT_KEY);
+                if (mCurrentFragmentId != 0) {
+                    mBottomNavigation.getMenu()
+                            .getItem(FragmentUtils.getBottomNavigationItemId(mCurrentFragmentId))
+                            .setChecked(true);
+                }
 
+            }
         }
 
+        //bottom navigation initialization
         //handles what selected item for the bottom navigation bar
         mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

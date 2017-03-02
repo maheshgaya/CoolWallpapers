@@ -489,14 +489,14 @@ public class FullScreenFragment extends Fragment {
         AlertDialog alertDialog = new AlertDialog.Builder(getContext(), R.style.AppTheme_AlertDialog).create();
         alertDialog.setTitle(getString(R.string.delete_alert));
         alertDialog.setMessage(getString(R.string.delete_message));
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.no),
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.no),
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 });
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(R.string.yes),
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.yes),
                 new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         deletePost();

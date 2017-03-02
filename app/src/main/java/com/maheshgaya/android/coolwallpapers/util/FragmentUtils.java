@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.ui.main.HomeFragment;
@@ -15,6 +16,7 @@ import com.maheshgaya.android.coolwallpapers.ui.main.SearchFragment;
  */
 
 public class FragmentUtils {
+    private static final String TAG = FragmentUtils.class.getSimpleName();
     public static int getBottomNavigationItemId(int currentFragmentId){
         switch (currentFragmentId){
             case R.id.menu_search:
@@ -33,16 +35,20 @@ public class FragmentUtils {
      */
     public static Fragment selectFragment(int itemId) {
         switch (itemId){
-            case R.id.menu_home:
+            case R.id.menu_home: {
                 return new HomeFragment();
-            case R.id.menu_search:
+            }
+            case R.id.menu_search: {
                 return new SearchFragment();
-            case R.id.menu_profile:
+            }
+            case R.id.menu_profile: {
                 return new ProfileFragment();
+            }
             default:
                 return null;
         }
     }
+
 
     public static Toolbar getToolbar(Context context, Toolbar toolbar, boolean parent){
         ((AppCompatActivity) context).setSupportActionBar(toolbar);

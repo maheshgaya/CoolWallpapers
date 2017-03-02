@@ -62,9 +62,6 @@
         <service android:name=".widget.ImageAppWidgetIntentService"/>
 
         <!-- handles collection widget -->
-        <service android:name=".widget.ImageAppWidgetService"
-            android:permission="android.permission.BIND_REMOTEVIEWS"
-            android:exported="false" />
     </application>
 
 </manifest>

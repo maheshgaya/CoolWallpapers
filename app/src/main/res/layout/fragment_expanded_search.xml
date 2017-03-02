@@ -63,7 +63,6 @@
 
     <FrameLayout
         android:id="@+id/expanded_search_content"
-        android:paddingTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <android.support.v7.widget.RecyclerView
