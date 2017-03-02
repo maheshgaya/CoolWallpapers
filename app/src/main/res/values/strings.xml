@@ -44,6 +44,7 @@
 
     <!-- Error Handling and messages -->
     <string name="no_internet_connection">No internet connection available!</string>
+    <string name="no_network_no_transaction">Sorry! No network available! Failed to complete your request!</string>
     <string name="failed_no_connection">No internet connection available! Failed to load sign in page!</string>
     <string name="sign_out_success">You have successfully signed out!</string>
     <string name="no_google_play_services_available">Could not start app! Please update your Google Play Services</string>

@@ -51,6 +51,7 @@ import com.maheshgaya.android.coolwallpapers.ui.image.FullScreenActivity;
 import com.maheshgaya.android.coolwallpapers.util.DateUtils;
 import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.FragmentUtils;
+import com.maheshgaya.android.coolwallpapers.util.Utils;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -253,12 +254,12 @@ public class PostFragment extends Fragment{
             case R.id.action_post:{
                 //all the input fields have not been filled out, so just disable the button
                 if (isInputEmpty()){
-                    Snackbar.make(mCoordinatorLayout, getString(R.string.empty_content), Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.empty_content), Snackbar.LENGTH_LONG).show();
                     return false;
                 }
                 //save image and then save data
                 final DatabaseReference postDBReference = mPostDatabase.getReference().child(Post.TABLE_NAME);
-                if (mUser != null) {
+                if (mUser != null && Utils.isOnline(getContext())) {
                     //save image
                     final StorageReference storageReference = mStorage.getReference().child(mUser.getUid() + "_" +
                             new Timestamp(System.currentTimeMillis()));
@@ -292,6 +293,8 @@ public class PostFragment extends Fragment{
 
                                 }
                             });
+                } else if (!Utils.isOnline(getContext())){
+                    Snackbar.make(mCoordinatorLayout, getString(R.string.no_network_no_transaction), Snackbar.LENGTH_SHORT).show();
                 }
 
                 return true;

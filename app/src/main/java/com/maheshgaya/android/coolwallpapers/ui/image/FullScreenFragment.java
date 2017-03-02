@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -42,7 +43,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.maheshgaya.android.coolwallpapers.Constants;
 import com.maheshgaya.android.coolwallpapers.R;
@@ -89,10 +92,9 @@ public class FullScreenFragment extends Fragment {
     private Post mPost;
     private boolean showDetail = true;
     private String postRef;
-    private static int mLikeCount;
-    private static int mFollowing;
-    private int mFollowers;
     private FirebaseDatabase mDatabase;
+    private boolean mFavorite = false;
+    private boolean mFollow = false;
 
     private final ChildEventListener userChildEventListener = new ChildEventListener() {
         @Override
@@ -140,6 +142,10 @@ public class FullScreenFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_full_screen_image, container, false);
         ButterKnife.bind(this, rootView);
         setupToolbar();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null){
+            Toast.makeText(getContext(), getString(R.string.general_error), Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
         if (getActivity().getIntent().getData() != null){
             showDetail = false;
             mDetailLinearLayout.setVisibility(View.GONE);
@@ -166,16 +172,46 @@ public class FullScreenFragment extends Fragment {
                     //if initial was unfavorite then change it to favorite
                     mFavoriteButton.setImageResource(R.drawable.ic_heart_colored);
                     mFavoriteButton.setTag(getString(R.string.favorite_tag));
-                    userRef.setValue(++mLikeCount);
                     reference.setValue(Constants.TRUE_STR);
+                    mFavorite = true;
                 } else {
                     mFavoriteButton.setImageResource(R.drawable.ic_heart);
                     mFavoriteButton.setTag(getString(R.string.unfavorite_tag));
-                    if (mLikeCount > 0) {
-                        userRef.setValue(--mLikeCount);
-                    }
+                    mFavorite = false;
                     reference.setValue(Constants.FALSE_STR);
                 }
+
+                userRef.runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData currentData) {
+                        if (mFavorite){
+                            if (currentData.getValue() == null){
+                                currentData.setValue(1);
+                            } else {
+                                long currentValue = (long) currentData.getValue();
+                                currentData.setValue(currentValue + 1);
+                            }
+                        } else {
+                            if (currentData.getValue() == null){
+                                currentData.setValue(0);
+                            } else {
+                                long currentValue = (long) currentData.getValue();
+                                if (currentValue > 0){
+                                    currentData.setValue(currentValue - 1);
+                                }
+                            }
+                        }
+                        return Transaction.success(currentData);
+                    }
+
+                    @Override
+                    public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                        if (databaseError != null){
+                            Log.d(TAG, "onComplete: " + databaseError.toString());
+                        } else
+                            Log.d(TAG, "onComplete: Successful");
+                    }
+                });
 
             }
         });
@@ -216,43 +252,6 @@ public class FullScreenFragment extends Fragment {
                     for (DataSnapshot favoriteSnapshot: dataSnapshot.getChildren()){
                         if (favoriteSnapshot.getKey().equals(postRef)) {
                             updateFavoriteButton(favoriteSnapshot.getValue().toString());
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            DatabaseReference userReference = mDatabase
-                    .getReference(User.TABLE_NAME + "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-            userReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot user: dataSnapshot.getChildren()){
-                        if (user.getKey().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                            mLikeCount = Integer.parseInt(user.child(User.COLUMN_LIKES).toString());
-                            mFollowing = Integer.parseInt(user.child(User.COLUMN_FOLLOWING).toString());
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-            DatabaseReference postUserRef = mDatabase
-                    .getReference(User.TABLE_NAME + "/" + mPost.getUid());
-            postUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot user: dataSnapshot.getChildren()){
-                        if (user.getKey().equals(mPost.getUid())){
-                            mFollowers = Integer.parseInt(user.child(User.COLUMN_FOLLOWERS).toString());
                         }
                     }
                 }
@@ -519,28 +518,83 @@ public class FullScreenFragment extends Fragment {
         DatabaseReference followerRef = mDatabase
                 .getReference(Constants.FOLLOWER_TABLE_NAME + "/" + mPost.getUid() +
                         "/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-
         if (item.getTitle().equals(getString(R.string.follow_user))){
             item.setIcon(R.drawable.ic_user_following);
-            Snackbar.make(mCoordinatorLayout, getString(R.string.following), Snackbar.LENGTH_SHORT).show();
             item.setTitle(getString(R.string.unfollow_user));
-            userRef.setValue(++mFollowing);
             followingRef.setValue(Constants.TRUE_STR);
             followerRef.setValue(Constants.TRUE_STR);
-            postRef.setValue(++mFollowers);
-        } else if (item.getTitle().equals(getString(R.string.unfollow_user))){
+            mFollow = true;
+        } else {
             item.setIcon(R.drawable.ic_follow_user);
             item.setTitle(getString(R.string.follow_user));
-            Snackbar.make(mCoordinatorLayout, getString(R.string.unfollow_user), Snackbar.LENGTH_SHORT).show();
-            if (mFollowing > 0) {
-                userRef.setValue(--mFollowing);
-            }
-            if (mFollowers > 0){
-                postRef.setValue(--mFollowers);
-            }
+            mFollow = false;
             followingRef.setValue(Constants.FALSE_STR);
             followerRef.setValue(Constants.FALSE_STR);
         }
+
+        userRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                if (mFollow){
+                    if (currentData.getValue() == null){
+                        currentData.setValue(1);
+                    } else {
+                        long currentValue = (long) currentData.getValue();
+                        currentData.setValue(currentValue + 1);
+                    }
+                } else {
+                    if (currentData.getValue() == null){
+                        currentData.setValue(0);
+                    } else {
+                        long currentValue = (long) currentData.getValue();
+                        if (currentValue > 0){
+                            currentData.setValue(currentValue - 1);
+                        }
+                    }
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if (databaseError != null){
+                    Log.d(TAG, "onComplete: " + databaseError.toString());
+                } else
+                    Log.d(TAG, "onComplete: Successful");
+            }
+        });
+
+        postRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData currentData) {
+                if (mFollow){
+                    if (currentData.getValue() == null){
+                        currentData.setValue(1);
+                    } else {
+                        long currentValue = (long) currentData.getValue();
+                        currentData.setValue(currentValue + 1);
+                    }
+                } else {
+                    if (currentData.getValue() == null){
+                        currentData.setValue(0);
+                    } else {
+                        long currentValue = (long) currentData.getValue();
+                        if (currentValue > 0){
+                            currentData.setValue(currentValue - 1);
+                        }
+                    }
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if (databaseError != null){
+                    Log.d(TAG, "onComplete: " + databaseError.toString());
+                } else
+                    Log.d(TAG, "onComplete: Successful");
+            }
+        });
 
 
     }
