@@ -58,9 +58,12 @@ public class ExpandedSearchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_expanded_search, container, false);
         ButterKnife.bind(this, rootView);
 
+        showCancelButton(false);
+
         if (getActivity().getIntent().getStringExtra(CATEGORY_KEY) != null){
             String category = getActivity().getIntent().getStringExtra(CATEGORY_KEY);
             showContent(true);
+            showCancelButton(true);
             mExpandedSearchEditText.setText(category);
             mExpandedSearchEditText.setSelection(mExpandedSearchEditText.getText().length());
             queryDatabase(new String[]{category, CATEGORY_KEY});
@@ -104,9 +107,11 @@ public class ExpandedSearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence text, int start, int before, int count) {
                 if (text.length() > 0){
+                    showCancelButton(true);
                     showContent(true);
                     queryDatabase(new String[]{text.toString()});
                 } else {
+                    showCancelButton(false);
                     mImageList.clear();
                     mImageAdapter.notifyDataSetChanged();
                     showContent(false);
@@ -125,17 +130,22 @@ public class ExpandedSearchFragment extends Fragment {
         return rootView;
     }
 
+    private void showCancelButton(boolean value){
+        if (value){
+            mExpandedSearchCancelImageButton.setVisibility(View.VISIBLE);
+        } else {
+            mExpandedSearchCancelImageButton.setVisibility(View.INVISIBLE);
+        }
+    }
     private void queryDatabase(String[] query){
         QueryAsyncTask queryAsyncTask = new QueryAsyncTask();
         queryAsyncTask.execute(query);
     }
     private void showContent(boolean value){
         if (value){
-            mExpandedSearchCancelImageButton.setVisibility(View.VISIBLE);
             mEmptyLayout.setVisibility(View.GONE);
             mSearchContentFrameLayout.setVisibility(View.VISIBLE);
         } else {
-            mExpandedSearchCancelImageButton.setVisibility(View.INVISIBLE);
             mSearchContentFrameLayout.setVisibility(View.GONE);
             mEmptyLayout.setVisibility(View.VISIBLE);
         }
