@@ -8,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -26,7 +29,6 @@ import java.util.Map;
  * Created by Mahesh Gaya on 2/21/17.
  */
 
-//todo consider Service instead of IntentService
 public class SetWallpaperIntentService extends IntentService {
     private static final String TAG = SetWallpaperIntentService.class.getSimpleName();
     public static final String WALLPAPER_EXTRA = "wallpaper_extra";
@@ -50,17 +52,17 @@ public class SetWallpaperIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         Map<String, String> message = new HashMap<>();
         if (intent.getParcelableExtra(WALLPAPER_EXTRA) != null) {
             mPost = intent.getParcelableExtra(WALLPAPER_EXTRA);
-            Log.d(TAG, "onHandleIntent: " + mPost.toString());
             try {
                 URL url = new URL(mPost.getImageUrl());
                 //reads the assets from the input stream
                 InputStream assetInputStream = url.openConnection().getInputStream();
                 Bitmap bitmap = BitmapFactory.decodeStream(assetInputStream);
                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(getApplicationContext());
-                    wallpaperManager.setBitmap(bitmap);
+                wallpaperManager.setBitmap(bitmap);
                 message.put(TITLE_KEY, getString(R.string.set_wallpaper_successful_friendly));
                 message.put(TEXT_KEY, getString(R.string.set_wallpaper_successful));
             } catch (Exception e) {
@@ -71,14 +73,13 @@ public class SetWallpaperIntentService extends IntentService {
 
         }
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, FullScreenActivity.class);
+        Intent resultIntent = new Intent(getApplicationContext(), FullScreenActivity.class);
         resultIntent.putExtra(FullScreenFragment.POST_EXTRA, mPost);
-
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
         // This ensures that navigating backward from the Activity leads out of
         // your application to the Home screen.
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
         // Adds the back stack for the Intent (but not the Intent itself)
         stackBuilder.addParentStack(FullScreenActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
@@ -90,7 +91,7 @@ public class SetWallpaperIntentService extends IntentService {
                 );
 
         NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
+                new NotificationCompat.Builder(getApplicationContext())
                         .setAutoCancel(true)
                         .setSmallIcon(R.drawable.ic_notification_icon)
                         .setContentTitle(message.get(TITLE_KEY))

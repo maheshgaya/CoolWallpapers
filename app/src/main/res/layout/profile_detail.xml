@@ -68,13 +68,11 @@
         app:layout_gravity="center_horizontal"/>
 
     <TextView
-        android:paddingRight="28dp"
-        android:paddingEnd="28dp"
-        tools:text="# likes"
+        tools:text="# favorites"
         app:layout_column="2"
         app:layout_row="1"
         app:layout_columnWeight="1"
-        android:id="@+id/likes_textview"
+        android:id="@+id/favorites_textview"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         app:layout_gravity="center_horizontal"/>

@@ -28,8 +28,8 @@
     <string name="followers">Followers</string>
     <string name="follower">Follower</string>
     <string name="following">Following</string>
-    <string name="likes">Likes</string>
-    <string name="like">Like</string>
+    <string name="favorites">Favorites</string>
+    <string name="favorite">Favorite</string>
     <string name="edit_name">Name</string>
 
     <!-- post -->

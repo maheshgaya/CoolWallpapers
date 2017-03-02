@@ -31,7 +31,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.maheshgaya.android.coolwallpapers.MainApplication;
 import com.maheshgaya.android.coolwallpapers.R;
 import com.maheshgaya.android.coolwallpapers.adapter.ImageAdapter;
 import com.maheshgaya.android.coolwallpapers.data.Post;
@@ -39,7 +38,6 @@ import com.maheshgaya.android.coolwallpapers.data.User;
 import com.maheshgaya.android.coolwallpapers.ui.post.PostActivity;
 import com.maheshgaya.android.coolwallpapers.ui.profile.ProfileEditActivity;
 import com.maheshgaya.android.coolwallpapers.ui.profile.ProfileEditFragment;
-import com.maheshgaya.android.coolwallpapers.util.DisplayUtils;
 import com.maheshgaya.android.coolwallpapers.util.UserAuthUtils;
 
 import java.util.ArrayList;
@@ -66,7 +64,7 @@ public class ProfileFragment extends Fragment{
     @BindView(R.id.edit_profile_button)Button mEditProfileButton;
     @BindView(R.id.follower_textview)TextView mFollowerTextView;
     @BindView(R.id.following_textview)TextView mFollowingTextView;
-    @BindView(R.id.likes_textview)TextView mLikesTextView;
+    @BindView(R.id.favorites_textview)TextView mLikesTextView;
 
     @BindView(R.id.profile_layout)LinearLayout mPostLinearLayout;
     @BindView(R.id.empty_linearlayout)LinearLayout mEmptyLayout;
@@ -258,7 +256,7 @@ public class ProfileFragment extends Fragment{
                                 ((mCurrentUser.getFollowers() > 1) ? getString(R.string.followers) : getString(R.string.follower)));
                         mFollowingTextView.setText(mCurrentUser.getFollowing()  + " " + getString(R.string.following));
                         mLikesTextView.setText(mCurrentUser.getLikes()  + " " +
-                                ((mCurrentUser.getLikes() > 1) ? getString(R.string.likes) : getString(R.string.like)));
+                                ((mCurrentUser.getLikes() > 1) ? getString(R.string.favorites) : getString(R.string.favorite)));
                         Glide.with(getContext())
                                 .load(mCurrentUser.getImageUrl())
                                 .error(R.drawable.ic_user_profile)
