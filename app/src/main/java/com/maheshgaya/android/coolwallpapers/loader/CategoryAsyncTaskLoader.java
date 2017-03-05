@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class CategoryAsyncTaskLoader extends AsyncTaskLoader<ArrayList<Category>> {
     private static final String TAG = CategoryAsyncTaskLoader.class.getSimpleName();
     public static final int HEADER_TITLE = -1;
-    //TODO Replace this with actual icons
     private int[] mCategoryIcons = {
             HEADER_TITLE,
             android.R.color.holo_blue_dark,
